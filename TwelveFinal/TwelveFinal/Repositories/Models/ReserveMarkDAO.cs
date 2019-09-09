@@ -18,6 +18,6 @@ namespace TwelveFinal.Repositories.Models
         public int? Languages { get; set; }
         public Guid GraduationId { get; set; }
 
-        public virtual GraduationDAO Graduation { get; set; }
+        public virtual GraduationInformationDAO Graduation { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TwelveFinal.Entities
 {
-    public class Test : DataEntity
+    public class TestExam : DataEntity
     {
         public Guid Id { get; set; }
         public bool Maths { get; set; }

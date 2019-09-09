@@ -1,45 +1,48 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace TwelveFinal.Entities
 {
-    public class Aspiration : DataEntity
+    public class University_Majors : DataEntity
     {
         public Guid Id { get; set; }
+        public Guid UniversityId { get; set; }
         public string UniversityCode { get; set; }
+        public string UniversityName { get; set; }
+        public Guid MajorsId { get; set; }
         public string MajorsCode { get; set; }
         public string MajorsName { get; set; }
+        public double? Benchmark { get; set; }
         public string SubjectGroupType { get; set; }
         public Guid UniversityAdmissionId { get; set; }
     }
 
-    public class AspirationFilter : FilterEntity
+    public class University_MajorsFilter : FilterEntity
     {
         public GuidFilter Id { get; set; }
-        public Guid UniversityAdmissionId { get; set; }
+        public GuidFilter UniversityId { get; set; }
         public StringFilter UniversityCode { get; set; }
+        public StringFilter UniversityName { get; set; }
+        public GuidFilter MajorsId { get; set; }
         public StringFilter MajorsCode { get; set; }
         public StringFilter MajorsName { get; set; }
+        public DoubleFilter Benchmark { get; set; }
         public StringFilter SubjectGroupType { get; set; }
-        public List<Guid> ExceptIds { get; set; }
-        public List<Guid> Ids { get; set; }
-        public AspirationOrder OrderBy { get; set; }
-        public AspirationFilter() : base()
+        public GuidFilter UniversityAdmissionId { get; set; }
+        public University_MajorsOrder OrderBy { get; set; }
+        public University_MajorsFilter() : base()
         {
 
         }
     }
 
-    [JsonConverter(typeof(StringEnumConverter))]
-    public enum AspirationOrder
+    public enum University_MajorsOrder
     {
         CX,
         UniversityCode,
         MajorsCode,
-        MajorsName
+        Benchmark
     }
 }

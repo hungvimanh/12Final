@@ -8,40 +8,40 @@ using TwelveFinal.Repositories.Models;
 
 namespace TwelveFinal.Repositories
 {
-    public interface IStudentRepository
+    public interface IPersonalInformationRepository
     {
-        Task<bool> Create(Student student);
-        Task<Student> Get(Guid Id);
-        Task<bool> Update(Student student);
+        Task<bool> Create(PersonalInformation personalInformation);
+        Task<PersonalInformation> Get(Guid Id);
+        Task<bool> Update(PersonalInformation personalInformation);
         Task<bool> Delete(Guid Id);
     }
-    public class StudentRepository : IStudentRepository
+    public class PersonalInformationRepository : IPersonalInformationRepository
     {
         private readonly TFContext tFContext;
-        public StudentRepository(TFContext _tFContext)
+        public PersonalInformationRepository(TFContext _tFContext)
         {
             tFContext = _tFContext;
         }
-        public async Task<bool> Create(Student student)
+        public async Task<bool> Create(PersonalInformation personalInformation)
         {
-            StudentDAO studentDAO = new StudentDAO
+            PersonalInformationDAO personalInformationDAO = new PersonalInformationDAO
             {
-                Id = student.Id,
-                FullName = student.FullName,
-                Address = student.Address,
-                Dob = student.Dob,
-                Email = student.Email,
-                Gender = student.Gender,
-                HighSchoolId = student.HighSchoolId,
-                Identify = student.Identify,
-                IsPermanentResidenceMore18 = student.IsPermanentResidenceMore18,
-                IsPermanentResidenceSpecialMore18 = student.IsPermanentResidenceSpecialMore18,
-                Nation = student.Nation,
-                Phone = student.Phone,
-                TownId = student.TownId
+                Id = personalInformation.Id,
+                FullName = personalInformation.FullName,
+                Address = personalInformation.Address,
+                Dob = personalInformation.Dob,
+                Email = personalInformation.Email,
+                Gender = personalInformation.Gender,
+                HighSchoolId = personalInformation.HighSchoolId,
+                Identify = personalInformation.Identify,
+                IsPermanentResidenceMore18 = personalInformation.IsPermanentResidenceMore18,
+                IsPermanentResidenceSpecialMore18 = personalInformation.IsPermanentResidenceSpecialMore18,
+                Nation = personalInformation.Nation,
+                Phone = personalInformation.Phone,
+                TownId = personalInformation.TownId
             };
 
-            tFContext.Student.Add(studentDAO);
+            tFContext.PersonalInformation.Add(personalInformationDAO);
             await tFContext.SaveChangesAsync();
             return true;
         }
@@ -49,49 +49,49 @@ namespace TwelveFinal.Repositories
         public async Task<bool> Delete(Guid Id)
         {
             await tFContext.Form.Where(f => f.PersonalInfomartionId.Equals(Id)).DeleteFromQueryAsync();
-            await tFContext.Student.Where(b => b.Id.Equals(Id)).DeleteFromQueryAsync();
+            await tFContext.PersonalInformation.Where(b => b.Id.Equals(Id)).DeleteFromQueryAsync();
             return true;
         }
 
-        public async Task<Student> Get(Guid Id)
+        public async Task<PersonalInformation> Get(Guid Id)
         {
-            Student student = await tFContext.Student.Where(s => s.Id.Equals(Id)).Select(s => new Student
+            PersonalInformation personalInformation = await tFContext.PersonalInformation.Where(p => p.Id.Equals(Id)).Select(p => new PersonalInformation
             {
-                Id = s.Id,
-                FullName = s.FullName,
-                Address = s.Address,
-                Dob = s.Dob,
-                Email = s.Email,
-                Gender = s.Gender,
-                HighSchoolId = s.HighSchoolId,
-                Identify = s.Identify,
-                IsPermanentResidenceMore18 = s.IsPermanentResidenceMore18,
-                IsPermanentResidenceSpecialMore18 = s.IsPermanentResidenceSpecialMore18,
-                Nation = s.Nation,
-                Phone = s.Phone,
-                TownId = s.TownId,
+                Id = p.Id,
+                FullName = p.FullName,
+                Address = p.Address,
+                Dob = p.Dob,
+                Email = p.Email,
+                Gender = p.Gender,
+                HighSchoolId = p.HighSchoolId,
+                Identify = p.Identify,
+                IsPermanentResidenceMore18 = p.IsPermanentResidenceMore18,
+                IsPermanentResidenceSpecialMore18 = p.IsPermanentResidenceSpecialMore18,
+                Nation = p.Nation,
+                Phone = p.Phone,
+                TownId = p.TownId,
             }).FirstOrDefaultAsync();
 
-            return student;
+            return personalInformation;
         }
 
-        public async Task<bool> Update(Student student)
+        public async Task<bool> Update(PersonalInformation personalInformation)
         {
-            await tFContext.Student.Where(s => s.Id.Equals(student.Id)).UpdateFromQueryAsync(s => new StudentDAO
+            await tFContext.PersonalInformation.Where(p => p.Id.Equals(personalInformation.Id)).UpdateFromQueryAsync(p => new PersonalInformationDAO
             {
-                Id = student.Id,
-                FullName = student.FullName,
-                Address = student.Address,
-                Dob = student.Dob,
-                Email = student.Email,
-                Gender = student.Gender,
-                HighSchoolId = student.HighSchoolId,
-                Identify = student.Identify,
-                IsPermanentResidenceMore18 = student.IsPermanentResidenceMore18,
-                IsPermanentResidenceSpecialMore18 = student.IsPermanentResidenceSpecialMore18,
-                Nation = student.Nation,
-                Phone = student.Phone,
-                TownId = student.TownId,
+                Id = personalInformation.Id,
+                FullName = personalInformation.FullName,
+                Address = personalInformation.Address,
+                Dob = personalInformation.Dob,
+                Email = personalInformation.Email,
+                Gender = personalInformation.Gender,
+                HighSchoolId = personalInformation.HighSchoolId,
+                Identify = personalInformation.Identify,
+                IsPermanentResidenceMore18 = personalInformation.IsPermanentResidenceMore18,
+                IsPermanentResidenceSpecialMore18 = personalInformation.IsPermanentResidenceSpecialMore18,
+                Nation = personalInformation.Nation,
+                Phone = personalInformation.Phone,
+                TownId = personalInformation.TownId,
             });
 
             return true;

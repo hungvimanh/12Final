@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TwelveFinal.Entities
 {
-    public class Register : DataEntity
+    public class RegisterInformation : DataEntity
     {
         public Guid Id { get; set; }
         public bool? ResultForUniversity { get; set; }

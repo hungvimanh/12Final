@@ -8,23 +8,23 @@ using TwelveFinal.Repositories.Models;
 
 namespace TwelveFinal.Repositories
 {
-    public interface IRegisterRepository
+    public interface IRegisterInformationRepository
     {
-        Task<bool> Create(Register register);
-        Task<Register> Get(Guid Id);
-        Task<bool> Update(Register register);
+        Task<bool> Create(RegisterInformation register);
+        Task<RegisterInformation> Get(Guid Id);
+        Task<bool> Update(RegisterInformation register);
         Task<bool> Delete(Guid Id);
     }
-    public class RegisterRepository : IRegisterRepository
+    public class RegisterInformationRepository : IRegisterInformationRepository
     {
         private readonly TFContext tFContext;
-        public RegisterRepository(TFContext _tFContext)
+        public RegisterInformationRepository(TFContext _tFContext)
         {
             tFContext = _tFContext;
         }
-        public async Task<bool> Create(Register register)
+        public async Task<bool> Create(RegisterInformation register)
         {
-            RegisterDAO RegisterDAO = new RegisterDAO
+            RegisterInformationDAO RegisterDAO = new RegisterInformationDAO
             {
                 Id = register.Id,
                 Passed = register.Passed,
@@ -35,7 +35,7 @@ namespace TwelveFinal.Repositories
                 TestId = register.TestId,
             };
 
-            tFContext.Register.Add(RegisterDAO);
+            tFContext.RegisterInformation.Add(RegisterDAO);
             await tFContext.SaveChangesAsync();
             return true;
         }
@@ -43,13 +43,13 @@ namespace TwelveFinal.Repositories
         public async Task<bool> Delete(Guid Id)
         {
             await tFContext.Form.Where(f => f.RegisterInformationId.Equals(Id)).DeleteFromQueryAsync();
-            await tFContext.Register.Where(r => r.Id.Equals(Id)).DeleteFromQueryAsync();
+            await tFContext.RegisterInformation.Where(r => r.Id.Equals(Id)).DeleteFromQueryAsync();
             return true;
         }
 
-        public async Task<Register> Get(Guid Id)
+        public async Task<RegisterInformation> Get(Guid Id)
         {
-            Register register = await tFContext.Register.Where(r => r.Id.Equals(Id)).Select(r => new Register
+            RegisterInformation register = await tFContext.RegisterInformation.Where(r => r.Id.Equals(Id)).Select(r => new RegisterInformation
             {
                 Id = r.Id,
                 Passed = r.Passed,
@@ -63,9 +63,9 @@ namespace TwelveFinal.Repositories
             return register;
         }
 
-        public async Task<bool> Update(Register register)
+        public async Task<bool> Update(RegisterInformation register)
         {
-            await tFContext.Register.Where(r => r.Id.Equals(register.Id)).UpdateFromQueryAsync(r => new RegisterDAO
+            await tFContext.RegisterInformation.Where(r => r.Id.Equals(register.Id)).UpdateFromQueryAsync(r => new RegisterInformationDAO
             {
                 Id = register.Id,
                 Passed = register.Passed,

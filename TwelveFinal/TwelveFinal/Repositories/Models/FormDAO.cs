@@ -15,9 +15,9 @@ namespace TwelveFinal.Repositories.Models
         public Guid GraduationInformationId { get; set; }
         public Guid UniversityAdmissionId { get; set; }
 
-        public virtual GraduationDAO GraduationInformation { get; set; }
-        public virtual StudentDAO PersonalInfomartion { get; set; }
-        public virtual RegisterDAO RegisterInformation { get; set; }
+        public virtual GraduationInformationDAO GraduationInformation { get; set; }
+        public virtual PersonalInformationDAO PersonalInfomartion { get; set; }
+        public virtual RegisterInformationDAO RegisterInformation { get; set; }
         public virtual UniversityAdmissionDAO UniversityAdmission { get; set; }
     }
 }

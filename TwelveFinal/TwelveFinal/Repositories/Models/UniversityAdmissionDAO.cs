@@ -7,8 +7,8 @@ namespace TwelveFinal.Repositories.Models
     {
         public UniversityAdmissionDAO()
         {
-            Aspirations = new HashSet<AspirationDAO>();
             Forms = new HashSet<FormDAO>();
+            University_Majors = new HashSet<University_MajorsDAO>();
         }
 
         public Guid Id { get; set; }
@@ -18,7 +18,7 @@ namespace TwelveFinal.Repositories.Models
         public string GraduateYear { get; set; }
         public int? Connected { get; set; }
 
-        public virtual ICollection<AspirationDAO> Aspirations { get; set; }
         public virtual ICollection<FormDAO> Forms { get; set; }
+        public virtual ICollection<University_MajorsDAO> University_Majors { get; set; }
     }
 }

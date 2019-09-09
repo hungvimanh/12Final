@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TwelveFinal.Entities
 {
-    public class Student : DataEntity
+    public class PersonalInformation : DataEntity
     {
         public Guid Id { get; set; }
         public string FullName { get; set; }

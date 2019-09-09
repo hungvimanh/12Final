@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace TwelveFinal.Repositories.Models
 {
-    public partial class RegisterDAO
+    public partial class RegisterInformationDAO
     {
-        public RegisterDAO()
+        public RegisterInformationDAO()
         {
             Forms = new HashSet<FormDAO>();
         }
@@ -21,7 +21,7 @@ namespace TwelveFinal.Repositories.Models
 
         public virtual ProvinceDAO ContestGroup { get; set; }
         public virtual HighSchoolDAO ContestUnit { get; set; }
-        public virtual TestDAO Test { get; set; }
+        public virtual TestExamDAO Test { get; set; }
         public virtual ICollection<FormDAO> Forms { get; set; }
     }
 }

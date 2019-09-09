@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace TwelveFinal.Repositories.Models
 {
-    public partial class GraduationDAO
+    public partial class GraduationInformationDAO
     {
-        public GraduationDAO()
+        public GraduationInformationDAO()
         {
             Forms = new HashSet<FormDAO>();
             ReserveMarks = new HashSet<ReserveMarkDAO>();

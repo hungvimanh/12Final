@@ -7,7 +7,7 @@ namespace TwelveFinal.Repositories.Models
     {
         public HighSchoolReferenceDAO()
         {
-            Students = new HashSet<StudentDAO>();
+            PersonalInformations = new HashSet<PersonalInformationDAO>();
         }
 
         public Guid Id { get; set; }
@@ -19,6 +19,6 @@ namespace TwelveFinal.Repositories.Models
         public virtual HighSchoolDAO Grade10 { get; set; }
         public virtual HighSchoolDAO Grade11 { get; set; }
         public virtual HighSchoolDAO Grade12 { get; set; }
-        public virtual ICollection<StudentDAO> Students { get; set; }
+        public virtual ICollection<PersonalInformationDAO> PersonalInformations { get; set; }
     }
 }

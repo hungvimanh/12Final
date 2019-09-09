@@ -39,7 +39,7 @@ namespace TwelveFinal.Repositories
 
         public async Task<bool> Delete(Guid Id)
         {
-            await tFContext.Student.Where(s => s.TownId.Equals(Id)).DeleteFromQueryAsync();
+            await tFContext.PersonalInformation.Where(p => p.TownId.Equals(Id)).DeleteFromQueryAsync();
             await tFContext.Town.Where(t => t.Id.Equals(Id)).DeleteFromQueryAsync();
             return true;
         }

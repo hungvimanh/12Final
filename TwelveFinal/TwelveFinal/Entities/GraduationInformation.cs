@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TwelveFinal.Entities
 {
-    public class Graduation : DataEntity
+    public class GraduationInformation : DataEntity
     {
         public Guid Id { get; set; }
         public string ExceptLanguages { get; set; }
@@ -15,7 +15,7 @@ namespace TwelveFinal.Entities
         public Guid? ReserveId { get; set; }
     }
 
-    public class GraduationFilter : FilterEntity
+    public class GraduationInformationFilter : FilterEntity
     {
         public GuidFilter Id { get; set; }
         public StringFilter ExceptLanguages { get; set; }
@@ -24,7 +24,7 @@ namespace TwelveFinal.Entities
         public List<Guid> ExceptIds { get; set; }
         public List<Guid> Ids { get; set; }
         public GraduationOrder OrderBy { get; set; }
-        public GraduationFilter() : base()
+        public GraduationInformationFilter() : base()
         {
 
         }

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace TwelveFinal.Repositories.Models
 {
-    public partial class TestDAO
+    public partial class TestExamDAO
     {
-        public TestDAO()
+        public TestExamDAO()
         {
-            Registers = new HashSet<RegisterDAO>();
+            RegisterInformations = new HashSet<RegisterInformationDAO>();
         }
 
         public Guid Id { get; set; }
@@ -19,6 +19,6 @@ namespace TwelveFinal.Repositories.Models
 
         public virtual NaturalSciencesDAO Science { get; set; }
         public virtual SocialScienceDAO ScienceNavigation { get; set; }
-        public virtual ICollection<RegisterDAO> Registers { get; set; }
+        public virtual ICollection<RegisterInformationDAO> RegisterInformations { get; set; }
     }
 }

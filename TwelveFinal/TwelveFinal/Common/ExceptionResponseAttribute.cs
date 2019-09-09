@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -30,15 +32,26 @@ namespace TwelveFinal
         private static Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             var code = HttpStatusCode.InternalServerError; // 500 if unexpected
+            if (exception is NotFoundException || exception is UnauthorizedException)
+            {
+                if (exception is NotFoundException) code = HttpStatusCode.NotFound;
+                else if (exception is UnauthorizedException) code = HttpStatusCode.Unauthorized;
 
-            if (exception is NotFoundException) code = HttpStatusCode.NotFound;
-            else if (exception is UnauthorizedException) code = HttpStatusCode.Unauthorized;
-            else if (exception is BadRequestException) code = HttpStatusCode.BadRequest;
+                context.Response.ContentType = "application/json";
+                context.Response.StatusCode = (int)code;
+                return context.Response.WriteAsync(JsonConvert.SerializeObject(exception));
+            }
+            else if (exception is MessageException)
+            {
+                context.Response.ContentType = "application/json";
+                context.Response.StatusCode = 420;
+                return context.Response.WriteAsync(exception.Message);
 
-            var result = exception.Message;
+            }
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)code;
-            return context.Response.WriteAsync(result);
+            return context.Response.WriteAsync(exception.Message);
+
         }
     }
 
@@ -50,27 +63,20 @@ namespace TwelveFinal
         }
     }
 
-    public class BadRequestException : Exception
+    public class MessageException : Exception
     {
-        public DataDTO DataDTO { get; }
-        public object DataDTOs { get; }
-        private static string ModifyMessage(object DataDTO)
+        private static string ModifyMessage(object obj)
         {
-            return JsonConvert.SerializeObject(DataDTO);
+            return JsonConvert.SerializeObject(obj, new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            });
         }
+        public MessageException(string message) : base(message) { }
 
-        public BadRequestException(DataDTO DataDTO) : base(ModifyMessage(DataDTO))
-        {
-            this.DataDTO = DataDTO;
-        }
+        public MessageException(Exception ex) : base(ModifyMessage(ex)) { }
 
-        public BadRequestException(object DataDTOs) : base(ModifyMessage(DataDTOs))
-        {
-            this.DataDTOs = DataDTOs;
-        }
-
-        public BadRequestException(string Message) : base(Message) { }
-
+        public MessageException(ModelStateDictionary ms) : base(ModifyMessage(ms)) { }
     }
 
     public class InternalServerErrorException : Exception
@@ -99,6 +105,22 @@ namespace TwelveFinal
     public class ConflictException : Exception
     {
         public ConflictException(string Message) : base(Message)
+        {
+        }
+    }
+    public class BadRequestException : Exception
+    {
+        private static string ModifyMessage(object DataDTO)
+        {
+            return JsonConvert.SerializeObject(DataDTO, new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            });
+        }
+        public BadRequestException(string Message) : base(Message)
+        {
+        }
+        public BadRequestException(object obj) : base(ModifyMessage(obj))
         {
         }
     }

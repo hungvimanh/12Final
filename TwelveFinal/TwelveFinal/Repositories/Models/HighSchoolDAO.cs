@@ -10,7 +10,7 @@ namespace TwelveFinal.Repositories.Models
             HighSchoolReferenceGrade10s = new HashSet<HighSchoolReferenceDAO>();
             HighSchoolReferenceGrade11s = new HashSet<HighSchoolReferenceDAO>();
             HighSchoolReferenceGrade12s = new HashSet<HighSchoolReferenceDAO>();
-            Registers = new HashSet<RegisterDAO>();
+            RegisterInformations = new HashSet<RegisterInformationDAO>();
         }
 
         public Guid Id { get; set; }
@@ -23,6 +23,6 @@ namespace TwelveFinal.Repositories.Models
         public virtual ICollection<HighSchoolReferenceDAO> HighSchoolReferenceGrade10s { get; set; }
         public virtual ICollection<HighSchoolReferenceDAO> HighSchoolReferenceGrade11s { get; set; }
         public virtual ICollection<HighSchoolReferenceDAO> HighSchoolReferenceGrade12s { get; set; }
-        public virtual ICollection<RegisterDAO> Registers { get; set; }
+        public virtual ICollection<RegisterInformationDAO> RegisterInformations { get; set; }
     }
 }

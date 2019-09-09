@@ -41,7 +41,7 @@ namespace TwelveFinal.Repositories
         public async Task<bool> Delete(Guid Id)
         {
             await tFContext.Form.Where(f => f.UniversityAdmissionId.Equals(Id)).DeleteFromQueryAsync();
-            await tFContext.Aspiration.Where(a => a.UniversityAdmissionId.Equals(Id)).DeleteFromQueryAsync();
+            await tFContext.University_Majors.Where(a => a.UniversityAdmissionId.Equals(Id)).DeleteFromQueryAsync();
             await tFContext.UniversityAdmission.Where(u => u.Id.Equals(Id)).DeleteFromQueryAsync();
             return true;
         }
@@ -55,14 +55,18 @@ namespace TwelveFinal.Repositories
                 Connected = g.Connected,
                 GraduateYear = g.GraduateYear,
                 PriorityType = g.PriorityType,
-                Aspirations = g.Aspirations.Select(a => new Aspiration
+                University_Majorses = g.University_Majors.Select(a => new University_Majors
                 {
                     Id = a.Id,
-                    MajorsCode = a.MajorsCode,
-                    MajorsName = a.MajorsName,
+                    MajorsId = a.MajorsId,
+                    MajorsCode = a.Majors.Code,
+                    MajorsName = a.Majors.Name,
+                    UniversityId = a.UniversityId,
+                    UniversityCode = a.University.Code,
+                    UniversityName = a.University.Name,
                     SubjectGroupType = a.SubjectGroupType,
+                    Benchmark = a.Benchmark,
                     UniversityAdmissionId = a.UniversityAdmissionId,
-                    UniversityCode = a.UniversityCode
                 }).ToList()
             }).FirstOrDefaultAsync();
 
@@ -78,14 +82,14 @@ namespace TwelveFinal.Repositories
                 Connected = universityAdmission.Connected,
                 GraduateYear = universityAdmission.GraduateYear,
                 PriorityType = universityAdmission.PriorityType,
-                Aspirations = universityAdmission.Aspirations.Select(a => new AspirationDAO
+                University_Majors = universityAdmission.University_Majorses.Select(a => new University_MajorsDAO
                 {
                     Id = a.Id,
-                    MajorsCode = a.MajorsCode,
-                    MajorsName = a.MajorsName,
+                    MajorsId = a.MajorsId,
+                    UniversityId = a.UniversityId,
                     SubjectGroupType = a.SubjectGroupType,
-                    UniversityAdmissionId = a.UniversityAdmissionId,
-                    UniversityCode = a.UniversityCode
+                    Benchmark = a.Benchmark,
+                    UniversityAdmissionId = a.UniversityAdmissionId
                 }).ToList()
             });
 

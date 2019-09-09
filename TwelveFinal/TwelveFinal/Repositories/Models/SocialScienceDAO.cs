@@ -7,7 +7,7 @@ namespace TwelveFinal.Repositories.Models
     {
         public SocialScienceDAO()
         {
-            Tests = new HashSet<TestDAO>();
+            TestExams = new HashSet<TestExamDAO>();
         }
 
         public Guid Id { get; set; }
@@ -16,6 +16,6 @@ namespace TwelveFinal.Repositories.Models
         public bool Geography { get; set; }
         public bool CivicEducation { get; set; }
 
-        public virtual ICollection<TestDAO> Tests { get; set; }
+        public virtual ICollection<TestExamDAO> TestExams { get; set; }
     }
 }
