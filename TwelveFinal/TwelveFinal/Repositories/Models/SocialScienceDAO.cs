@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace TwelveFinal.Repositories.Models
+{
+    public partial class SocialScienceDAO
+    {
+        public SocialScienceDAO()
+        {
+            Tests = new HashSet<TestDAO>();
+        }
+
+        public Guid Id { get; set; }
+        public long CX { get; set; }
+        public bool History { get; set; }
+        public bool Geography { get; set; }
+        public bool CivicEducation { get; set; }
+
+        public virtual ICollection<TestDAO> Tests { get; set; }
+    }
+}
