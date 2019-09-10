@@ -254,6 +254,10 @@ namespace TwelveFinal.Repositories.Models
                     .IsRequired()
                     .HasMaxLength(15);
 
+                entity.Property(e => e.PlaceOfBirth)
+                    .IsRequired()
+                    .HasMaxLength(30);
+
                 entity.HasOne(d => d.HighSchool)
                     .WithMany(p => p.PersonalInformations)
                     .HasForeignKey(d => d.HighSchoolId)

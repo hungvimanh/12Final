@@ -16,6 +16,7 @@ namespace TwelveFinal.Repositories.Models
         public string FullName { get; set; }
         public DateTime Dob { get; set; }
         public bool Gender { get; set; }
+        public string PlaceOfBirth { get; set; }
         public string Nation { get; set; }
         public string Identify { get; set; }
         public Guid TownId { get; set; }
