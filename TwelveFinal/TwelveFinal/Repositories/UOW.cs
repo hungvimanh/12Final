@@ -16,7 +16,6 @@ namespace TwelveFinal.Repositories
         IDistrictRepository DistrictRepository { get; }
         IFormRepository FormRepository { get; }
         IGraduationInformationRepository GraduationInformationRepository { get; }
-        IHighSchoolReferenceRepository HighSchoolReferenceRepository { get; }
         IHighSchoolRepository HighSchoolRepository { get; }
         IMajorsRepository MajorsRepository { get; }
         IProvinceRepository ProvinceRepository { get; }
@@ -26,6 +25,7 @@ namespace TwelveFinal.Repositories
         IUniversity_MajorsRepository University_MajorsRepository { get; }
         IUniversityAdmissionRepository UniversityAdmissionRepository { get; }
         IUniversityRepository UniversityRepository { get; }
+        IUserRepository UserRepository { get; }
     }
     public class UOW : IUOW
     { 
@@ -33,7 +33,6 @@ namespace TwelveFinal.Repositories
         public IDistrictRepository DistrictRepository { get; private set; }
         public IFormRepository FormRepository { get; private set; }
         public IGraduationInformationRepository GraduationInformationRepository { get; private set; }
-        public IHighSchoolReferenceRepository HighSchoolReferenceRepository { get; private set; }
         public IHighSchoolRepository HighSchoolRepository { get; private set; }
         public IMajorsRepository MajorsRepository { get; private set; }
         public IProvinceRepository ProvinceRepository { get; private set; }
@@ -43,15 +42,14 @@ namespace TwelveFinal.Repositories
         public IUniversity_MajorsRepository University_MajorsRepository { get; private set; }
         public IUniversityAdmissionRepository UniversityAdmissionRepository { get; private set; }
         public IUniversityRepository UniversityRepository { get; private set; }
-    
-    
+        public IUserRepository UserRepository { get; private set; }
+
         public UOW(TFContext _tFContext)
         {
             tFContext = _tFContext;
             DistrictRepository = new DistrictRepository(tFContext);
             FormRepository = new FormRepository(tFContext);
             GraduationInformationRepository = new GraduationInformationRepository(tFContext);
-            HighSchoolReferenceRepository = new HighSchoolReferenceRepository(tFContext);
             HighSchoolRepository = new HighSchoolRepository(tFContext);
             MajorsRepository = new MajorsRepository(tFContext);
             ProvinceRepository = new ProvinceRepository(tFContext);
@@ -61,6 +59,7 @@ namespace TwelveFinal.Repositories
             University_MajorsRepository = new University_MajorsRepository(tFContext);
             UniversityAdmissionRepository = new UniversityAdmissionRepository(tFContext);
             UniversityRepository = new UniversityRepository(tFContext);
+            UserRepository = new UserRepository(tFContext);
             EntityFrameworkManager.ContextFactory = DbContext => tFContext;
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TwelveFinal.Entities;
+using TwelveFinal.Repositories;
 
 namespace TwelveFinal.Services.MDistrict
 {
@@ -14,6 +15,17 @@ namespace TwelveFinal.Services.MDistrict
     }
     public class DistrictValidator : IDistrictValidator
     {
+        private IUOW UOW;
+        public enum ErrorCode
+        {
+
+        }
+
+        public DistrictValidator(IUOW _UOW)
+        {
+            UOW = _UOW;
+        }
+
         public Task<bool> Create(District District)
         {
             throw new NotImplementedException();

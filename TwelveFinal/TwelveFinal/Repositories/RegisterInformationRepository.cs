@@ -10,10 +10,8 @@ namespace TwelveFinal.Repositories
 {
     public interface IRegisterInformationRepository
     {
-        Task<bool> Create(RegisterInformation register);
-        Task<RegisterInformation> Get(Guid Id);
+        Task<RegisterInformation> Get(Guid FormId);
         Task<bool> Update(RegisterInformation register);
-        Task<bool> Delete(Guid Id);
     }
     public class RegisterInformationRepository : IRegisterInformationRepository
     {
@@ -22,42 +20,28 @@ namespace TwelveFinal.Repositories
         {
             tFContext = _tFContext;
         }
-        public async Task<bool> Create(RegisterInformation register)
-        {
-            RegisterInformationDAO RegisterDAO = new RegisterInformationDAO
-            {
-                Id = register.Id,
-                Passed = register.Passed,
-                ResultForUniversity = register.ResultForUniversity,
-                StudyAtHighSchool = register.StudyAtHighSchool,
-                ContestGroupId = register.ContestGroupId,
-                ContestUnitId = register.ContestUnitId,
-                TestId = register.TestId,
-            };
 
-            tFContext.RegisterInformation.Add(RegisterDAO);
-            await tFContext.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<bool> Delete(Guid Id)
+        public async Task<RegisterInformation> Get(Guid FormId)
         {
-            await tFContext.Form.Where(f => f.RegisterInformationId.Equals(Id)).DeleteFromQueryAsync();
-            await tFContext.RegisterInformation.Where(r => r.Id.Equals(Id)).DeleteFromQueryAsync();
-            return true;
-        }
-
-        public async Task<RegisterInformation> Get(Guid Id)
-        {
-            RegisterInformation register = await tFContext.RegisterInformation.Where(r => r.Id.Equals(Id)).Select(r => new RegisterInformation
+            RegisterInformation register = await tFContext.Form.Where(r => r.Id.Equals(FormId)).Select(r => new RegisterInformation
             {
                 Id = r.Id,
-                Passed = r.Passed,
+                Graduated = r.Graduated,
                 ResultForUniversity = r.ResultForUniversity,
                 StudyAtHighSchool = r.StudyAtHighSchool,
-                ContestGroupId = r.ContestGroupId,
-                ContestUnitId = r.ContestUnitId,
-                TestId = r.TestId,
+                ClusterContestId = r.ClusterContestId,
+                RegisterPlaceOfExamId = r.RegisterPlaceOfExamId,
+                Maths = r.Maths,
+                Literature = r.Literature,
+                Languages = r.Languages,
+                Physics = r.Physics,
+                Chemistry = r.Chemistry,
+                Biology = r.Biology,
+                History = r.History,
+                Geography = r.Geography,
+                CivicEducation = r.CivicEducation,
+                NaturalSciences = r.NaturalSciences,
+                SocialSciences = r.SocialSciences
             }).FirstOrDefaultAsync();
 
             return register;
@@ -65,15 +49,24 @@ namespace TwelveFinal.Repositories
 
         public async Task<bool> Update(RegisterInformation register)
         {
-            await tFContext.RegisterInformation.Where(r => r.Id.Equals(register.Id)).UpdateFromQueryAsync(r => new RegisterInformationDAO
+            await tFContext.Form.Where(r => r.Id.Equals(register.Id)).UpdateFromQueryAsync(r => new FormDAO
             {
-                Id = register.Id,
-                Passed = register.Passed,
+                Graduated = register.Graduated,
                 ResultForUniversity = register.ResultForUniversity,
                 StudyAtHighSchool = register.StudyAtHighSchool,
-                ContestGroupId = register.ContestGroupId,
-                ContestUnitId = register.ContestUnitId,
-                TestId = register.TestId,
+                ClusterContestId = register.ClusterContestId,
+                RegisterPlaceOfExamId = register.RegisterPlaceOfExamId,
+                Maths = register.Maths,
+                Literature = register.Literature,
+                Languages = register.Languages,
+                Physics = register.Physics,
+                Chemistry = register.Chemistry,
+                Biology = register.Biology,
+                History = register.History,
+                Geography = register.Geography,
+                CivicEducation = register.CivicEducation,
+                NaturalSciences = register.NaturalSciences,
+                SocialSciences = register.SocialSciences
             });
 
             return true;

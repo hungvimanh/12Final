@@ -12,7 +12,9 @@ namespace TwelveFinal.Entities
         public Guid Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
-        public Guid ProvinceId { get; set; }
+        public Guid DistrictId { get; set; }
+        public string DistrictCode { get; set; }
+        public string DistrictName { get; set; }
         public string ProvinceCode { get; set; }
         public string ProvinceName { get; set; }
     }
@@ -22,7 +24,9 @@ namespace TwelveFinal.Entities
         public GuidFilter Id { get; set; }
         public StringFilter Code { get; set; }
         public StringFilter Name { get; set; }
-        public Guid ProvinceId { get; set; }
+        public Guid DistrictId { get; set; }
+        public StringFilter DistrictCode { get; set; }
+        public StringFilter DistrictName { get; set; }
         public StringFilter ProvinceCode { get; set; }
         public StringFilter ProvinceName { get; set; }
         public List<Guid> ExceptIds { get; set; }

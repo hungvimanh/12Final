@@ -11,7 +11,7 @@ namespace TwelveFinal.Entities
         public string PriorityType { get; set; }
         public string Area { get; set; }
         public string GraduateYear { get; set; }
-        public int? Connected { get; set; }
+        public bool? Connected { get; set; }
         public List<University_Majors> University_Majorses { get; set; }
     }
 }

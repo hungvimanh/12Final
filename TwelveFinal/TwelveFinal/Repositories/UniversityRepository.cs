@@ -151,7 +151,6 @@ namespace TwelveFinal.Repositories
         {
             await tFContext.University.Where(u => u.Id.Equals(university.Id)).UpdateFromQueryAsync(u => new UniversityDAO
             {
-                Id = university.Id,
                 Code = university.Code,
                 Name = university.Name,
                 Address = university.Address

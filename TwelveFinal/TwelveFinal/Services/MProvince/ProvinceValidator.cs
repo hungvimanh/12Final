@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TwelveFinal.Entities;
+using TwelveFinal.Repositories;
 
 namespace TwelveFinal.Services.MProvince
 {
@@ -14,6 +15,17 @@ namespace TwelveFinal.Services.MProvince
     }
     public class ProvinceValidator : IProvinceValidator
     {
+        private IUOW UOW;
+        public enum ErrorCode
+        {
+
+        }
+
+        public ProvinceValidator(IUOW _UOW)
+        {
+            UOW = _UOW;
+        }
+
         public Task<bool> Create(Province Province)
         {
             throw new NotImplementedException();

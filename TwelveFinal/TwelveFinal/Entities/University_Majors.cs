@@ -16,12 +16,15 @@ namespace TwelveFinal.Entities
         public string MajorsName { get; set; }
         public double? Benchmark { get; set; }
         public string SubjectGroupType { get; set; }
-        public Guid UniversityAdmissionId { get; set; }
+        public int TotalAspiration { get; set; }
+        public string Year { get; set; }
+        public Guid FormId { get; set; }
     }
 
     public class University_MajorsFilter : FilterEntity
     {
         public GuidFilter Id { get; set; }
+        public Guid FormId { get; set; }
         public GuidFilter UniversityId { get; set; }
         public StringFilter UniversityCode { get; set; }
         public StringFilter UniversityName { get; set; }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TwelveFinal.Entities;
+using TwelveFinal.Repositories;
 
 namespace TwelveFinal.Services.MUniversityAdmission
 {
@@ -14,6 +15,17 @@ namespace TwelveFinal.Services.MUniversityAdmission
     }
     public class UniversityAdmissionValidator : IUniversityAdmissionValidator
     {
+        private IUOW UOW;
+        public enum ErrorCode
+        {
+
+        }
+
+        public UniversityAdmissionValidator(IUOW _UOW)
+        {
+            UOW = _UOW;
+        }
+
         public Task<bool> Create(UniversityAdmission universityAdmission)
         {
             throw new NotImplementedException();

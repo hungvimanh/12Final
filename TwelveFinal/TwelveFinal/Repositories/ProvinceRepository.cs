@@ -92,7 +92,6 @@ namespace TwelveFinal.Repositories
         {
             await tFContext.Province.Where(t => t.Id.Equals(Province.Id)).UpdateFromQueryAsync(t => new ProvinceDAO
             {
-                Id = Province.Id,
                 Code = Province.Code,
                 Name = Province.Name,
             });

@@ -9,54 +9,13 @@ namespace TwelveFinal.Services.MRegister
 {
     public interface IRegisterInformationService : IServiceScoped
     {
-        Task<RegisterInformation> Create(RegisterInformation registerInformation);
         Task<RegisterInformation> Get(Guid Id);
         Task<RegisterInformation> Update(RegisterInformation registerInformation);
-        Task<RegisterInformation> Delete(RegisterInformation registerInformation);
     }
     public class RegisterInformationService : IRegisterInformationService
     {
         private readonly IUOW UOW;
         private readonly IRegisterInformationValidator RegisterInformationValidator;
-
-        public async Task<RegisterInformation> Create(RegisterInformation registerInformation)
-        {
-            registerInformation.Id = Guid.NewGuid();
-            if (!await RegisterInformationValidator.Create(registerInformation))
-                return registerInformation;
-
-            try
-            {
-                await UOW.Begin();
-                await UOW.RegisterInformationRepository.Create(registerInformation);
-                await UOW.Commit();
-                return await Get(registerInformation.Id);
-            }
-            catch (Exception ex)
-            {
-                await UOW.Rollback();
-                throw new MessageException(ex);
-            }
-        }
-
-        public async Task<RegisterInformation> Delete(RegisterInformation registerInformation)
-        {
-            if (!await RegisterInformationValidator.Delete(registerInformation))
-                return registerInformation;
-
-            try
-            {
-                await UOW.Begin();
-                await UOW.RegisterInformationRepository.Delete(registerInformation.Id);
-                await UOW.Commit();
-                return await Get(registerInformation.Id);
-            }
-            catch (Exception ex)
-            {
-                await UOW.Rollback();
-                throw new MessageException(ex);
-            }
-        }
 
         public async Task<RegisterInformation> Get(Guid Id)
         {

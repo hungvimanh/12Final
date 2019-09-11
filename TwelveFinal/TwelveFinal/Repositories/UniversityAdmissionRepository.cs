@@ -10,10 +10,8 @@ namespace TwelveFinal.Repositories
 {
     public interface IUniversityAdmissionRepository
     {
-        Task<bool> Create(UniversityAdmission universityAdmission);
-        Task<UniversityAdmission> Get(Guid Id);
+        Task<UniversityAdmission> Get(Guid FormId);
         Task<bool> Update(UniversityAdmission universityAdmission);
-        Task<bool> Delete(Guid Id);
     }
     public class UniversityAdmissionRepository : IUniversityAdmissionRepository
     {
@@ -22,33 +20,10 @@ namespace TwelveFinal.Repositories
         {
             tFContext = _tFContext;
         }
-        public async Task<bool> Create(UniversityAdmission universityAdmission)
-        {
-            UniversityAdmissionDAO UniversityAdmissionDAO = new UniversityAdmissionDAO
-            {
-                Id = universityAdmission.Id,
-                Area = universityAdmission.Area,
-                Connected = universityAdmission.Connected,
-                GraduateYear = universityAdmission.GraduateYear,
-                PriorityType = universityAdmission.PriorityType
-            };
 
-            tFContext.UniversityAdmission.Add(UniversityAdmissionDAO);
-            await tFContext.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<bool> Delete(Guid Id)
+        public async Task<UniversityAdmission> Get(Guid FormId)
         {
-            await tFContext.Form.Where(f => f.UniversityAdmissionId.Equals(Id)).DeleteFromQueryAsync();
-            await tFContext.University_Majors.Where(a => a.UniversityAdmissionId.Equals(Id)).DeleteFromQueryAsync();
-            await tFContext.UniversityAdmission.Where(u => u.Id.Equals(Id)).DeleteFromQueryAsync();
-            return true;
-        }
-
-        public async Task<UniversityAdmission> Get(Guid Id)
-        {
-            UniversityAdmission universityAdmission = await tFContext.UniversityAdmission.Where(g => g.Id.Equals(Id)).Select(g => new UniversityAdmission
+            UniversityAdmission universityAdmission = await tFContext.Form.Where(g => g.Id.Equals(FormId)).Select(g => new UniversityAdmission
             {
                 Id = g.Id,
                 Area = g.Area,
@@ -66,7 +41,7 @@ namespace TwelveFinal.Repositories
                     UniversityName = a.University.Name,
                     SubjectGroupType = a.SubjectGroupType,
                     Benchmark = a.Benchmark,
-                    UniversityAdmissionId = a.UniversityAdmissionId,
+                    Year = a.Year
                 }).ToList()
             }).FirstOrDefaultAsync();
 
@@ -75,9 +50,8 @@ namespace TwelveFinal.Repositories
 
         public async Task<bool> Update(UniversityAdmission universityAdmission)
         {
-            await tFContext.UniversityAdmission.Where(g => g.Id.Equals(universityAdmission.Id)).UpdateFromQueryAsync(g => new UniversityAdmissionDAO
+            await tFContext.Form.Where(g => g.Id.Equals(universityAdmission.Id)).UpdateFromQueryAsync(g => new FormDAO
             {
-                Id = universityAdmission.Id,
                 Area = universityAdmission.Area,
                 Connected = universityAdmission.Connected,
                 GraduateYear = universityAdmission.GraduateYear,
@@ -89,7 +63,7 @@ namespace TwelveFinal.Repositories
                     UniversityId = a.UniversityId,
                     SubjectGroupType = a.SubjectGroupType,
                     Benchmark = a.Benchmark,
-                    UniversityAdmissionId = a.UniversityAdmissionId
+                    Year = a.Year
                 }).ToList()
             });
 

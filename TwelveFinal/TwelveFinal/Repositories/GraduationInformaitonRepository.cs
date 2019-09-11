@@ -10,10 +10,8 @@ namespace TwelveFinal.Repositories
 {
     public interface IGraduationInformationRepository
     {
-        Task<bool> Create(GraduationInformation graduation);
         Task<GraduationInformation> Get(Guid Id);
         Task<bool> Update(GraduationInformation graduation);
-        Task<bool> Delete(Guid Id);
     }
     public class GraduationInformationRepository : IGraduationInformationRepository
     {
@@ -22,34 +20,23 @@ namespace TwelveFinal.Repositories
         {
             tFContext = _tFContext;
         }
-        public async Task<bool> Create(GraduationInformation graduation)
-        {
-            GraduationInformationDAO GraduationDAO = new GraduationInformationDAO
-            {
-                Id = graduation.Id,
-                Mark = graduation.Mark,
-                ExceptLanguages = graduation.ExceptLanguages,
-            };
-
-            tFContext.GraduationInformation.Add(GraduationDAO);
-            await tFContext.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<bool> Delete(Guid Id)
-        {
-            await tFContext.Form.Where(f => f.GraduationInformationId.Equals(Id)).DeleteFromQueryAsync();
-            await tFContext.GraduationInformation.Where(g => g.Id.Equals(Id)).DeleteFromQueryAsync();
-            return true;
-        }
 
         public async Task<GraduationInformation> Get(Guid Id)
         {
-            GraduationInformation graduation = await tFContext.GraduationInformation.Where(g => g.Id.Equals(Id)).Select(g => new GraduationInformation
+            GraduationInformation graduation = await tFContext.Form.Where(g => g.Id.Equals(Id)).Select(g => new GraduationInformation
             {
                 Id = g.Id,
                 Mark = g.Mark,
                 ExceptLanguages = g.ExceptLanguages,
+                ReserveMaths = g.ReserveMaths,
+                ReserveLiterature = g.ReserveLiterature,
+                ReserveLanguages = g.ReserveLanguages,
+                ReservePhysics = g.ReservePhysics,
+                ReserveChemistry = g.ReserveChemistry,
+                ReserveBiology = g.ReserveBiology,
+                ReserveHistory = g.ReserveHistory,
+                ReserveGeography = g.ReserveGeography,
+                ReserveCivicEducation = g.ReserveCivicEducation,
             }).FirstOrDefaultAsync();
 
             return graduation;
@@ -57,11 +44,19 @@ namespace TwelveFinal.Repositories
 
         public async Task<bool> Update(GraduationInformation graduation)
         {
-            await tFContext.GraduationInformation.Where(g => g.Id.Equals(graduation.Id)).UpdateFromQueryAsync(g => new GraduationInformationDAO
+            await tFContext.Form.Where(g => g.Id.Equals(graduation.Id)).UpdateFromQueryAsync(g => new FormDAO
             {
-                Id = graduation.Id,
                 Mark = graduation.Mark,
                 ExceptLanguages = graduation.ExceptLanguages,
+                ReserveMaths = graduation.ReserveMaths,
+                ReserveLiterature = graduation.ReserveLiterature,
+                ReserveLanguages = graduation.ReserveLanguages,
+                ReservePhysics = graduation.ReservePhysics,
+                ReserveChemistry = graduation.ReserveChemistry,
+                ReserveBiology = graduation.ReserveBiology,
+                ReserveHistory = graduation.ReserveHistory,
+                ReserveGeography = graduation.ReserveGeography,
+                ReserveCivicEducation = graduation.ReserveCivicEducation,
             });
 
             return true;

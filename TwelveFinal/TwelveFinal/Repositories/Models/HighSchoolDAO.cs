@@ -7,22 +7,22 @@ namespace TwelveFinal.Repositories.Models
     {
         public HighSchoolDAO()
         {
-            HighSchoolReferenceGrade10s = new HashSet<HighSchoolReferenceDAO>();
-            HighSchoolReferenceGrade11s = new HashSet<HighSchoolReferenceDAO>();
-            HighSchoolReferenceGrade12s = new HashSet<HighSchoolReferenceDAO>();
-            RegisterInformations = new HashSet<RegisterInformationDAO>();
+            FormHighSchoolGrade10s = new HashSet<FormDAO>();
+            FormHighSchoolGrade11s = new HashSet<FormDAO>();
+            FormHighSchoolGrade12s = new HashSet<FormDAO>();
+            FormRegisterPlaceOfExams = new HashSet<FormDAO>();
         }
 
         public Guid Id { get; set; }
         public long CX { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
-        public Guid ProvinceId { get; set; }
+        public Guid DistrictId { get; set; }
 
-        public virtual ProvinceDAO Province { get; set; }
-        public virtual ICollection<HighSchoolReferenceDAO> HighSchoolReferenceGrade10s { get; set; }
-        public virtual ICollection<HighSchoolReferenceDAO> HighSchoolReferenceGrade11s { get; set; }
-        public virtual ICollection<HighSchoolReferenceDAO> HighSchoolReferenceGrade12s { get; set; }
-        public virtual ICollection<RegisterInformationDAO> RegisterInformations { get; set; }
+        public virtual DistrictDAO District { get; set; }
+        public virtual ICollection<FormDAO> FormHighSchoolGrade10s { get; set; }
+        public virtual ICollection<FormDAO> FormHighSchoolGrade11s { get; set; }
+        public virtual ICollection<FormDAO> FormHighSchoolGrade12s { get; set; }
+        public virtual ICollection<FormDAO> FormRegisterPlaceOfExams { get; set; }
     }
 }

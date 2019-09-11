@@ -11,10 +11,11 @@ namespace TwelveFinal.Repositories.Models
         public Guid MajorsId { get; set; }
         public double? Benchmark { get; set; }
         public string SubjectGroupType { get; set; }
-        public Guid UniversityAdmissionId { get; set; }
+        public Guid FormId { get; set; }
+        public string Year { get; set; }
 
+        public virtual FormDAO Form { get; set; }
         public virtual MajorsDAO Majors { get; set; }
         public virtual UniversityDAO University { get; set; }
-        public virtual UniversityAdmissionDAO UniversityAdmission { get; set; }
     }
 }

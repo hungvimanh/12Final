@@ -9,7 +9,7 @@ namespace TwelveFinal.Services.MForm
 {
     public interface IFormRepository : IServiceScoped
     {
-        Task<List<Form>> List(Guid studentId);
+        //Task<List<Form>> List(Guid studentId);
         Task<Form> Create(Form form);
         Task<Form> Get(Guid Id);
         Task<Form> Update(Form form);
@@ -66,11 +66,11 @@ namespace TwelveFinal.Services.MForm
             return form;
         }
 
-        public async Task<List<Form>> List(Guid studentId)
-        {
-            List<Form> forms = await UOW.FormRepository.List(studentId);
-            return forms;
-        }
+        //public async Task<List<Form>> List(Guid studentId)
+        //{
+        //    List<Form> forms = await UOW.FormRepository.List(studentId);
+        //    return forms;
+        //}
 
         public async Task<Form> Update(Form form)
         {

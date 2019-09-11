@@ -146,7 +146,6 @@ namespace TwelveFinal.Repositories
         {
             await tFContext.Majors.Where(m => m.Id.Equals(majors.Id)).UpdateFromQueryAsync(m => new MajorsDAO
             {
-                Id = majors.Id,
                 Code = majors.Code,
                 Name = majors.Name
             });

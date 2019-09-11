@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TwelveFinal.Entities
+namespace TwelveFinal.Controller.DTO
 {
-    public class User : DataEntity
+    public class UserDTO : DataDTO
     {
         public Guid Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public bool IsAdmin { get; set; }
-        public List<Form> Forms { get; set; }
+        public Guid StudentId { get; set; }
     }
 }

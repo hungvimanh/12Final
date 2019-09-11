@@ -12,22 +12,20 @@ namespace TwelveFinal.Entities
         public Guid Id { get; set; }
         public string NumberForm { get; set; }
         public string DepartmentCode { get; set; }
-        public Guid PersonalInfomationId { get; set; }
-        public Guid RegisterInformationId { get; set; }
-        public Guid GraduationInformationId { get; set; }
-        public Guid UniversityAdmissionId { get; set; }
+        public PersonalInformation PersonalInformation { get; set; }
+        public RegisterInformation RegisterInformation { get; set; }
+        public GraduationInformation GraduationInformation { get; set; }
+        public UniversityAdmission UniversityAdmission { get; set; }
         public DateTime Date { get; set; }
+        public Guid UserId { get; set; }
     }
 
     public class FormFilter : FilterEntity
     {
         public GuidFilter Id { get; set; }
+        public Guid UserId { get; set; }
         public StringFilter NumberForm { get; set; }
         public StringFilter DepartmentCode { get; set; }
-        public GuidFilter PersonalInfomationId { get; set; }
-        public GuidFilter RegisterInformationId { get; set; }
-        public GuidFilter GraduationInformationId { get; set; }
-        public GuidFilter UniversityAdmissionId { get; set; }
         public DateTimeFilter Date { get; set; }
         public List<Guid> ExceptIds { get; set; }
         public List<Guid> Ids { get; set; }

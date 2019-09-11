@@ -39,7 +39,7 @@ namespace TwelveFinal.Repositories
 
         public async Task<bool> Delete(Guid Id)
         {
-            await tFContext.PersonalInformation.Where(p => p.TownId.Equals(Id)).DeleteFromQueryAsync();
+            await tFContext.Form.Where(p => p.TownId.Equals(Id)).DeleteFromQueryAsync();
             await tFContext.Town.Where(t => t.Id.Equals(Id)).DeleteFromQueryAsync();
             return true;
         }
@@ -63,7 +63,6 @@ namespace TwelveFinal.Repositories
         {
             await tFContext.Town.Where(t => t.Id.Equals(town.Id)).UpdateFromQueryAsync(t => new TownDAO
             {
-                Id = town.Id,
                 Code = town.Code,
                 Name = town.Name,
                 DistrictId = town.DistrictId

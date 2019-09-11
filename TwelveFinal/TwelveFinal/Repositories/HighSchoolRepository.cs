@@ -29,7 +29,7 @@ namespace TwelveFinal.Repositories
                 Id = highSchool.Id,
                 Code = highSchool.Code,
                 Name = highSchool.Name,
-                ProvinceId = highSchool.ProvinceId,
+                DistrictId = highSchool.DistrictId,
                 
             };
 
@@ -40,9 +40,10 @@ namespace TwelveFinal.Repositories
 
         public async Task<bool> Delete(Guid Id)
         {
-            await tFContext.HighSchoolReference.Where(h => h.Grade10Id.Equals(Id)).DeleteFromQueryAsync();
-            await tFContext.HighSchoolReference.Where(h => h.Grade11Id.Equals(Id)).DeleteFromQueryAsync();
-            await tFContext.HighSchoolReference.Where(h => h.Grade12Id.Equals(Id)).DeleteFromQueryAsync();
+            await tFContext.Form.Where(h => h.HighSchoolGrade10Id.Equals(Id)).DeleteFromQueryAsync();
+            await tFContext.Form.Where(h => h.HighSchoolGrade11Id.Equals(Id)).DeleteFromQueryAsync();
+            await tFContext.Form.Where(h => h.HighSchoolGrade12Id.Equals(Id)).DeleteFromQueryAsync();
+            await tFContext.Form.Where(h => h.RegisterPlaceOfExamId.Equals(Id)).DeleteFromQueryAsync();
             await tFContext.HighSchool.Where(h => h.Id.Equals(Id)).DeleteFromQueryAsync();
             return true;
         }
@@ -54,9 +55,11 @@ namespace TwelveFinal.Repositories
                 Id = p.Id,
                 Code = p.Code,
                 Name = p.Name,
-                ProvinceId = p.ProvinceId,
-                ProvinceCode = p.Province.Code,
-                ProvinceName = p.Province.Name 
+                DistrictId = p.DistrictId,
+                DistrictCode = p.District.Code,
+                DistrictName = p.District.Name,
+                ProvinceCode = p.District.Province.Code,
+                ProvinceName = p.District.Province.Name
             }).FirstOrDefaultAsync();
 
             return HighSchool;
@@ -66,10 +69,10 @@ namespace TwelveFinal.Repositories
         {
             await tFContext.HighSchool.Where(t => t.Id.Equals(highSchool.Id)).UpdateFromQueryAsync(t => new HighSchoolDAO
             {
-                Id = highSchool.Id,
                 Code = highSchool.Code,
                 Name = highSchool.Name,
-                ProvinceId = highSchool.ProvinceId
+                DistrictId = highSchool.DistrictId,
+                
             });
 
             return true;

@@ -8,20 +8,11 @@ namespace TwelveFinal.Repositories.Models
     {
         public virtual DbSet<DistrictDAO> District { get; set; }
         public virtual DbSet<FormDAO> Form { get; set; }
-        public virtual DbSet<GraduationInformationDAO> GraduationInformation { get; set; }
         public virtual DbSet<HighSchoolDAO> HighSchool { get; set; }
-        public virtual DbSet<HighSchoolReferenceDAO> HighSchoolReference { get; set; }
         public virtual DbSet<MajorsDAO> Majors { get; set; }
-        public virtual DbSet<NaturalSciencesDAO> NaturalSciences { get; set; }
-        public virtual DbSet<PersonalInformationDAO> PersonalInformation { get; set; }
         public virtual DbSet<ProvinceDAO> Province { get; set; }
-        public virtual DbSet<RegisterInformationDAO> RegisterInformation { get; set; }
-        public virtual DbSet<ReserveMarkDAO> ReserveMark { get; set; }
-        public virtual DbSet<SocialScienceDAO> SocialScience { get; set; }
-        public virtual DbSet<TestExamDAO> TestExam { get; set; }
         public virtual DbSet<TownDAO> Town { get; set; }
         public virtual DbSet<UniversityDAO> University { get; set; }
-        public virtual DbSet<UniversityAdmissionDAO> UniversityAdmission { get; set; }
         public virtual DbSet<University_MajorsDAO> University_Majors { get; set; }
         public virtual DbSet<UserDAO> User { get; set; }
         public virtual DbSet<__MigrationLogDAO> __MigrationLog { get; set; }
@@ -80,6 +71,14 @@ namespace TwelveFinal.Repositories.Models
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
+                entity.Property(e => e.Address)
+                    .IsRequired()
+                    .HasMaxLength(500);
+
+                entity.Property(e => e.Area)
+                    .IsRequired()
+                    .HasMaxLength(10);
+
                 entity.Property(e => e.CX).ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Date).HasColumnType("date");
@@ -88,47 +87,93 @@ namespace TwelveFinal.Repositories.Models
                     .IsRequired()
                     .HasMaxLength(2);
 
+                entity.Property(e => e.Dob).HasColumnType("date");
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Ethnic)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.ExceptLanguages).HasMaxLength(500);
+
+                entity.Property(e => e.FullName)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.Grade12Name)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.GraduateYear)
+                    .IsRequired()
+                    .HasMaxLength(4);
+
+                entity.Property(e => e.Identify)
+                    .IsRequired()
+                    .HasMaxLength(12);
+
+                entity.Property(e => e.Languages).HasMaxLength(2);
+
                 entity.Property(e => e.NumberForm)
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.HasOne(d => d.GraduationInformation)
+                entity.Property(e => e.Phone)
+                    .IsRequired()
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.PlaceOfBirth)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.PriorityType)
+                    .IsRequired()
+                    .HasMaxLength(2);
+
+                entity.HasOne(d => d.ClusterContest)
                     .WithMany(p => p.Forms)
-                    .HasForeignKey(d => d.GraduationInformationId)
+                    .HasForeignKey(d => d.ClusterContestId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Form_Graduation");
+                    .HasConstraintName("FK_Form_Province");
 
-                entity.HasOne(d => d.PersonalInfomartion)
+                entity.HasOne(d => d.HighSchoolGrade10)
+                    .WithMany(p => p.FormHighSchoolGrade10s)
+                    .HasForeignKey(d => d.HighSchoolGrade10Id)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Form_HighSchool1");
+
+                entity.HasOne(d => d.HighSchoolGrade11)
+                    .WithMany(p => p.FormHighSchoolGrade11s)
+                    .HasForeignKey(d => d.HighSchoolGrade11Id)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Form_HighSchool2");
+
+                entity.HasOne(d => d.HighSchoolGrade12)
+                    .WithMany(p => p.FormHighSchoolGrade12s)
+                    .HasForeignKey(d => d.HighSchoolGrade12Id)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Form_HighSchool3");
+
+                entity.HasOne(d => d.RegisterPlaceOfExam)
+                    .WithMany(p => p.FormRegisterPlaceOfExams)
+                    .HasForeignKey(d => d.RegisterPlaceOfExamId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Form_HighSchool");
+
+                entity.HasOne(d => d.Town)
                     .WithMany(p => p.Forms)
-                    .HasForeignKey(d => d.PersonalInfomartionId)
+                    .HasForeignKey(d => d.TownId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Form_Student");
+                    .HasConstraintName("FK_Form_Town");
 
-                entity.HasOne(d => d.RegisterInformation)
+                entity.HasOne(d => d.User)
                     .WithMany(p => p.Forms)
-                    .HasForeignKey(d => d.RegisterInformationId)
+                    .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Form_Register");
-
-                entity.HasOne(d => d.UniversityAdmission)
-                    .WithMany(p => p.Forms)
-                    .HasForeignKey(d => d.UniversityAdmissionId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Form_UniversityAdmission");
-            });
-
-            modelBuilder.Entity<GraduationInformationDAO>(entity =>
-            {
-                entity.HasIndex(e => e.CX)
-                    .HasName("CX_Graduation")
-                    .IsUnique()
-                    .HasAnnotation("SqlServer:Clustered", true);
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.CX).ValueGeneratedOnAdd();
-
-                entity.Property(e => e.ExceptLanguages).HasMaxLength(500);
+                    .HasConstraintName("FK_Form_User");
             });
 
             modelBuilder.Entity<HighSchoolDAO>(entity =>
@@ -150,39 +195,11 @@ namespace TwelveFinal.Repositories.Models
                     .IsRequired()
                     .HasMaxLength(500);
 
-                entity.HasOne(d => d.Province)
+                entity.HasOne(d => d.District)
                     .WithMany(p => p.HighSchools)
-                    .HasForeignKey(d => d.ProvinceId)
+                    .HasForeignKey(d => d.DistrictId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_HighSchool_Province");
-            });
-
-            modelBuilder.Entity<HighSchoolReferenceDAO>(entity =>
-            {
-                entity.HasIndex(e => e.CX)
-                    .HasName("CX_HighSchoolReference")
-                    .IsUnique()
-                    .HasAnnotation("SqlServer:Clustered", true);
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.HasOne(d => d.Grade10)
-                    .WithMany(p => p.HighSchoolReferenceGrade10s)
-                    .HasForeignKey(d => d.Grade10Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_HighSchoolReference_HighSchool10");
-
-                entity.HasOne(d => d.Grade11)
-                    .WithMany(p => p.HighSchoolReferenceGrade11s)
-                    .HasForeignKey(d => d.Grade11Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_HighSchoolReference_HighSchool11");
-
-                entity.HasOne(d => d.Grade12)
-                    .WithMany(p => p.HighSchoolReferenceGrade12s)
-                    .HasForeignKey(d => d.Grade12Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_HighSchoolReference_HighSchool12");
+                    .HasConstraintName("FK_HighSchool_District");
             });
 
             modelBuilder.Entity<MajorsDAO>(entity =>
@@ -205,72 +222,6 @@ namespace TwelveFinal.Repositories.Models
                     .HasMaxLength(100);
             });
 
-            modelBuilder.Entity<NaturalSciencesDAO>(entity =>
-            {
-                entity.HasIndex(e => e.CX)
-                    .HasName("CX_NaturalSciences")
-                    .IsUnique()
-                    .HasAnnotation("SqlServer:Clustered", true);
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.CX).ValueGeneratedOnAdd();
-            });
-
-            modelBuilder.Entity<PersonalInformationDAO>(entity =>
-            {
-                entity.HasIndex(e => e.CX)
-                    .HasName("CX_Student")
-                    .IsUnique()
-                    .HasAnnotation("SqlServer:Clustered", true);
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.Address)
-                    .IsRequired()
-                    .HasMaxLength(500);
-
-                entity.Property(e => e.CX).ValueGeneratedOnAdd();
-
-                entity.Property(e => e.Dob).HasColumnType("date");
-
-                entity.Property(e => e.Email)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.FullName)
-                    .IsRequired()
-                    .HasMaxLength(100);
-
-                entity.Property(e => e.Identify)
-                    .IsRequired()
-                    .HasMaxLength(20);
-
-                entity.Property(e => e.Nation)
-                    .IsRequired()
-                    .HasMaxLength(30);
-
-                entity.Property(e => e.Phone)
-                    .IsRequired()
-                    .HasMaxLength(15);
-
-                entity.Property(e => e.PlaceOfBirth)
-                    .IsRequired()
-                    .HasMaxLength(30);
-
-                entity.HasOne(d => d.HighSchool)
-                    .WithMany(p => p.PersonalInformations)
-                    .HasForeignKey(d => d.HighSchoolId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Student_HighSchoolReference");
-
-                entity.HasOne(d => d.Town)
-                    .WithMany(p => p.PersonalInformations)
-                    .HasForeignKey(d => d.TownId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Student_Town");
-            });
-
             modelBuilder.Entity<ProvinceDAO>(entity =>
             {
                 entity.HasIndex(e => e.CX)
@@ -289,92 +240,6 @@ namespace TwelveFinal.Repositories.Models
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50);
-            });
-
-            modelBuilder.Entity<RegisterInformationDAO>(entity =>
-            {
-                entity.HasIndex(e => e.CX)
-                    .HasName("CX_Register")
-                    .IsUnique()
-                    .HasAnnotation("SqlServer:Clustered", true);
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.CX).ValueGeneratedOnAdd();
-
-                entity.HasOne(d => d.ContestGroup)
-                    .WithMany(p => p.RegisterInformations)
-                    .HasForeignKey(d => d.ContestGroupId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Register_Province");
-
-                entity.HasOne(d => d.ContestUnit)
-                    .WithMany(p => p.RegisterInformations)
-                    .HasForeignKey(d => d.ContestUnitId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Register_HighSchool");
-
-                entity.HasOne(d => d.Test)
-                    .WithMany(p => p.RegisterInformations)
-                    .HasForeignKey(d => d.TestId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Register_Test");
-            });
-
-            modelBuilder.Entity<ReserveMarkDAO>(entity =>
-            {
-                entity.HasIndex(e => e.CX)
-                    .HasName("CX_ReserveMark")
-                    .IsUnique()
-                    .HasAnnotation("SqlServer:Clustered", true);
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.CX).ValueGeneratedOnAdd();
-
-                entity.HasOne(d => d.Graduation)
-                    .WithMany(p => p.ReserveMarks)
-                    .HasForeignKey(d => d.GraduationId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ReserveMark_Graduation");
-            });
-
-            modelBuilder.Entity<SocialScienceDAO>(entity =>
-            {
-                entity.HasIndex(e => e.CX)
-                    .HasName("CX_SocialScience")
-                    .IsUnique()
-                    .HasAnnotation("SqlServer:Clustered", true);
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.CX).ValueGeneratedOnAdd();
-            });
-
-            modelBuilder.Entity<TestExamDAO>(entity =>
-            {
-                entity.HasIndex(e => e.CX)
-                    .HasName("CX_Test")
-                    .IsUnique()
-                    .HasAnnotation("SqlServer:Clustered", true);
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.CX).ValueGeneratedOnAdd();
-
-                entity.Property(e => e.ForeignLanguage)
-                    .IsRequired()
-                    .HasMaxLength(2);
-
-                entity.HasOne(d => d.Science)
-                    .WithMany(p => p.TestExams)
-                    .HasForeignKey(d => d.ScienceId)
-                    .HasConstraintName("FK_Test_NaturalSciences");
-
-                entity.HasOne(d => d.ScienceNavigation)
-                    .WithMany(p => p.TestExams)
-                    .HasForeignKey(d => d.ScienceId)
-                    .HasConstraintName("FK_Test_SocialScience");
             });
 
             modelBuilder.Entity<TownDAO>(entity =>
@@ -425,30 +290,6 @@ namespace TwelveFinal.Repositories.Models
                     .HasMaxLength(100);
             });
 
-            modelBuilder.Entity<UniversityAdmissionDAO>(entity =>
-            {
-                entity.HasIndex(e => e.CX)
-                    .HasName("CX_UniversityAdmission")
-                    .IsUnique()
-                    .HasAnnotation("SqlServer:Clustered", true);
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.Area)
-                    .IsRequired()
-                    .HasMaxLength(10);
-
-                entity.Property(e => e.CX).ValueGeneratedOnAdd();
-
-                entity.Property(e => e.GraduateYear)
-                    .IsRequired()
-                    .HasMaxLength(4);
-
-                entity.Property(e => e.PriorityType)
-                    .IsRequired()
-                    .HasMaxLength(2);
-            });
-
             modelBuilder.Entity<University_MajorsDAO>(entity =>
             {
                 entity.HasIndex(e => e.CX)
@@ -456,7 +297,7 @@ namespace TwelveFinal.Repositories.Models
                     .IsUnique()
                     .HasAnnotation("SqlServer:Clustered", true);
 
-                entity.HasIndex(e => new { e.MajorsId, e.UniversityId, e.SubjectGroupType })
+                entity.HasIndex(e => new { e.MajorsId, e.UniversityId, e.SubjectGroupType, e.Year })
                     .HasName("IX_University_Majors")
                     .IsUnique();
 
@@ -466,17 +307,19 @@ namespace TwelveFinal.Repositories.Models
 
                 entity.Property(e => e.SubjectGroupType).HasMaxLength(10);
 
+                entity.Property(e => e.Year).HasMaxLength(4);
+
+                entity.HasOne(d => d.Form)
+                    .WithMany(p => p.University_Majors)
+                    .HasForeignKey(d => d.FormId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_University_Majors_Form");
+
                 entity.HasOne(d => d.Majors)
                     .WithMany(p => p.University_Majors)
                     .HasForeignKey(d => d.MajorsId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_University_Majors_Majors");
-
-                entity.HasOne(d => d.UniversityAdmission)
-                    .WithMany(p => p.University_Majors)
-                    .HasForeignKey(d => d.UniversityAdmissionId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_University_Majors_UniversityAdmission");
 
                 entity.HasOne(d => d.University)
                     .WithMany(p => p.University_Majors)
@@ -503,12 +346,6 @@ namespace TwelveFinal.Repositories.Models
                 entity.Property(e => e.Username)
                     .IsRequired()
                     .HasMaxLength(50);
-
-                entity.HasOne(d => d.Student)
-                    .WithMany(p => p.Users)
-                    .HasForeignKey(d => d.StudentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_User_Student");
             });
 
             modelBuilder.Entity<__MigrationLogDAO>(entity =>

@@ -9,54 +9,13 @@ namespace TwelveFinal.Services.MGraduation
 {
     public interface IGraduationInformationService : IServiceScoped
     {
-        Task<GraduationInformation> Create(GraduationInformation graduationInformation);
         Task<GraduationInformation> Get(Guid Id);
         Task<GraduationInformation> Update(GraduationInformation graduationInformation);
-        Task<GraduationInformation> Delete(GraduationInformation graduationInformation);
     }
     public class GraduationInformationService : IGraduationInformationService
     {
         private readonly IUOW UOW;
         private readonly IGraduationInformationValidator GraduationInformationValidator;
-
-        public async Task<GraduationInformation> Create(GraduationInformation graduationInformation)
-        {
-            graduationInformation.Id = Guid.NewGuid();
-            if (!await GraduationInformationValidator.Create(graduationInformation))
-                return graduationInformation;
-
-            try
-            {
-                await UOW.Begin();
-                await UOW.GraduationInformationRepository.Create(graduationInformation);
-                await UOW.Commit();
-                return await Get(graduationInformation.Id);
-            }
-            catch (Exception ex)
-            {
-                await UOW.Rollback();
-                throw new MessageException(ex);
-            }
-        }
-
-        public async Task<GraduationInformation> Delete(GraduationInformation graduationInformation)
-        {
-            if (!await GraduationInformationValidator.Delete(graduationInformation))
-                return graduationInformation;
-
-            try
-            {
-                await UOW.Begin();
-                await UOW.GraduationInformationRepository.Delete(graduationInformation.Id);
-                await UOW.Commit();
-                return await Get(graduationInformation.Id);
-            }
-            catch (Exception ex)
-            {
-                await UOW.Rollback();
-                throw new MessageException(ex);
-            }
-        }
 
         public async Task<GraduationInformation> Get(Guid Id)
         {

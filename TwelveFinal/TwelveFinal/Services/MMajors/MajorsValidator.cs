@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TwelveFinal.Entities;
+using TwelveFinal.Repositories;
 
 namespace TwelveFinal.Services.MMajors
 {
@@ -14,6 +15,17 @@ namespace TwelveFinal.Services.MMajors
     }
     public class MajorsValidator : IMajorsValidator
     {
+        private IUOW UOW;
+        public enum ErrorCode
+        {
+
+        }
+
+        public MajorsValidator(IUOW _UOW)
+        {
+            UOW = _UOW;
+        }
+
         public Task<bool> Create(Majors Majors)
         {
             throw new NotImplementedException();

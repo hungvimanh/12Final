@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TwelveFinal.Entities;
+using TwelveFinal.Repositories;
 
 namespace TwelveFinal.Services.MGraduation
 {
@@ -14,6 +15,17 @@ namespace TwelveFinal.Services.MGraduation
     }
     public class GraduationInformationValidator : IGraduationInformationValidator
     {
+        private IUOW UOW;
+        public enum ErrorCode
+        {
+
+        }
+
+        public GraduationInformationValidator(IUOW _UOW)
+        {
+            UOW = _UOW;
+        }
+
         public Task<bool> Create(GraduationInformation graduationInformation)
         {
             throw new NotImplementedException();
@@ -28,5 +40,7 @@ namespace TwelveFinal.Services.MGraduation
         {
             throw new NotImplementedException();
         }
+
+        
     }
 }

@@ -135,15 +135,15 @@ namespace TwelveFinal.Services.MPersonal
 
         private async Task<bool> ValidateHighShool(PersonalInformation personalInformation)
         {
-            if(personalInformation.HighSchoolId == null || personalInformation.HighSchoolId == Guid.Empty)
+            if(personalInformation.HighSchoolGrade10Id == null || personalInformation.HighSchoolGrade10Id == Guid.Empty)
             {
-                personalInformation.AddError(nameof(PersonalInformationValidator), nameof(personalInformation.HighSchoolId), ErrorCode.HighSchoolInvalid);
+                personalInformation.AddError(nameof(PersonalInformationValidator), nameof(personalInformation.HighSchoolGrade10Id), ErrorCode.HighSchoolInvalid);
                 return personalInformation.IsValidated;
             }
 
-            if(HighSchoolService.Get(personalInformation.HighSchoolId) == null)
+            if(HighSchoolService.Get(personalInformation.HighSchoolGrade10Id) == null)
             {
-                personalInformation.AddError(nameof(PersonalInformationValidator), nameof(personalInformation.HighSchoolId), ErrorCode.HighSchoolNotExisted);
+                personalInformation.AddError(nameof(PersonalInformationValidator), nameof(personalInformation.HighSchoolGrade10Id), ErrorCode.HighSchoolNotExisted);
                 return personalInformation.IsValidated;
             }
 

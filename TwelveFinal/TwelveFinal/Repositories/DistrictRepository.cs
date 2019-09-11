@@ -72,7 +72,6 @@ namespace TwelveFinal.Repositories
         {
             await tFContext.District.Where(t => t.Id.Equals(district.Id)).UpdateFromQueryAsync(t => new DistrictDAO
             {
-                Id = district.Id,
                 Code = district.Code,
                 Name = district.Name,
                 ProvinceId = district.ProvinceId
