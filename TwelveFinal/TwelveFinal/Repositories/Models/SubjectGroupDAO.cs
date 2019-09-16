@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace TwelveFinal.Repositories.Models
 {
-    public partial class UniversityDAO
+    public partial class SubjectGroupDAO
     {
-        public UniversityDAO()
+        public SubjectGroupDAO()
         {
             FormDetails = new HashSet<FormDetailDAO>();
             University_Majors = new HashSet<University_MajorsDAO>();
@@ -15,7 +15,6 @@ namespace TwelveFinal.Repositories.Models
         public long CX { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
-        public string Address { get; set; }
 
         public virtual ICollection<FormDetailDAO> FormDetails { get; set; }
         public virtual ICollection<University_MajorsDAO> University_Majors { get; set; }

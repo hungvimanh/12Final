@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TwelveFinal.Entities
+namespace TwelveFinal.Controller.DTO
 {
-    public class University_Majors : DataEntity
+    public class University_MajorsDTO : DataDTO
     {
         public Guid UniversityId { get; set; }
         public string UniversityCode { get; set; }
@@ -21,7 +21,7 @@ namespace TwelveFinal.Entities
         public string Year { get; set; }
     }
 
-    public class University_MajorsFilter : FilterEntity
+    public class University_MajorsFilterDTO : FilterDTO
     {
         public GuidFilter UniversityId { get; set; }
         public StringFilter UniversityCode { get; set; }
@@ -34,20 +34,6 @@ namespace TwelveFinal.Entities
         public GuidFilter SubjectGroupId { get; set; }
         public StringFilter SubjectGroupCode { get; set; }
         public StringFilter SubjectGroupName { get; set; }
-        public University_MajorsOrder OrderBy { get; set; }
-        public University_MajorsFilter() : base()
-        {
-
-        }
-    }
-
-    public enum University_MajorsOrder
-    {
-        CX,
-        UniversityCode,
-        UniversityName,
-        MajorsCode,
-        MajorsName,
-        Benchmark
+        public StringFilter Year { get; set; }
     }
 }

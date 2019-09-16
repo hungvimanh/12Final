@@ -147,18 +147,20 @@ namespace TwelveFinal.Repositories
                         PriorityType = f.PriorityType,
                         GraduateYear = f.GraduateYear,
                         Connected = f.Connected,
-                        University_Majorses = f.University_Majors.Select(m => new University_Majors
+                        FormDetails = f.FormDetails.Select(d => new FormDetail
                         {
-                            Id = m.Id,
-                            Benchmark = m.Benchmark,
-                            Year = m.Year,
-                            MajorsId = m.MajorsId,
-                            MajorsCode = m.Majors.Code,
-                            MajorsName = m.Majors.Name,
-                            UniversityId = m.UniversityId,
-                            UniversityCode = m.University.Code,
-                            UniversityName = m.University.Name,
-                            SubjectGroupType = m.SubjectGroupType
+                            Id = d.Id,
+                            FormId = d.FormId,
+                            MajorsId = d.MajorsId,
+                            MajorsCode = d.Majors.Code,
+                            MajorsName = d.Majors.Name,
+                            UniversityId = d.UniversityId,
+                            UniversityCode = d.University.Code,
+                            UniversityName = d.University.Name,
+                            UniversityAddress = d.University.Address,
+                            SubjectGroupId = d.SubjectGroupId,
+                            SubjectGroupCode = d.SubjectGroup.Code,
+                            SubjectGroupName = d.SubjectGroup.Name,
                         }).ToList()
                     }
                 }).ToList()

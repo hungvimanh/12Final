@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace TwelveFinal.Repositories.Models
+namespace TwelveFinal.Controller.DTO
 {
-    public partial class FormDAO
+    public class FormDTO : DataDTO
     {
-        public FormDAO()
-        {
-            FormDetails = new HashSet<FormDetailDAO>();
-        }
-
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
         public long CX { get; set; }
         public string NumberForm { get; set; }
         public string DepartmentCode { get; set; }
         public DateTime Date { get; set; }
+
         public Guid UserId { get; set; }
+
         public string FullName { get; set; }
         public DateTime Dob { get; set; }
         public bool Gender { get; set; }
@@ -23,20 +22,49 @@ namespace TwelveFinal.Repositories.Models
         public string Ethnic { get; set; }
         public string Identify { get; set; }
         public Guid TownId { get; set; }
+        public string TownCode { get; set; }
+        public string TownName { get; set; }
+        public string DistrictCode { get; set; }
+        public string DistrictName { get; set; }
+        public string ProvinceCode { get; set; }
+        public string ProvinceName { get; set; }
         public bool? IsPermanentResidenceMore18 { get; set; }
         public bool? IsPermanentResidenceSpecialMore18 { get; set; }
         public Guid HighSchoolGrade10Id { get; set; }
+        public string HighSchoolGrade10Code { get; set; }
+        public string HighSchoolGrade10Name { get; set; }
+        public string HighSchoolGrade10DistrictCode { get; set; }
+        public string HighSchoolGrade10DistrictName { get; set; }
+        public string HighSchoolGrade10ProvinceCode { get; set; }
+        public string HighSchoolGrade10ProvinceName { get; set; }
         public Guid HighSchoolGrade11Id { get; set; }
+        public string HighSchoolGrade11Code { get; set; }
+        public string HighSchoolGrade11Name { get; set; }
+        public string HighSchoolGrade11DistrictCode { get; set; }
+        public string HighSchoolGrade11DistrictName { get; set; }
+        public string HighSchoolGrade11ProvinceCode { get; set; }
+        public string HighSchoolGrade11ProvinceName { get; set; }
         public Guid HighSchoolGrade12Id { get; set; }
+        public string HighSchoolGrade12Code { get; set; }
+        public string HighSchoolGrade12Name { get; set; }
+        public string HighSchoolGrade12DistrictCode { get; set; }
+        public string HighSchoolGrade12DistrictName { get; set; }
+        public string HighSchoolGrade12ProvinceCode { get; set; }
+        public string HighSchoolGrade12ProvinceName { get; set; }
         public string Grade12Name { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
+
         public bool? ResultForUniversity { get; set; }
         public bool StudyAtHighSchool { get; set; }
         public bool? Graduated { get; set; }
         public Guid ClusterContestId { get; set; }
+        public string ClusterContestCode { get; set; }
+        public string ClusterContestName { get; set; }
         public Guid RegisterPlaceOfExamId { get; set; }
+        public string RegisterPlaceOfExamCode { get; set; }
+        public string RegisterPlaceOfExamName { get; set; }
         public bool? Maths { get; set; }
         public bool? Literature { get; set; }
         public string Languages { get; set; }
@@ -48,6 +76,7 @@ namespace TwelveFinal.Repositories.Models
         public bool? History { get; set; }
         public bool? Geography { get; set; }
         public bool? CivicEducation { get; set; }
+
         public string ExceptLanguages { get; set; }
         public int? Mark { get; set; }
         public int? ReserveMaths { get; set; }
@@ -59,18 +88,12 @@ namespace TwelveFinal.Repositories.Models
         public int? ReserveBiology { get; set; }
         public int? ReserveCivicEducation { get; set; }
         public int? ReserveLanguages { get; set; }
+
         public string PriorityType { get; set; }
         public string Area { get; set; }
         public string GraduateYear { get; set; }
         public bool? Connected { get; set; }
 
-        public virtual ProvinceDAO ClusterContest { get; set; }
-        public virtual HighSchoolDAO HighSchoolGrade10 { get; set; }
-        public virtual HighSchoolDAO HighSchoolGrade11 { get; set; }
-        public virtual HighSchoolDAO HighSchoolGrade12 { get; set; }
-        public virtual HighSchoolDAO RegisterPlaceOfExam { get; set; }
-        public virtual TownDAO Town { get; set; }
-        public virtual UserDAO User { get; set; }
-        public virtual ICollection<FormDetailDAO> FormDetails { get; set; }
+        public List<FormDetailDTO> FormDetails { get; set; }
     }
 }

@@ -10,7 +10,6 @@ namespace TwelveFinal.Repositories
 {
     public interface IFormRepository
     {
-        //Task<List<Form>> List(Guid StudentId);
         Task<bool> Create(Form form);
         Task<Form> Get(Guid Id);
         Task<bool> Update(Form form);
@@ -82,15 +81,13 @@ namespace TwelveFinal.Repositories
                 Area = form.UniversityAdmission.Area,
                 GraduateYear = form.UniversityAdmission.GraduateYear,
                 Connected = form.UniversityAdmission.Connected,
-                University_Majors = form.UniversityAdmission.University_Majorses.Select(m => new University_MajorsDAO
+                FormDetails = form.UniversityAdmission.FormDetails.Select(d => new FormDetailDAO
                 {
-                    Id = m.Id,
-                    FormId = m.FormId,
-                    Benchmark = m.Benchmark,
-                    MajorsId = m.MajorsId,
-                    UniversityId = m.UniversityId,
-                    SubjectGroupType = m.SubjectGroupType,
-                    Year = m.Year
+                    Id = d.Id,
+                    FormId = d.FormId,
+                    MajorsId = d.MajorsId,
+                    UniversityId = d.UniversityId,
+                    SubjectGroupId = d.SubjectGroupId
                 }).ToList(),
                 UserId = form.UserId
             };
@@ -102,6 +99,7 @@ namespace TwelveFinal.Repositories
 
         public async Task<bool> Delete(Guid Id)
         {
+            await tFContext.FormDetail.Where(d => d.FormId.Equals(Id)).DeleteFromQueryAsync();
             await tFContext.Form.Where(b => b.Id.Equals(Id)).DeleteFromQueryAsync();
             return true;
         }
@@ -204,19 +202,21 @@ namespace TwelveFinal.Repositories
                     PriorityType = f.PriorityType,
                     GraduateYear = f.GraduateYear,
                     Connected = f.Connected,
-                    University_Majorses = f.University_Majors.Select(m => new University_Majors
+                    FormDetails = f.FormDetails.Select(d => new FormDetail
                     {
-                        Id = m.Id,
-                        Benchmark = m.Benchmark,
-                        Year = m.Year,
-                        MajorsId = m.MajorsId,
-                        MajorsCode = m.Majors.Code,
-                        MajorsName = m.Majors.Name,
-                        UniversityId = m.UniversityId,
-                        UniversityCode = m.University.Code,
-                        UniversityName = m.University.Name,
-                        SubjectGroupType = m.SubjectGroupType
-                    }).ToList()
+                        Id = d.Id,
+                        FormId = d.FormId,
+                        MajorsId = d.MajorsId,
+                        MajorsCode = d.Majors.Code,
+                        MajorsName = d.Majors.Name,
+                        UniversityId = d.UniversityId,
+                        UniversityCode = d.University.Code,
+                        UniversityName = d.University.Name,
+                        UniversityAddress = d.University.Address,
+                        SubjectGroupId = d.SubjectGroupId,
+                        SubjectGroupCode = d.SubjectGroup.Code,
+                        SubjectGroupName = d.SubjectGroup.Name
+                    }).ToList(),
                 }
             }).FirstOrDefaultAsync();
 
@@ -227,9 +227,70 @@ namespace TwelveFinal.Repositories
         {
             await tFContext.Form.Where(f => f.Id.Equals(form.Id)).UpdateFromQueryAsync(f => new FormDAO
             {
+                Id = f.Id,
                 NumberForm = form.NumberForm,
                 DepartmentCode = form.DepartmentCode,
                 Date = form.Date,
+                UserId = f.UserId,
+
+                FullName = form.PersonalInformation.FullName,
+                Address = form.PersonalInformation.Address,
+                Dob = form.PersonalInformation.Dob,
+                PlaceOfBirth = form.PersonalInformation.PlaceOfBirth,
+                Email = form.PersonalInformation.Email,
+                Gender = form.PersonalInformation.Gender,
+                HighSchoolGrade10Id = form.PersonalInformation.HighSchoolGrade10Id,
+                HighSchoolGrade11Id = form.PersonalInformation.HighSchoolGrade11Id,
+                HighSchoolGrade12Id = form.PersonalInformation.HighSchoolGrade12Id,
+                Grade12Name = form.PersonalInformation.Grade12Name,
+                Identify = form.PersonalInformation.Identify,
+                IsPermanentResidenceMore18 = form.PersonalInformation.IsPermanentResidenceMore18,
+                IsPermanentResidenceSpecialMore18 = form.PersonalInformation.IsPermanentResidenceSpecialMore18,
+                Ethnic = form.PersonalInformation.Ethnic,
+                Phone = form.PersonalInformation.Phone,
+                TownId = form.PersonalInformation.TownId,
+
+                Graduated = form.RegisterInformation.Graduated,
+                ResultForUniversity = form.RegisterInformation.ResultForUniversity,
+                StudyAtHighSchool = form.RegisterInformation.StudyAtHighSchool,
+                ClusterContestId = form.RegisterInformation.ClusterContestId,
+                RegisterPlaceOfExamId = form.RegisterInformation.RegisterPlaceOfExamId,
+                Maths = form.RegisterInformation.Maths,
+                Literature = form.RegisterInformation.Literature,
+                Languages = form.RegisterInformation.Languages,
+                Physics = form.RegisterInformation.Physics,
+                Chemistry = form.RegisterInformation.Chemistry,
+                Biology = form.RegisterInformation.Biology,
+                History = form.RegisterInformation.History,
+                Geography = form.RegisterInformation.Geography,
+                CivicEducation = form.RegisterInformation.CivicEducation,
+                NaturalSciences = form.RegisterInformation.NaturalSciences,
+                SocialSciences = form.RegisterInformation.SocialSciences,
+
+                Mark = form.GraduationInformation.Mark,
+                ExceptLanguages = form.GraduationInformation.ExceptLanguages,
+                ReserveMaths = form.GraduationInformation.ReserveMaths,
+                ReserveLiterature = form.GraduationInformation.ReserveLiterature,
+                ReserveLanguages = form.GraduationInformation.ReserveLanguages,
+                ReservePhysics = form.GraduationInformation.ReservePhysics,
+                ReserveChemistry = form.GraduationInformation.ReserveChemistry,
+                ReserveBiology = form.GraduationInformation.ReserveBiology,
+                ReserveHistory = form.GraduationInformation.ReserveHistory,
+                ReserveGeography = form.GraduationInformation.ReserveGeography,
+                ReserveCivicEducation = form.GraduationInformation.ReserveCivicEducation,
+
+                Area = form.UniversityAdmission.Area,
+                Connected = form.UniversityAdmission.Connected,
+                GraduateYear = form.UniversityAdmission.GraduateYear,
+                PriorityType = form.UniversityAdmission.PriorityType,
+                FormDetails = form.UniversityAdmission.FormDetails.Select(d => new FormDetailDAO
+                {
+                    Id = d.Id,
+                    MajorsId = d.MajorsId,
+                    UniversityId = d.UniversityId,
+                    SubjectGroupId = d.SubjectGroupId,
+                    FormId = d.FormId
+                }).ToList()
             });
 
             return true;

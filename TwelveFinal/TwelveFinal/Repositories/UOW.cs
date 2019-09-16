@@ -18,12 +18,13 @@ namespace TwelveFinal.Repositories
         IGraduationInformationRepository GraduationInformationRepository { get; }
         IHighSchoolRepository HighSchoolRepository { get; }
         IMajorsRepository MajorsRepository { get; }
+        IPersonalInformationRepository PersonalInformationRepository { get; }
         IProvinceRepository ProvinceRepository { get; }
         IRegisterInformationRepository RegisterInformationRepository { get; }
-        IPersonalInformationRepository PersonalInformationRepository { get; }
         ITownRepository TownRepository { get; }
-        IUniversity_MajorsRepository University_MajorsRepository { get; }
+        ISubjectGroupRepository SubjectGroupRepository { get; }
         IUniversityAdmissionRepository UniversityAdmissionRepository { get; }
+        IUniversity_MajorsRepository University_MajorsRepository { get; }
         IUniversityRepository UniversityRepository { get; }
         IUserRepository UserRepository { get; }
     }
@@ -35,12 +36,13 @@ namespace TwelveFinal.Repositories
         public IGraduationInformationRepository GraduationInformationRepository { get; private set; }
         public IHighSchoolRepository HighSchoolRepository { get; private set; }
         public IMajorsRepository MajorsRepository { get; private set; }
+        public IPersonalInformationRepository PersonalInformationRepository { get; private set; }
         public IProvinceRepository ProvinceRepository { get; private set; }
         public IRegisterInformationRepository RegisterInformationRepository { get; private set; }
-        public IPersonalInformationRepository PersonalInformationRepository { get; private set; }
         public ITownRepository TownRepository { get; private set; }
-        public IUniversity_MajorsRepository University_MajorsRepository { get; private set; }
+        public ISubjectGroupRepository SubjectGroupRepository { get; private set; }
         public IUniversityAdmissionRepository UniversityAdmissionRepository { get; private set; }
+        public IUniversity_MajorsRepository University_MajorsRepository { get; private set; }
         public IUniversityRepository UniversityRepository { get; private set; }
         public IUserRepository UserRepository { get; private set; }
 
@@ -52,12 +54,13 @@ namespace TwelveFinal.Repositories
             GraduationInformationRepository = new GraduationInformationRepository(tFContext);
             HighSchoolRepository = new HighSchoolRepository(tFContext);
             MajorsRepository = new MajorsRepository(tFContext);
+            PersonalInformationRepository = new PersonalInformationRepository(tFContext);
             ProvinceRepository = new ProvinceRepository(tFContext);
             RegisterInformationRepository = new RegisterInformationRepository(tFContext);
-            PersonalInformationRepository = new PersonalInformationRepository(tFContext);
             TownRepository = new TownRepository(tFContext);
-            University_MajorsRepository = new University_MajorsRepository(tFContext);
+            SubjectGroupRepository = new SubjectGroupRepository(tFContext);
             UniversityAdmissionRepository = new UniversityAdmissionRepository(tFContext);
+            University_MajorsRepository = new University_MajorsRepository(tFContext);
             UniversityRepository = new UniversityRepository(tFContext);
             UserRepository = new UserRepository(tFContext);
             EntityFrameworkManager.ContextFactory = DbContext => tFContext;

@@ -11,6 +11,7 @@ namespace TwelveFinal.Services.MMajors
     {
         Task<Majors> Create(Majors Majors);
         Task<Majors> Get(Guid Id);
+        Task<List<Majors>> List(MajorsFilter majorsFilter);
         Task<Majors> Update(Majors Majors);
         Task<Majors> Delete(Majors Majors);
     }
@@ -63,6 +64,11 @@ namespace TwelveFinal.Services.MMajors
             if (Id == Guid.Empty) return null;
             Majors Majors = await UOW.MajorsRepository.Get(Id);
             return Majors;
+        }
+
+        public async Task<List<Majors>> List(MajorsFilter majorsFilter)
+        {
+            return await UOW.MajorsRepository.List(majorsFilter);
         }
 
         public async Task<Majors> Update(Majors Majors)

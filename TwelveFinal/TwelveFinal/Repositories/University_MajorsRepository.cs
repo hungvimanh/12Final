@@ -13,7 +13,7 @@ namespace TwelveFinal.Repositories
         Task<bool> Create(University_Majors university_Majors);
         Task<List<University_Majors>> List(University_MajorsFilter university_MajorsFilter);
         Task<int> Count(University_MajorsFilter university_MajorsFilter);
-        Task<University_Majors> Get(Guid Id);
+        Task<University_Majors> Get(University_Majors university_Majors);
         Task<bool> Update(University_Majors university_Majors);
         Task<bool> Delete(University_Majors university_Majors);
     }
@@ -29,20 +29,26 @@ namespace TwelveFinal.Repositories
         {
             if (university_MajorsFilter == null)
                 return query.Where(q => 1 == 0);
-            if (university_MajorsFilter.Id != null)
-                query = query.Where(q => q.Id, university_MajorsFilter.Id);
             if (university_MajorsFilter.MajorsId != null)
                 query = query.Where(q => q.MajorsId, university_MajorsFilter.MajorsId);
-            if (university_MajorsFilter.UniversityId != null)
-                query = query.Where(q => q.UniversityId, university_MajorsFilter.UniversityId);
             if (university_MajorsFilter.MajorsCode != null)
                 query = query.Where(q => q.Majors.Code, university_MajorsFilter.MajorsCode);
             if (university_MajorsFilter.MajorsName != null)
                 query = query.Where(q => q.Majors.Name, university_MajorsFilter.MajorsName);
+
+            if (university_MajorsFilter.UniversityId != null)
+                query = query.Where(q => q.UniversityId, university_MajorsFilter.UniversityId);
             if (university_MajorsFilter.UniversityCode != null)
                 query = query.Where(q => q.University.Code, university_MajorsFilter.UniversityCode);
             if (university_MajorsFilter.UniversityName != null)
                 query = query.Where(q => q.University.Name, university_MajorsFilter.UniversityName);
+
+            if (university_MajorsFilter.SubjectGroupId != null)
+                query = query.Where(q => q.SubjectGroupId, university_MajorsFilter.SubjectGroupId);
+            if (university_MajorsFilter.SubjectGroupCode != null)
+                query = query.Where(q => q.SubjectGroup.Code, university_MajorsFilter.SubjectGroupCode);
+            if (university_MajorsFilter.SubjectGroupName != null)
+                query = query.Where(q => q.SubjectGroup.Name, university_MajorsFilter.SubjectGroupName);
             if (university_MajorsFilter.Benchmark != null)
                 query = query.Where(q => q.Benchmark, university_MajorsFilter.Benchmark);
             return query;
@@ -57,8 +63,14 @@ namespace TwelveFinal.Repositories
                         case University_MajorsOrder.MajorsCode:
                             query = query.OrderBy(q => q.Majors.Code);
                             break;
+                        case University_MajorsOrder.MajorsName:
+                            query = query.OrderBy(q => q.Majors.Name);
+                            break;
                         case University_MajorsOrder.UniversityCode:
                             query = query.OrderBy(q => q.University.Code);
+                            break;
+                        case University_MajorsOrder.UniversityName:
+                            query = query.OrderBy(q => q.University.Name);
                             break;
                         default:
                             query = query.OrderBy(q => q.CX);
@@ -71,7 +83,13 @@ namespace TwelveFinal.Repositories
                         case University_MajorsOrder.MajorsCode:
                             query = query.OrderByDescending(q => q.Majors.Code);
                             break;
+                        case University_MajorsOrder.MajorsName:
+                            query = query.OrderByDescending(q => q.Majors.Name);
+                            break;
                         case University_MajorsOrder.UniversityCode:
+                            query = query.OrderByDescending(q => q.University.Code);
+                            break;
+                        case University_MajorsOrder.UniversityName:
                             query = query.OrderByDescending(q => q.University.Name);
                             break;
                         default:
@@ -91,14 +109,18 @@ namespace TwelveFinal.Repositories
 
             List<University_Majors> university_Majorss = await query.Select(q => new University_Majors()
             {
-                Id = q.Id,
                 MajorsId = q.MajorsId,
                 MajorsCode = q.Majors.Code,
                 MajorsName = q.Majors.Name,
                 UniversityId = q.UniversityId,
                 UniversityCode = q.University.Code,
                 UniversityName = q.University.Name,
-                Benchmark = q.Benchmark
+                UniversityAddress = q.University.Address,
+                SubjectGroupId = q.SubjectGroupId,
+                SubjectGroupCode = q.SubjectGroup.Code,
+                SubjectGroupName = q.SubjectGroup.Name,
+                Benchmark = q.Benchmark,
+                Year = q.Year
             }).ToListAsync();
             return university_Majorss;
         }
@@ -124,10 +146,11 @@ namespace TwelveFinal.Repositories
         {
             University_MajorsDAO university_MajorsDAO = new University_MajorsDAO
             {
-                Id = university_Majors.Id,
                 MajorsId = university_Majors.MajorsId,
                 UniversityId = university_Majors.UniversityId,
+                SubjectGroupId = university_Majors.SubjectGroupId,
                 Benchmark = university_Majors.Benchmark,
+                Year = university_Majors.Year
             };
 
             tFContext.University_Majors.Add(university_MajorsDAO);
@@ -141,30 +164,36 @@ namespace TwelveFinal.Repositories
             return true;
         }
 
-        public async Task<University_Majors> Get(Guid Id)
+        public async Task<University_Majors> Get(University_Majors university_Majors)
         {
-            University_Majors University_Majors = await tFContext.University_Majors.Where(u => u.MajorsId.Equals(Id)).Select(u => new University_Majors
+            University_Majors University_Majors = await tFContext.University_Majors.Where(m => m.MajorsId.Equals(university_Majors.MajorsId) && m.UniversityId.Equals(university_Majors.UniversityId)).Select(u => new University_Majors
             {
-                Id = u.Id,
                 UniversityId = u.UniversityId,
                 UniversityCode = u.University.Code,
                 UniversityName = u.University.Name,
+                UniversityAddress = u.University.Address,
                 MajorsId = u.MajorsId,
                 MajorsCode = u.Majors.Code,
                 MajorsName = u.Majors.Name,
-                Benchmark = u.Benchmark
+                SubjectGroupId = u.SubjectGroupId,
+                SubjectGroupCode = u.SubjectGroup.Code,
+                SubjectGroupName = u.SubjectGroup.Name,
+                Benchmark = u.Benchmark,
+                Year = u.Year
             }).FirstOrDefaultAsync();
 
             return University_Majors;
         }
 
-        public async Task<bool> Update(University_Majors University_Majors)
+        public async Task<bool> Update(University_Majors university_Majors)
         {
-            await tFContext.University_Majors.Where(u => u.Id.Equals(University_Majors.Id)).UpdateFromQueryAsync(u => new University_MajorsDAO
+            await tFContext.University_Majors.Where(m => m.MajorsId.Equals(university_Majors.MajorsId) && m.UniversityId.Equals(university_Majors.UniversityId)).UpdateFromQueryAsync(u => new University_MajorsDAO
             {
-                MajorsId = University_Majors.MajorsId,
-                UniversityId = University_Majors.UniversityId,
-                Benchmark = University_Majors.Benchmark
+                MajorsId = university_Majors.MajorsId,
+                UniversityId = university_Majors.UniversityId,
+                SubjectGroupId = university_Majors.SubjectGroupId,
+                Benchmark = university_Majors.Benchmark,
+                Year = university_Majors.Year
             });
 
             return true;

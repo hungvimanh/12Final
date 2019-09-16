@@ -30,18 +30,20 @@ namespace TwelveFinal.Repositories
                 Connected = g.Connected,
                 GraduateYear = g.GraduateYear,
                 PriorityType = g.PriorityType,
-                University_Majorses = g.University_Majors.Select(a => new University_Majors
+                FormDetails = g.FormDetails.Select(d => new FormDetail
                 {
-                    Id = a.Id,
-                    MajorsId = a.MajorsId,
-                    MajorsCode = a.Majors.Code,
-                    MajorsName = a.Majors.Name,
-                    UniversityId = a.UniversityId,
-                    UniversityCode = a.University.Code,
-                    UniversityName = a.University.Name,
-                    SubjectGroupType = a.SubjectGroupType,
-                    Benchmark = a.Benchmark,
-                    Year = a.Year
+                    Id = d.Id,
+                    FormId = d.FormId,
+                    MajorsId = d.MajorsId,
+                    MajorsCode = d.Majors.Code,
+                    MajorsName = d.Majors.Name,
+                    UniversityId = d.UniversityId,
+                    UniversityCode = d.University.Code,
+                    UniversityName = d.University.Name,
+                    UniversityAddress = d.University.Address,
+                    SubjectGroupId = d.SubjectGroupId,
+                    SubjectGroupCode = d.SubjectGroup.Code,
+                    SubjectGroupName = d.SubjectGroup.Name,
                 }).ToList()
             }).FirstOrDefaultAsync();
 
@@ -56,14 +58,13 @@ namespace TwelveFinal.Repositories
                 Connected = universityAdmission.Connected,
                 GraduateYear = universityAdmission.GraduateYear,
                 PriorityType = universityAdmission.PriorityType,
-                University_Majors = universityAdmission.University_Majorses.Select(a => new University_MajorsDAO
+                FormDetails = universityAdmission.FormDetails.Select(d => new FormDetailDAO
                 {
-                    Id = a.Id,
-                    MajorsId = a.MajorsId,
-                    UniversityId = a.UniversityId,
-                    SubjectGroupType = a.SubjectGroupType,
-                    Benchmark = a.Benchmark,
-                    Year = a.Year
+                    Id = d.Id,
+                    MajorsId = d.MajorsId,
+                    UniversityId = d.UniversityId,
+                    SubjectGroupId = d.SubjectGroupId,
+                    FormId = d.FormId
                 }).ToList()
             });
 

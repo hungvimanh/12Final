@@ -11,6 +11,7 @@ namespace TwelveFinal.Services.MUniversity
     {
         Task<University> Create(University University);
         Task<University> Get(Guid Id);
+        Task<List<University>> List(UniversityFilter universityFilter);
         Task<University> Update(University University);
         Task<University> Delete(University University);
     }
@@ -63,6 +64,11 @@ namespace TwelveFinal.Services.MUniversity
             if (Id == Guid.Empty) return null;
             University University = await UOW.UniversityRepository.Get(Id);
             return University;
+        }
+
+        public async Task<List<University>> List(UniversityFilter universityFilter)
+        {
+            return await UOW.UniversityRepository.List(universityFilter);
         }
 
         public async Task<University> Update(University University)

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TwelveFinal.Entities;
 
-namespace TwelveFinal.Entities
+namespace TwelveFinal.Controller.DTO
 {
-    public class UniversityAdmission : DataEntity
+    public class UniversityAdmissionDTO
     {
         public Guid Id { get; set; }
         public string PriorityType { get; set; }
@@ -13,6 +14,6 @@ namespace TwelveFinal.Entities
         public string GraduateYear { get; set; }
         public bool? Connected { get; set; }
         public int TotalAspiration { get; set; }
-        public List<FormDetail> FormDetails { get; set; }
+        public List<University_Majors> University_Majorses { get; set; }
     }
 }

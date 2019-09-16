@@ -7,7 +7,7 @@ using TwelveFinal.Repositories;
 
 namespace TwelveFinal.Services.MForm
 {
-    public interface IFormRepository : IServiceScoped
+    public interface IFormService : IServiceScoped
     {
         //Task<List<Form>> List(Guid studentId);
         Task<Form> Create(Form form);
@@ -15,7 +15,7 @@ namespace TwelveFinal.Services.MForm
         Task<Form> Update(Form form);
         Task<Form> Delete(Form form);
     }
-    public class FormService : IFormRepository
+    public class FormService : IFormService
     {
         private readonly IUOW UOW;
         private readonly IFormValidator FormValidator;
@@ -23,6 +23,10 @@ namespace TwelveFinal.Services.MForm
         public async Task<Form> Create(Form form)
         {
             form.Id = Guid.NewGuid();
+            form.PersonalInformation.Id = form.Id;
+            form.RegisterInformation.Id = form.Id;
+            form.GraduationInformation.Id = form.Id;
+            form.UniversityAdmission.Id = form.Id;
             if (!await FormValidator.Create(form))
                 return form;
 
@@ -63,6 +67,7 @@ namespace TwelveFinal.Services.MForm
         {
             if (Id == Guid.Empty) return null;
             Form form = await UOW.FormRepository.Get(Id);
+            form.UniversityAdmission.TotalAspiration = form.UniversityAdmission.FormDetails.Count();
             return form;
         }
 
