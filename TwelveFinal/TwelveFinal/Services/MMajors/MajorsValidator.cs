@@ -9,16 +9,17 @@ namespace TwelveFinal.Services.MMajors
 {
     public interface IMajorsValidator : IServiceScoped
     {
-        Task<bool> Create(Majors Majors);
-        Task<bool> Update(Majors Majors);
-        Task<bool> Delete(Majors Majors);
+        Task<bool> Create(Majors majors);
+        Task<bool> Update(Majors majors);
+        Task<bool> Delete(Majors majors);
     }
     public class MajorsValidator : IMajorsValidator
     {
         private IUOW UOW;
         public enum ErrorCode
         {
-
+            NotExisted,
+            Duplicate
         }
 
         public MajorsValidator(IUOW _UOW)
@@ -26,19 +27,51 @@ namespace TwelveFinal.Services.MMajors
             UOW = _UOW;
         }
 
-        public Task<bool> Create(Majors Majors)
+        public async Task<bool> Create(Majors majors)
         {
-            throw new NotImplementedException();
+            bool IsValid = true;
+            IsValid &= await CodeValidate(majors);
+            return IsValid;
         }
 
-        public Task<bool> Delete(Majors Majors)
+        public async Task<bool> Delete(Majors majors)
         {
-            throw new NotImplementedException();
+            bool IsValid = true;
+            IsValid &= await IsExisted(majors);
+            return IsValid;
         }
 
-        public Task<bool> Update(Majors Majors)
+        public async Task<bool> Update(Majors majors)
         {
-            throw new NotImplementedException();
+            bool IsValid = true;
+            IsValid &= await IsExisted(majors);
+            IsValid &= await CodeValidate(majors);
+            return IsValid;
+        }
+
+        private async Task<bool> IsExisted(Majors majors)
+        {
+            if (await UOW.MajorsRepository.Get(majors.Id) == null)
+            {
+                majors.AddError(nameof(MajorsValidator), nameof(majors.Name), ErrorCode.NotExisted);
+            }
+            return majors.IsValidated;
+        }
+
+        private async Task<bool> CodeValidate(Majors majors)
+        {
+            MajorsFilter filter = new MajorsFilter
+            {
+                Id = new GuidFilter { NotEqual = majors.Id },
+                Code = new StringFilter { Equal = majors.Code }
+            };
+
+            var count = await UOW.MajorsRepository.Count(filter);
+            if (count > 0)
+            {
+                majors.AddError(nameof(MajorsValidator), nameof(majors.Code), ErrorCode.Duplicate);
+            }
+            return majors.IsValidated;
         }
     }
 }

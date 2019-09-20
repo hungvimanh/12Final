@@ -11,7 +11,7 @@ namespace TwelveFinal.Controller.majors
 {
     public class MajorsRoute
     {
-        private const string Default = "api/TF/majors";
+        public const string Default = "api/TF/majors";
         public const string Create = Default + "/create";
         public const string Get = Default + "/get";
         public const string List = Default + "/list";
@@ -20,13 +20,13 @@ namespace TwelveFinal.Controller.majors
     }
 
     [ApiController]
-    public class MajorsController
+    public class MajorsController : ControllerBase
     {
-        private MajorsService majorsService;
+        private IMajorsService MajorsService;
 
-        public MajorsController(MajorsService majorsService)
+        public MajorsController(IMajorsService majorsService)
         {
-            this.majorsService = majorsService;
+            this.MajorsService = majorsService;
         }
 
         [Route(MajorsRoute.Create), HttpPost]
@@ -35,7 +35,7 @@ namespace TwelveFinal.Controller.majors
             if (MajorsDTO == null) MajorsDTO = new MajorsDTO();
 
             Majors Majors = ConvertDTOtoBO(MajorsDTO);
-            Majors = await majorsService.Create(Majors);
+            Majors = await MajorsService.Create(Majors);
 
             MajorsDTO = new MajorsDTO
             {
@@ -58,7 +58,7 @@ namespace TwelveFinal.Controller.majors
             if (MajorsDTO == null) MajorsDTO = new MajorsDTO();
 
             Majors Majors = ConvertDTOtoBO(MajorsDTO);
-            Majors = await majorsService.Update(Majors);
+            Majors = await MajorsService.Update(Majors);
 
             MajorsDTO = new MajorsDTO
             {
@@ -81,7 +81,7 @@ namespace TwelveFinal.Controller.majors
             if (MajorsDTO.Id == null) return null;
 
             Majors Majors = ConvertDTOtoBO(MajorsDTO);
-            Majors = await majorsService.Update(Majors);
+            Majors = await MajorsService.Update(Majors);
 
             return Majors == null ? null : new MajorsDTO()
             {
@@ -103,7 +103,7 @@ namespace TwelveFinal.Controller.majors
                 Take = int.MaxValue
             };
 
-            List<Majors> universities = await majorsService.List(MajorsFilter);
+            List<Majors> universities = await MajorsService.List(MajorsFilter);
 
             List<MajorsDTO> MajorsDTOs = universities.Select(u => new MajorsDTO
             {
@@ -121,7 +121,7 @@ namespace TwelveFinal.Controller.majors
             if (MajorsDTO == null) MajorsDTO = new MajorsDTO();
 
             Majors Majors = ConvertDTOtoBO(MajorsDTO);
-            Majors = await majorsService.Delete(Majors);
+            Majors = await MajorsService.Delete(Majors);
 
             MajorsDTO = new MajorsDTO
             {

@@ -12,7 +12,7 @@ namespace TwelveFinal.Controller.university
 {
     public class UniversityRoute
     {
-        private const string Default = "api/TF/university";
+        public const string Default = "api/TF/university";
         public const string Create = Default + "/create";
         public const string Get = Default + "/get";
         public const string List = Default + "/list";
@@ -21,7 +21,7 @@ namespace TwelveFinal.Controller.university
     }
 
     [ApiController]
-    public class UniversityController
+    public class UniversityController : ControllerBase
     {
         private UniversityService universityService;
         private MajorsService majorsService;

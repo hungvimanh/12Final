@@ -6,11 +6,14 @@ namespace TwelveFinal.Repositories.Models
 {
     public partial class TFContext : DbContext
     {
+        public virtual DbSet<AreaDAO> Area { get; set; }
         public virtual DbSet<DistrictDAO> District { get; set; }
+        public virtual DbSet<EthnicDAO> Ethnic { get; set; }
         public virtual DbSet<FormDAO> Form { get; set; }
         public virtual DbSet<FormDetailDAO> FormDetail { get; set; }
         public virtual DbSet<HighSchoolDAO> HighSchool { get; set; }
         public virtual DbSet<MajorsDAO> Majors { get; set; }
+        public virtual DbSet<PriorityTypeDAO> PriorityType { get; set; }
         public virtual DbSet<ProvinceDAO> Province { get; set; }
         public virtual DbSet<SubjectGroupDAO> SubjectGroup { get; set; }
         public virtual DbSet<TownDAO> Town { get; set; }
@@ -38,6 +41,24 @@ namespace TwelveFinal.Repositories.Models
         {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
 
+            modelBuilder.Entity<AreaDAO>(entity =>
+            {
+                entity.HasIndex(e => e.CX)
+                    .HasName("CX_Area")
+                    .IsUnique()
+                    .HasAnnotation("SqlServer:Clustered", true);
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Code)
+                    .IsRequired()
+                    .HasMaxLength(10);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50);
+            });
+
             modelBuilder.Entity<DistrictDAO>(entity =>
             {
                 entity.HasIndex(e => e.CX)
@@ -62,6 +83,20 @@ namespace TwelveFinal.Repositories.Models
                     .HasForeignKey(d => d.ProvinceId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_District_Province");
+            });
+
+            modelBuilder.Entity<EthnicDAO>(entity =>
+            {
+                entity.HasIndex(e => e.CX)
+                    .HasName("CX_Ethnic")
+                    .IsUnique()
+                    .HasAnnotation("SqlServer:Clustered", true);
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50);
             });
 
             modelBuilder.Entity<FormDAO>(entity =>
@@ -260,6 +295,20 @@ namespace TwelveFinal.Repositories.Models
                     .HasMaxLength(100);
             });
 
+            modelBuilder.Entity<PriorityTypeDAO>(entity =>
+            {
+                entity.HasIndex(e => e.CX)
+                    .HasName("CX_PriorityType")
+                    .IsUnique()
+                    .HasAnnotation("SqlServer:Clustered", true);
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Code)
+                    .IsRequired()
+                    .HasMaxLength(2);
+            });
+
             modelBuilder.Entity<ProvinceDAO>(entity =>
             {
                 entity.HasIndex(e => e.CX)
@@ -278,6 +327,12 @@ namespace TwelveFinal.Repositories.Models
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50);
+
+                entity.HasOne(d => d.Area)
+                    .WithMany(p => p.Provinces)
+                    .HasForeignKey(d => d.AreaId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Province_Area");
             });
 
             modelBuilder.Entity<SubjectGroupDAO>(entity =>

@@ -29,15 +29,17 @@ namespace TwelveFinal.Repositories
         {
             if (university_MajorsFilter == null)
                 return query.Where(q => 1 == 0);
-            if (university_MajorsFilter.MajorsId != null)
-                query = query.Where(q => q.MajorsId, university_MajorsFilter.MajorsId);
+            if (university_MajorsFilter.UniversityId.HasValue)
+                query = query.Where(q => q.UniversityId.Equals(university_MajorsFilter.UniversityId.Value));
+            if (university_MajorsFilter.MajorsId.HasValue)
+                query = query.Where(q => q.MajorsId.Equals(university_MajorsFilter.MajorsId.Value));
+
             if (university_MajorsFilter.MajorsCode != null)
                 query = query.Where(q => q.Majors.Code, university_MajorsFilter.MajorsCode);
             if (university_MajorsFilter.MajorsName != null)
                 query = query.Where(q => q.Majors.Name, university_MajorsFilter.MajorsName);
 
-            if (university_MajorsFilter.UniversityId != null)
-                query = query.Where(q => q.UniversityId, university_MajorsFilter.UniversityId);
+           
             if (university_MajorsFilter.UniversityCode != null)
                 query = query.Where(q => q.University.Code, university_MajorsFilter.UniversityCode);
             if (university_MajorsFilter.UniversityName != null)
@@ -51,6 +53,8 @@ namespace TwelveFinal.Repositories
                 query = query.Where(q => q.SubjectGroup.Name, university_MajorsFilter.SubjectGroupName);
             if (university_MajorsFilter.Benchmark != null)
                 query = query.Where(q => q.Benchmark, university_MajorsFilter.Benchmark);
+            if (!string.IsNullOrEmpty(university_MajorsFilter.Year))
+                query = query.Where(q => q.Year.Equals(university_MajorsFilter.Year));
             return query;
         }
         private IQueryable<University_MajorsDAO> DynamicOrder(IQueryable<University_MajorsDAO> query, University_MajorsFilter university_MajorsFilter)

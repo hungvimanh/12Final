@@ -20,6 +20,15 @@ namespace TwelveFinal.Services.MMajors
         private readonly IUOW UOW;
         private readonly IMajorsValidator MajorsValidator;
 
+        public MajorsService(
+            IUOW UOW,
+            IMajorsValidator MajorsValidator
+            )
+        {
+            this.UOW = UOW;
+            this.MajorsValidator = MajorsValidator;
+        }
+
         public async Task<Majors> Create(Majors Majors)
         {
             Majors.Id = Guid.NewGuid();

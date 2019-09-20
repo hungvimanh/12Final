@@ -11,6 +11,8 @@ namespace TwelveFinal.Repositories
     public interface ITownRepository
     {
         Task<bool> Create(Town town);
+        Task<int> Count(TownFilter townFilter);
+        Task<List<Town>> List(TownFilter townFilter);
         Task<Town> Get(Guid Id);
         Task<bool> Update(Town town);
         Task<bool> Delete(Guid Id);
@@ -22,6 +24,96 @@ namespace TwelveFinal.Repositories
         {
             tFContext = _tFContext;
         }
+
+        private IQueryable<TownDAO> DynamicFilter(IQueryable<TownDAO> query, TownFilter townFilter)
+        {
+            if (townFilter == null)
+                return query.Where(q => 1 == 0);
+            query.Where(q => q.DistrictId.Equals(townFilter.DistrictId));
+
+            if (townFilter.Ids != null)
+                query = query.Where(e => townFilter.Ids.Contains(e.Id));
+            if (townFilter.ExceptIds != null)
+                query = query.Where(q => !townFilter.ExceptIds.Contains(q.Id));
+            if (townFilter.Id != null)
+                query = query.Where(q => q.Id, townFilter.Id);
+            if (townFilter.Name != null)
+                query = query.Where(q => q.Name, townFilter.Name);
+            if (townFilter.Code != null)
+                query = query.Where(q => q.Code, townFilter.Code);
+            return query;
+        }
+        private IQueryable<TownDAO> DynamicOrder(IQueryable<TownDAO> query, TownFilter townFilter)
+        {
+            switch (townFilter.OrderType)
+            {
+                case OrderType.ASC:
+                    switch (townFilter.OrderBy)
+                    {
+                        case TownOrder.Code:
+                            query = query.OrderBy(q => q.Code);
+                            break;
+                        case TownOrder.Name:
+                            query = query.OrderBy(q => q.Name);
+                            break;
+                        default:
+                            query = query.OrderBy(q => q.CX);
+                            break;
+                    }
+                    break;
+                case OrderType.DESC:
+                    switch (townFilter.OrderBy)
+                    {
+                        case TownOrder.Code:
+                            query = query.OrderByDescending(q => q.Code);
+                            break;
+                        case TownOrder.Name:
+                            query = query.OrderByDescending(q => q.Name);
+                            break;
+                        default:
+                            query = query.OrderByDescending(q => q.CX);
+                            break;
+                    }
+                    break;
+                default:
+                    query = query.OrderBy(q => q.CX);
+                    break;
+            }
+            query = query.Skip(townFilter.Skip).Take(townFilter.Take);
+            return query;
+        }
+        private async Task<List<Town>> DynamicSelect(IQueryable<TownDAO> query)
+        {
+
+            List<Town> towns = await query.Select(q => new Town()
+            {
+                Id = q.Id,
+                DistrictId = q.DistrictId,
+                DistrictCode = q.District.Code,
+                DistrictName = q.District.Name,
+                Name = q.Name,
+                Code = q.Code
+            }).ToListAsync();
+            return towns;
+        }
+
+        public async Task<int> Count(TownFilter townFilter)
+        {
+            IQueryable<TownDAO> townDAOs = tFContext.Town;
+            townDAOs = DynamicFilter(townDAOs, townFilter);
+            return await townDAOs.CountAsync();
+        }
+
+        public async Task<List<Town>> List(TownFilter townFilter)
+        {
+            if (townFilter == null) return new List<Town>();
+            IQueryable<TownDAO> townDAOs = tFContext.Town;
+            townDAOs = DynamicFilter(townDAOs, townFilter);
+            townDAOs = DynamicOrder(townDAOs, townFilter);
+            var towns = await DynamicSelect(townDAOs);
+            return towns;
+        }
+
         public async Task<bool> Create(Town town)
         {
             TownDAO TownDAO = new TownDAO

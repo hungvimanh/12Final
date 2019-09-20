@@ -8,6 +8,10 @@ namespace TwelveFinal.Entities
     public class PersonalInformation : DataEntity
     {
         public Guid Id { get; set; }
+        public string NumberForm { get; set; }
+        public string DepartmentCode { get; set; }
+        public DateTime Date { get; set; }
+
         public string FullName { get; set; }
         public DateTime Dob { get; set; }
         public bool Gender { get; set; }

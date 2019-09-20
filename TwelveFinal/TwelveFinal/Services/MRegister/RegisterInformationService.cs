@@ -9,6 +9,7 @@ namespace TwelveFinal.Services.MRegister
 {
     public interface IRegisterInformationService : IServiceScoped
     {
+        Task<RegisterInformation> Check(RegisterInformation registerInformation);
         Task<RegisterInformation> Get(Guid Id);
         Task<RegisterInformation> Update(RegisterInformation registerInformation);
     }
@@ -16,6 +17,22 @@ namespace TwelveFinal.Services.MRegister
     {
         private readonly IUOW UOW;
         private readonly IRegisterInformationValidator RegisterInformationValidator;
+
+        public RegisterInformationService(
+            IUOW UOW,
+            IRegisterInformationValidator RegisterInformationValidator
+            )
+        {
+            this.UOW = UOW;
+            this.RegisterInformationValidator = RegisterInformationValidator;
+        }
+
+        public async Task<RegisterInformation> Check(RegisterInformation registerInformation)
+        {
+            if (!await RegisterInformationValidator.Check(registerInformation))
+                return registerInformation;
+            return registerInformation;
+        }
 
         public async Task<RegisterInformation> Get(Guid Id)
         {
@@ -26,7 +43,7 @@ namespace TwelveFinal.Services.MRegister
 
         public async Task<RegisterInformation> Update(RegisterInformation registerInformation)
         {
-            if (!await RegisterInformationValidator.Update(registerInformation))
+            if (!await RegisterInformationValidator.Check(registerInformation))
                 return registerInformation;
 
             try

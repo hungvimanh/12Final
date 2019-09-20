@@ -18,27 +18,56 @@ namespace TwelveFinal.Services.MTown
         private IUOW UOW;
         public enum ErrorCode
         {
-
+            NotExisted,
+            Duplicate
         }
 
-        public TownValidator(IUOW _UOW)
+        public async Task<bool> Create(Town town)
         {
-            UOW = _UOW;
+            bool IsValid = true;
+            IsValid &= await CodeValidate(town);
+            return IsValid;
         }
 
-        public Task<bool> Create(Town Town)
+        public async Task<bool> Delete(Town town)
         {
-            throw new NotImplementedException();
+            bool IsValid = true;
+            IsValid &= await IsExisted(town);
+            return IsValid;
         }
 
-        public Task<bool> Delete(Town Town)
+        public async Task<bool> Update(Town town)
         {
-            throw new NotImplementedException();
+            bool IsValid = true;
+            IsValid &= await IsExisted(town);
+            IsValid &= await CodeValidate(town);
+            return IsValid;
         }
 
-        public Task<bool> Update(Town Town)
+        private async Task<bool> IsExisted(Town town)
         {
-            throw new NotImplementedException();
+            if (await UOW.TownRepository.Get(town.Id) == null)
+            {
+                town.AddError(nameof(TownValidator), nameof(town.Name), ErrorCode.NotExisted);
+            }
+            return town.IsValidated;
+        }
+
+        private async Task<bool> CodeValidate(Town town)
+        {
+            TownFilter filter = new TownFilter
+            {
+                Id = new GuidFilter { NotEqual = town.Id },
+                DistrictId = town.DistrictId,
+                Code = new StringFilter { Equal = town.Code }
+            };
+
+            var count = await UOW.TownRepository.Count(filter);
+            if (count > 0)
+            {
+                town.AddError(nameof(TownValidator), nameof(town.Code), ErrorCode.Duplicate);
+            }
+            return town.IsValidated;
         }
     }
 }

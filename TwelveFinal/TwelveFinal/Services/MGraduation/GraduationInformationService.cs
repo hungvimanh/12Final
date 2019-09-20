@@ -9,6 +9,7 @@ namespace TwelveFinal.Services.MGraduation
 {
     public interface IGraduationInformationService : IServiceScoped
     {
+        Task<GraduationInformation> Check(GraduationInformation graduationInformation);
         Task<GraduationInformation> Get(Guid Id);
         Task<GraduationInformation> Update(GraduationInformation graduationInformation);
     }
@@ -16,6 +17,21 @@ namespace TwelveFinal.Services.MGraduation
     {
         private readonly IUOW UOW;
         private readonly IGraduationInformationValidator GraduationInformationValidator;
+
+        public GraduationInformationService(
+            IUOW UOW,
+            IGraduationInformationValidator GraduationInformationValidator
+            )
+        {
+            this.UOW = UOW;
+            this.GraduationInformationValidator = GraduationInformationValidator;
+        }
+        public async Task<GraduationInformation> Check(GraduationInformation graduationInformation)
+        {
+            if (!await GraduationInformationValidator.Check(graduationInformation))
+                return graduationInformation;
+            return graduationInformation;
+        }
 
         public async Task<GraduationInformation> Get(Guid Id)
         {
@@ -26,7 +42,7 @@ namespace TwelveFinal.Services.MGraduation
 
         public async Task<GraduationInformation> Update(GraduationInformation graduationInformation)
         {
-            if (!await GraduationInformationValidator.Update(graduationInformation))
+            if (!await GraduationInformationValidator.Check(graduationInformation))
                 return graduationInformation;
 
             try

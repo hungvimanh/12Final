@@ -11,7 +11,7 @@ namespace TwelveFinal.Services.MSubjectGroup
     {
         Task<SubjectGroup> Create(SubjectGroup SubjectGroup);
         Task<SubjectGroup> Get(Guid Id);
-        //Task<List<SubjectGroup>> List(SubjectGroupFilter SubjectGroupFilter);
+        Task<List<SubjectGroup>> List(SubjectGroupFilter SubjectGroupFilter);
         Task<SubjectGroup> Update(SubjectGroup SubjectGroup);
         Task<SubjectGroup> Delete(SubjectGroup SubjectGroup);
     }
@@ -19,6 +19,15 @@ namespace TwelveFinal.Services.MSubjectGroup
     {
         private readonly IUOW UOW;
         private readonly ISubjectGroupValidator SubjectGroupValidator;
+
+        public SubjectGroupService(
+            IUOW UOW,
+            ISubjectGroupValidator SubjectGroupValidator
+            )
+        {
+            this.UOW = UOW;
+            this.SubjectGroupValidator = SubjectGroupValidator;
+        }
 
         public async Task<SubjectGroup> Create(SubjectGroup SubjectGroup)
         {
@@ -66,10 +75,10 @@ namespace TwelveFinal.Services.MSubjectGroup
             return SubjectGroup;
         }
 
-        //public async Task<List<SubjectGroup>> List(SubjectGroupFilter SubjectGroupFilter)
-        //{
-        //    return await UOW.SubjectGroupRepository.List(SubjectGroupFilter);
-        //}
+        public async Task<List<SubjectGroup>> List(SubjectGroupFilter SubjectGroupFilter)
+        {
+            return await UOW.SubjectGroupRepository.List(SubjectGroupFilter);
+        }
 
         public async Task<SubjectGroup> Update(SubjectGroup SubjectGroup)
         {

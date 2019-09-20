@@ -19,6 +19,14 @@ namespace TwelveFinal.Services.MDistrict
         private readonly IUOW UOW;
         private readonly IDistrictValidator DistrictValidator;
 
+        public DistrictService(
+            IUOW _UOW, 
+            IDistrictValidator districtValidator
+            )
+        {
+            UOW = _UOW;
+            DistrictValidator = districtValidator;
+        }
         public async Task<District> Create(District District)
         {
             District.Id = Guid.NewGuid();

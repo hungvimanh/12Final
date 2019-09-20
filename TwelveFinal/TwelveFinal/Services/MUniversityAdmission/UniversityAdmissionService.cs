@@ -9,6 +9,7 @@ namespace TwelveFinal.Services.MUniversityAdmission
 {
     public interface IUniversityAdmissionService : IServiceScoped
     {
+        Task<UniversityAdmission> Check(UniversityAdmission universityAdmission);
         Task<UniversityAdmission> Get(Guid Id);
         Task<UniversityAdmission> Update(UniversityAdmission universityAdmission);
     }
@@ -16,6 +17,22 @@ namespace TwelveFinal.Services.MUniversityAdmission
     {
         private readonly IUOW UOW;
         private readonly IUniversityAdmissionValidator UniversityAdmissionValidator;
+
+        public UniversityAdmissionService(
+            IUOW UOW,
+            IUniversityAdmissionValidator UniversityAdmissionValidator
+            )
+        {
+            this.UOW = UOW;
+            this.UniversityAdmissionValidator = UniversityAdmissionValidator;
+        }
+
+        public async Task<UniversityAdmission> Check(UniversityAdmission universityAdmission)
+        {
+            if (!await UniversityAdmissionValidator.Check(universityAdmission))
+                return universityAdmission;
+            return universityAdmission;
+        }
 
         public async Task<UniversityAdmission> Get(Guid Id)
         {
@@ -26,7 +43,7 @@ namespace TwelveFinal.Services.MUniversityAdmission
 
         public async Task<UniversityAdmission> Update(UniversityAdmission universityAdmission)
         {
-            if (!await UniversityAdmissionValidator.Update(universityAdmission))
+            if (!await UniversityAdmissionValidator.Check(universityAdmission))
                 return universityAdmission;
 
             try

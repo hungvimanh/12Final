@@ -9,16 +9,14 @@ namespace TwelveFinal.Services.MGraduation
 {
     public interface IGraduationInformationValidator : IServiceScoped
     {
-        Task<bool> Create(GraduationInformation graduationInformation);
-        Task<bool> Update(GraduationInformation graduationInformation);
-        Task<bool> Delete(GraduationInformation graduationInformation);
+        Task<bool> Check(GraduationInformation graduationInformation);
     }
     public class GraduationInformationValidator : IGraduationInformationValidator
     {
         private IUOW UOW;
         public enum ErrorCode
         {
-
+            Invalid
         }
 
         public GraduationInformationValidator(IUOW _UOW)
@@ -26,21 +24,71 @@ namespace TwelveFinal.Services.MGraduation
             UOW = _UOW;
         }
 
-        public Task<bool> Create(GraduationInformation graduationInformation)
+        public async Task<bool> Check(GraduationInformation graduationInformation)
         {
-            throw new NotImplementedException();
+            bool IsValid = true;
+            IsValid &= await InputValidate(graduationInformation);
+            return IsValid;
         }
 
-        public Task<bool> Delete(GraduationInformation graduationInformation)
+        private async Task<bool> InputValidate(GraduationInformation graduationInformation)
         {
-            throw new NotImplementedException();
-        }
+            if(!string.IsNullOrEmpty(graduationInformation.ExceptLanguages) && graduationInformation.ExceptLanguages.Length > 500)
+            {
+                graduationInformation.AddError(nameof(GraduationInformationValidator), nameof(graduationInformation.ExceptLanguages), ErrorCode.Invalid);
+            }
 
-        public Task<bool> Update(GraduationInformation graduationInformation)
-        {
-            throw new NotImplementedException();
-        }
+            if(!string.IsNullOrEmpty(graduationInformation.ExceptLanguages) && graduationInformation.Mark == null)
+            {
+                graduationInformation.AddError(nameof(GraduationInformationValidator), nameof(graduationInformation.Mark), ErrorCode.Invalid);
+            }
 
-        
+            if(graduationInformation.ReserveMaths != null && !(graduationInformation.ReserveMaths >= 0 && graduationInformation.ReserveMaths <= 10))
+            {
+                graduationInformation.AddError(nameof(GraduationInformationValidator), nameof(graduationInformation.ReserveMaths), ErrorCode.Invalid);
+            }
+
+            if (graduationInformation.ReservePhysics != null && !(graduationInformation.ReservePhysics >= 0 && graduationInformation.ReservePhysics <= 10))
+            {
+                graduationInformation.AddError(nameof(GraduationInformationValidator), nameof(graduationInformation.ReservePhysics), ErrorCode.Invalid);
+            }
+
+            if (graduationInformation.ReserveChemistry != null && !(graduationInformation.ReserveChemistry >= 0 && graduationInformation.ReserveChemistry <= 10))
+            {
+                graduationInformation.AddError(nameof(GraduationInformationValidator), nameof(graduationInformation.ReserveChemistry), ErrorCode.Invalid);
+            }
+
+            if (graduationInformation.ReserveLiterature != null && !(graduationInformation.ReserveLiterature >= 0 && graduationInformation.ReserveLiterature <= 10))
+            {
+                graduationInformation.AddError(nameof(GraduationInformationValidator), nameof(graduationInformation.ReserveLiterature), ErrorCode.Invalid);
+            }
+
+            if (graduationInformation.ReserveHistory != null && !(graduationInformation.ReserveHistory >= 0 && graduationInformation.ReserveHistory <= 10))
+            {
+                graduationInformation.AddError(nameof(GraduationInformationValidator), nameof(graduationInformation.ReserveHistory), ErrorCode.Invalid);
+            }
+
+            if (graduationInformation.ReserveGeography != null && !(graduationInformation.ReserveGeography >= 0 && graduationInformation.ReserveGeography <= 10))
+            {
+                graduationInformation.AddError(nameof(GraduationInformationValidator), nameof(graduationInformation.ReserveGeography), ErrorCode.Invalid);
+            }
+
+            if (graduationInformation.ReserveBiology != null && !(graduationInformation.ReserveBiology >= 0 && graduationInformation.ReserveBiology <= 10))
+            {
+                graduationInformation.AddError(nameof(GraduationInformationValidator), nameof(graduationInformation.ReserveBiology), ErrorCode.Invalid);
+            }
+
+            if (graduationInformation.ReserveCivicEducation != null && !(graduationInformation.ReserveCivicEducation >= 0 && graduationInformation.ReserveCivicEducation <= 10))
+            {
+                graduationInformation.AddError(nameof(GraduationInformationValidator), nameof(graduationInformation.ReserveCivicEducation), ErrorCode.Invalid);
+            }
+
+            if (graduationInformation.ReserveLanguages != null && !(graduationInformation.ReserveLanguages >= 0 && graduationInformation.ReserveLanguages <= 10))
+            {
+                graduationInformation.AddError(nameof(GraduationInformationValidator), nameof(graduationInformation.ReserveLanguages), ErrorCode.Invalid);
+            }
+
+            return graduationInformation.IsValidated;
+        }
     }
 }

@@ -8,6 +8,10 @@ namespace TwelveFinal.Controller.DTO
     public class PersonalInformationDTO : DataDTO   
     {
         public Guid Id { get; set; }
+        public string NumberForm { get; set; }
+        public string DepartmentCode { get; set; }
+        public DateTime Date { get; set; }
+
         public string FullName { get; set; }
         public DateTime Dob { get; set; }
         public bool Gender { get; set; }

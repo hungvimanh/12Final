@@ -11,6 +11,8 @@ namespace TwelveFinal.Repositories
     public interface IHighSchoolRepository
     {
         Task<bool> Create(HighSchool highSchool);
+        Task<int> Count(HighSchoolFilter highSchoolFilter);
+        Task<List<HighSchool>> List(HighSchoolFilter highSchoolFilter);
         Task<HighSchool> Get(Guid Id);
         Task<bool> Update(HighSchool highSchool);
         Task<bool> Delete(Guid Id);
@@ -22,6 +24,84 @@ namespace TwelveFinal.Repositories
         {
             tFContext = _tFContext;
         }
+
+        private IQueryable<HighSchoolDAO> DynamicFilter(IQueryable<HighSchoolDAO> query, HighSchoolFilter highSchoolFilter)
+        {
+            if (highSchoolFilter == null)
+                return query.Where(q => 1 == 0);
+            if(highSchoolFilter.DistrictId.HasValue)
+                query = query.Where(q => highSchoolFilter.DistrictId.Equals(q.DistrictId));
+
+            if (highSchoolFilter.Ids != null)
+                query = query.Where(q => highSchoolFilter.Ids.Contains(q.Id));
+            if (highSchoolFilter.ExceptIds != null)
+                query = query.Where(q => !highSchoolFilter.ExceptIds.Contains(q.Id));
+            if (highSchoolFilter.Id != null)
+                query = query.Where(q => q.Id, highSchoolFilter.Id);
+            if (highSchoolFilter.Name != null)
+                query = query.Where(q => q.Name, highSchoolFilter.Name);
+            if (highSchoolFilter.Code != null)
+                query = query.Where(q => q.Code, highSchoolFilter.Code);
+            return query;
+        }
+        private IQueryable<HighSchoolDAO> DynamicOrder(IQueryable<HighSchoolDAO> query, HighSchoolFilter highSchoolFilter)
+        {
+            switch (highSchoolFilter.OrderType)
+            {
+                case OrderType.ASC:
+                    switch (highSchoolFilter.OrderBy)
+                    {
+                        case HighSchoolOrder.Code:
+                            query = query.OrderBy(q => q.Code);
+                            break;
+                        case HighSchoolOrder.Name:
+                            query = query.OrderBy(q => q.Name);
+                            break;
+                        default:
+                            query = query.OrderBy(q => q.CX);
+                            break;
+                    }
+                    break;
+                case OrderType.DESC:
+                    switch (highSchoolFilter.OrderBy)
+                    {
+                        case HighSchoolOrder.Code:
+                            query = query.OrderByDescending(q => q.Code);
+                            break;
+                        case HighSchoolOrder.Name:
+                            query = query.OrderByDescending(q => q.Name);
+                            break;
+                        default:
+                            query = query.OrderByDescending(q => q.CX);
+                            break;
+                    }
+                    break;
+                default:
+                    query = query.OrderBy(q => q.CX);
+                    break;
+            }
+            query = query.Skip(highSchoolFilter.Skip).Take(highSchoolFilter.Take);
+            return query;
+        }
+        private async Task<List<HighSchool>> DynamicSelect(IQueryable<HighSchoolDAO> query)
+        {
+
+            List<HighSchool> highSchools = await query.Select(q => new HighSchool()
+            {
+                Id = q.Id,
+                Name = q.Name,
+                Code = q.Code
+            }).ToListAsync();
+            return highSchools;
+        }
+
+        public async Task<int> Count(HighSchoolFilter highSchoolFilter)
+        {
+            IQueryable<HighSchoolDAO> highSchoolDAOs = tFContext.HighSchool;
+            highSchoolDAOs = DynamicFilter(highSchoolDAOs, highSchoolFilter);
+            return await highSchoolDAOs.CountAsync();
+        }
+
         public async Task<bool> Create(HighSchool highSchool)
         {
             HighSchoolDAO HighSchoolDAO = new HighSchoolDAO
@@ -63,6 +143,16 @@ namespace TwelveFinal.Repositories
             }).FirstOrDefaultAsync();
 
             return HighSchool;
+        }
+
+        public async Task<List<HighSchool>> List(HighSchoolFilter highSchoolFilter)
+        {
+            if (highSchoolFilter == null) return new List<HighSchool>();
+            IQueryable<HighSchoolDAO> highSchoolDAOs = tFContext.HighSchool;
+            highSchoolDAOs = DynamicFilter(highSchoolDAOs, highSchoolFilter);
+            highSchoolDAOs = DynamicOrder(highSchoolDAOs, highSchoolFilter);
+            var highSchools = await DynamicSelect(highSchoolDAOs);
+            return highSchools;
         }
 
         public async Task<bool> Update(HighSchool highSchool)

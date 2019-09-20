@@ -19,6 +19,15 @@ namespace TwelveFinal.Services.MTown
         private readonly IUOW UOW;
         private readonly ITownValidator TownValidator;
 
+        public TownService(
+            IUOW UOW,
+            ITownValidator TownValidator
+            )
+        {
+            this.UOW = UOW;
+            this.TownValidator = TownValidator;
+        }
+
         public async Task<Town> Create(Town Town)
         {
             Town.Id = Guid.NewGuid();

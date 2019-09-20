@@ -7,7 +7,7 @@ using TwelveFinal.Repositories;
 
 namespace TwelveFinal.Services.MForm
 {
-    public interface IFormValidator
+    public interface IFormValidator : IServiceScoped
     {
         Task<bool> Create(Form form);
         Task<bool> Update(Form form);
@@ -18,7 +18,8 @@ namespace TwelveFinal.Services.MForm
         private IUOW UOW;
         public enum ErrorCode
         {
-
+            Duplicate,
+            NotExisted
         }
 
         public FormValidator(IUOW _UOW)
@@ -26,19 +27,32 @@ namespace TwelveFinal.Services.MForm
             UOW = _UOW;
         }
 
-        public Task<bool> Create(Form form)
+        public async Task<bool> Create(Form form)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
-        public Task<bool> Delete(Form form)
+        public async Task<bool> Delete(Form form)
         {
-            throw new NotImplementedException();
+            bool IsValid = true;
+            IsValid &= await IsExisted(form);
+            return IsValid;
         }
 
-        public Task<bool> Update(Form form)
+        public async Task<bool> Update(Form form)
         {
-            throw new NotImplementedException();
+            bool IsValid = true;
+            IsValid &= await IsExisted(form);
+            return IsValid;
+        }
+
+        private async Task<bool> IsExisted(Form form)
+        {
+            if(await UOW.FormRepository.Get(form.Id) == null)
+            {
+                form.AddError(nameof(FormValidator), nameof(form.Id), ErrorCode.NotExisted);
+            }
+            return form.IsValidated;
         }
     }
 }

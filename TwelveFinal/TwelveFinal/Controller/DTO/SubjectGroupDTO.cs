@@ -11,4 +11,11 @@ namespace TwelveFinal.Controller.DTO
         public string Code { get; set; }
         public string Name { get; set; }
     }
+
+    public class SubjectGroupFilterDTO : FilterDTO
+    {
+        public GuidFilter Id { get; set; }
+        public StringFilter Code { get; set; }
+        public StringFilter Name { get; set; }
+    }
 }

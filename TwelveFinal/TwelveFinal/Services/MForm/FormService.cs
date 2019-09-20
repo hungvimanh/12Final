@@ -4,12 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using TwelveFinal.Entities;
 using TwelveFinal.Repositories;
+using TwelveFinal.Services.MGraduation;
+using TwelveFinal.Services.MPersonal;
+using TwelveFinal.Services.MRegister;
+using TwelveFinal.Services.MUniversityAdmission;
 
 namespace TwelveFinal.Services.MForm
 {
     public interface IFormService : IServiceScoped
     {
-        //Task<List<Form>> List(Guid studentId);
         Task<Form> Create(Form form);
         Task<Form> Get(Guid Id);
         Task<Form> Update(Form form);
@@ -19,6 +22,27 @@ namespace TwelveFinal.Services.MForm
     {
         private readonly IUOW UOW;
         private readonly IFormValidator FormValidator;
+        private readonly IPersonalInformationValidator PersonalInformationValidator;
+        private readonly IRegisterInformationValidator RegisterInformationValidator;
+        private readonly IGraduationInformationValidator GraduationInformationValidator;
+        private readonly IUniversityAdmissionValidator UniversityAdmissionValidator;
+
+        public FormService(
+            IUOW UOW,
+            IFormValidator FormValidator,
+            IPersonalInformationValidator PersonalInformationValidator,
+            IRegisterInformationValidator RegisterInformationValidator,
+            IGraduationInformationValidator GraduationInformationValidator,
+            IUniversityAdmissionValidator UniversityAdmissionValidator
+            )
+        {
+            this.UOW = UOW;
+            this.FormValidator = FormValidator;
+            this.PersonalInformationValidator = PersonalInformationValidator;
+            this.RegisterInformationValidator = RegisterInformationValidator;
+            this.GraduationInformationValidator = GraduationInformationValidator;
+            this.UniversityAdmissionValidator = UniversityAdmissionValidator;
+        }
 
         public async Task<Form> Create(Form form)
         {
@@ -28,6 +52,18 @@ namespace TwelveFinal.Services.MForm
             form.GraduationInformation.Id = form.Id;
             form.UniversityAdmission.Id = form.Id;
             if (!await FormValidator.Create(form))
+                return form;
+
+            if(!await PersonalInformationValidator.Check(form.PersonalInformation))
+                return form;
+
+            if (!await RegisterInformationValidator.Check(form.RegisterInformation))
+                return form;
+
+            if (!await GraduationInformationValidator.Check(form.GraduationInformation))
+                return form;
+
+            if (!await UniversityAdmissionValidator.Check(form.UniversityAdmission))
                 return form;
 
             try
@@ -71,15 +107,21 @@ namespace TwelveFinal.Services.MForm
             return form;
         }
 
-        //public async Task<List<Form>> List(Guid studentId)
-        //{
-        //    List<Form> forms = await UOW.FormRepository.List(studentId);
-        //    return forms;
-        //}
-
         public async Task<Form> Update(Form form)
         {
             if (!await FormValidator.Update(form))
+                return form;
+
+            if (!await PersonalInformationValidator.Check(form.PersonalInformation))
+                return form;
+
+            if (!await RegisterInformationValidator.Check(form.RegisterInformation))
+                return form;
+
+            if (!await GraduationInformationValidator.Check(form.GraduationInformation))
+                return form;
+
+            if (!await UniversityAdmissionValidator.Check(form.UniversityAdmission))
                 return form;
 
             try

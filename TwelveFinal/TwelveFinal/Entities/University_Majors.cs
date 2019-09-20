@@ -23,17 +23,18 @@ namespace TwelveFinal.Entities
 
     public class University_MajorsFilter : FilterEntity
     {
-        public GuidFilter UniversityId { get; set; }
+        public Guid? UniversityId { get; set; }
         public StringFilter UniversityCode { get; set; }
         public StringFilter UniversityName { get; set; }
         public StringFilter UniversityAddress { get; set; }
-        public GuidFilter MajorsId { get; set; }
+        public Guid? MajorsId { get; set; }
         public StringFilter MajorsCode { get; set; }
         public StringFilter MajorsName { get; set; }
         public DoubleFilter Benchmark { get; set; }
         public GuidFilter SubjectGroupId { get; set; }
         public StringFilter SubjectGroupCode { get; set; }
         public StringFilter SubjectGroupName { get; set; }
+        public string Year { get; set; }
         public University_MajorsOrder OrderBy { get; set; }
         public University_MajorsFilter() : base()
         {

@@ -14,6 +14,6 @@ namespace TwelveFinal.Controller.DTO
         public string GraduateYear { get; set; }
         public bool? Connected { get; set; }
         public int TotalAspiration { get; set; }
-        public List<University_Majors> University_Majorses { get; set; }
+        public List<FormDetailDTO> FormDetailDTOs { get; set; }
     }
 }

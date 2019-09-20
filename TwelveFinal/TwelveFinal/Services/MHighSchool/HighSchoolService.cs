@@ -19,6 +19,14 @@ namespace TwelveFinal.Services.MHighSchool
         private readonly IUOW UOW;
         private readonly IHighSchoolValidator HighSchoolValidator;
 
+        public HighSchoolService(
+            IUOW UOW,
+            IHighSchoolValidator HighSchoolValidator
+            )
+        {
+            this.UOW = UOW;
+            this.HighSchoolValidator = HighSchoolValidator;
+        }
         public async Task<HighSchool> Create(HighSchool HighSchool)
         {
             HighSchool.Id = Guid.NewGuid();

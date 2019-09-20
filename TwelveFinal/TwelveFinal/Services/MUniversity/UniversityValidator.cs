@@ -18,7 +18,8 @@ namespace TwelveFinal.Services.MUniversity
         private IUOW UOW;
         public enum ErrorCode
         {
-
+            NotExisted,
+            Duplicate
         }
 
         public UniversityValidator(IUOW _UOW)
@@ -26,19 +27,51 @@ namespace TwelveFinal.Services.MUniversity
             UOW = _UOW;
         }
 
-        public Task<bool> Create(University University)
+        public async Task<bool> Create(University university)
         {
-            throw new NotImplementedException();
+            bool IsValid = true;
+            IsValid &= await CodeValidate(university);
+            return IsValid;
         }
 
-        public Task<bool> Delete(University University)
+        public async Task<bool> Delete(University university)
         {
-            throw new NotImplementedException();
+            bool IsValid = true;
+            IsValid &= await IsExisted(university);
+            return IsValid;
         }
 
-        public Task<bool> Update(University University)
+        public async Task<bool> Update(University university)
         {
-            throw new NotImplementedException();
+            bool IsValid = true;
+            IsValid &= await IsExisted(university);
+            IsValid &= await CodeValidate(university);
+            return IsValid;
+        }
+
+        private async Task<bool> IsExisted(University university)
+        {
+            if (await UOW.UniversityRepository.Get(university.Id) == null)
+            {
+                university.AddError(nameof(UniversityValidator), nameof(university.Name), ErrorCode.NotExisted);
+            }
+            return university.IsValidated;
+        }
+
+        private async Task<bool> CodeValidate(University university)
+        {
+            UniversityFilter filter = new UniversityFilter
+            {
+                Id = new GuidFilter { NotEqual = university.Id },
+                Code = new StringFilter { Equal = university.Code }
+            };
+
+            var count = await UOW.UniversityRepository.Count(filter);
+            if (count > 0)
+            {
+                university.AddError(nameof(UniversityValidator), nameof(university.Code), ErrorCode.Duplicate);
+            }
+            return university.IsValidated;
         }
     }
 }

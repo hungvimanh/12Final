@@ -20,6 +20,15 @@ namespace TwelveFinal.Services.MUniversity
         private readonly IUOW UOW;
         private readonly IUniversityValidator UniversityValidator;
 
+        public UniversityService(
+            IUOW UOW,
+            IUniversityValidator UniversityValidator
+            )
+        {
+            this.UOW = UOW;
+            this.UniversityValidator = UniversityValidator;
+        }
+
         public async Task<University> Create(University University)
         {
             University.Id = Guid.NewGuid();

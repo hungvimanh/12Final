@@ -18,7 +18,8 @@ namespace TwelveFinal.Services.MUniversity_Majors_Majors
         private IUOW UOW;
         public enum ErrorCode
         {
-
+            NotExisted,
+            Duplicate
         }
 
         public University_MajorsValidator(IUOW _UOW)
@@ -26,19 +27,52 @@ namespace TwelveFinal.Services.MUniversity_Majors_Majors
             UOW = _UOW;
         }
 
-        public Task<bool> Create(University_Majors university_Majors)
+        public async Task<bool> Create(University_Majors university_Majors)
         {
-            throw new NotImplementedException();
+            bool IsValid = true;
+            IsValid &= await CodeValidate(university_Majors);
+            return IsValid;
         }
 
-        public Task<bool> Delete(University_Majors university_Majors)
+        public async Task<bool> Delete(University_Majors university_Majors)
         {
-            throw new NotImplementedException();
+            bool IsValid = true;
+            IsValid &= await IsExisted(university_Majors);
+            return IsValid;
         }
 
-        public Task<bool> Update(University_Majors university_Majors)
+        public async Task<bool> Update(University_Majors university_Majors)
         {
-            throw new NotImplementedException();
+            bool IsValid = true;
+            IsValid &= await IsExisted(university_Majors);
+            IsValid &= await CodeValidate(university_Majors);
+            return IsValid;
+        }
+
+        private async Task<bool> IsExisted(University_Majors university_Majors)
+        {
+            if (await UOW.University_MajorsRepository.Get(university_Majors) == null)
+            {
+                university_Majors.AddError(nameof(University_MajorsValidator), nameof(university_Majors.MajorsName), ErrorCode.NotExisted);
+            }
+            return university_Majors.IsValidated;
+        }
+
+        private async Task<bool> CodeValidate(University_Majors university_Majors)
+        {
+            University_MajorsFilter filter = new University_MajorsFilter
+            {
+                MajorsId = university_Majors.MajorsId,
+                UniversityId = university_Majors.UniversityId,
+                SubjectGroupId = new GuidFilter { Equal = university_Majors.SubjectGroupId }
+            };
+
+            var count = await UOW.University_MajorsRepository.Count(filter);
+            if (count > 0)
+            {
+                university_Majors.AddError(nameof(University_MajorsValidator), nameof(university_Majors.MajorsName), ErrorCode.Duplicate);
+            }
+            return university_Majors.IsValidated;
         }
     }
 }

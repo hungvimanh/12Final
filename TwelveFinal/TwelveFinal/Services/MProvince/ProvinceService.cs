@@ -19,6 +19,15 @@ namespace TwelveFinal.Services.MProvince
         private readonly IUOW UOW;
         private readonly IProvinceValidator ProvinceValidator;
 
+        public ProvinceService(
+            IUOW UOW,
+            IProvinceValidator ProvinceValidator
+            )
+        {
+            this.UOW = UOW;
+            this.ProvinceValidator = ProvinceValidator;
+        }
+
         public async Task<Province> Create(Province Province)
         {
             Province.Id = Guid.NewGuid();

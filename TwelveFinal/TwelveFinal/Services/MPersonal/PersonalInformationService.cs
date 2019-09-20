@@ -9,6 +9,7 @@ namespace TwelveFinal.Services.MPersonal
 {
     public interface IPersonalInformationService : IServiceScoped
     {
+        Task<PersonalInformation> Check(PersonalInformation personalInformation);
         Task<PersonalInformation> Get(Guid Id);
         Task<PersonalInformation> Update(PersonalInformation personalInformation);
     }
@@ -16,6 +17,22 @@ namespace TwelveFinal.Services.MPersonal
     {
         private readonly IUOW UOW;
         private readonly IPersonalInformationValidator PersonalInformationValidator;
+
+        public PersonalInformationService(
+            IUOW UOW,
+            IPersonalInformationValidator PersonalInformationValidator
+            )
+        {
+            this.UOW = UOW;
+            this.PersonalInformationValidator = PersonalInformationValidator;
+        }
+
+        public async Task<PersonalInformation> Check(PersonalInformation personalInformation)
+        {
+            if (!await PersonalInformationValidator.Check(personalInformation))
+                return personalInformation;
+            return personalInformation;
+        }
 
         public async Task<PersonalInformation> Get(Guid Id)
         {
@@ -26,7 +43,7 @@ namespace TwelveFinal.Services.MPersonal
 
         public async Task<PersonalInformation> Update(PersonalInformation personalInformation)
         {
-            if (!await PersonalInformationValidator.Update(personalInformation))
+            if (!await PersonalInformationValidator.Check(personalInformation))
                 return personalInformation;
 
             try

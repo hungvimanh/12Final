@@ -18,7 +18,8 @@ namespace TwelveFinal.Services.MSubjectGroup
         private IUOW UOW;
         public enum ErrorCode
         {
-
+            NotExisted,
+            Duplicate
         }
 
         public SubjectGroupValidator(IUOW _UOW)
@@ -26,19 +27,51 @@ namespace TwelveFinal.Services.MSubjectGroup
             UOW = _UOW;
         }
 
-        public Task<bool> Create(SubjectGroup SubjectGroup)
+        public async Task<bool> Create(SubjectGroup subjectGroup)
         {
-            throw new NotImplementedException();
+            bool IsValid = true;
+            IsValid &= await CodeValidate(subjectGroup);
+            return IsValid;
         }
 
-        public Task<bool> Delete(SubjectGroup SubjectGroup)
+        public async Task<bool> Delete(SubjectGroup subjectGroup)
         {
-            throw new NotImplementedException();
+            bool IsValid = true;
+            IsValid &= await IsExisted(subjectGroup);
+            return IsValid;
         }
 
-        public Task<bool> Update(SubjectGroup SubjectGroup)
+        public async Task<bool> Update(SubjectGroup subjectGroup)
         {
-            throw new NotImplementedException();
+            bool IsValid = true;
+            IsValid &= await IsExisted(subjectGroup);
+            IsValid &= await CodeValidate(subjectGroup);
+            return IsValid;
+        }
+
+        private async Task<bool> IsExisted(SubjectGroup subjectGroup)
+        {
+            if (await UOW.SubjectGroupRepository.Get(subjectGroup.Id) == null)
+            {
+                subjectGroup.AddError(nameof(SubjectGroupValidator), nameof(subjectGroup.Name), ErrorCode.NotExisted);
+            }
+            return subjectGroup.IsValidated;
+        }
+
+        private async Task<bool> CodeValidate(SubjectGroup subjectGroup)
+        {
+            SubjectGroupFilter filter = new SubjectGroupFilter
+            {
+                Id = new GuidFilter { NotEqual = subjectGroup.Id },
+                Code = new StringFilter { Equal = subjectGroup.Code }
+            };
+
+            var count = await UOW.SubjectGroupRepository.Count(filter);
+            if (count > 0)
+            {
+                subjectGroup.AddError(nameof(SubjectGroupValidator), nameof(subjectGroup.Code), ErrorCode.Duplicate);
+            }
+            return subjectGroup.IsValidated;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace TwelveFinal.Controller.university_majors
 {
     public class University_MajorsRoute
     {
-        private const string Default = "api/TF/university-majors";
+        public const string Default = "api/TF/university-majors";
         public const string Create = Default + "/create";
         public const string Get = Default + "/get";
         public const string List = Default + "/list";
@@ -19,7 +19,7 @@ namespace TwelveFinal.Controller.university_majors
         public const string Delete = Default + "/delete";
     }
     [ApiController]
-    public class University_MajorsController
+    public class University_MajorsController : ControllerBase
     {
         private University_MajorsService university_MajorsService;
         public University_MajorsController(University_MajorsService university_MajorsService)
@@ -116,28 +116,28 @@ namespace TwelveFinal.Controller.university_majors
         }
 
         [Route(University_MajorsRoute.List), HttpPost]
-        public async Task<List<University_MajorsDTO>> List([FromBody] University_MajorsFilterDTO University_MajorsFilterDTO)
+        public async Task<List<University_MajorsDTO>> List([FromBody] University_MajorsFilterDTO university_MajorsFilterDTO)
         {
-            University_MajorsFilter University_MajorsFilter = new University_MajorsFilter
+            University_MajorsFilter university_MajorsFilter = new University_MajorsFilter
             {
-                UniversityId = University_MajorsFilterDTO.UniversityId,
-                UniversityCode = University_MajorsFilterDTO.UniversityCode,
-                UniversityName = University_MajorsFilterDTO.UniversityName,
-                MajorsId = University_MajorsFilterDTO.MajorsId,
-                MajorsCode = University_MajorsFilterDTO.MajorsCode,
-                MajorsName = University_MajorsFilterDTO.MajorsName,
-                SubjectGroupId = University_MajorsFilterDTO.SubjectGroupId,
-                SubjectGroupCode = University_MajorsFilterDTO.SubjectGroupCode,
-                SubjectGroupName = University_MajorsFilterDTO.SubjectGroupName,
-                UniversityAddress = University_MajorsFilterDTO.UniversityAddress,
-                Benchmark = University_MajorsFilterDTO.Benchmark,
+                UniversityId = university_MajorsFilterDTO.UniversityId,
+                UniversityCode = university_MajorsFilterDTO.UniversityCode,
+                UniversityName = university_MajorsFilterDTO.UniversityName,
+                MajorsId = university_MajorsFilterDTO.MajorsId,
+                MajorsCode = university_MajorsFilterDTO.MajorsCode,
+                MajorsName = university_MajorsFilterDTO.MajorsName,
+                SubjectGroupId = university_MajorsFilterDTO.SubjectGroupId,
+                SubjectGroupCode = university_MajorsFilterDTO.SubjectGroupCode,
+                SubjectGroupName = university_MajorsFilterDTO.SubjectGroupName,
+                UniversityAddress = university_MajorsFilterDTO.UniversityAddress,
+                Benchmark = university_MajorsFilterDTO.Benchmark,
                 Skip = 0,
                 Take = int.MaxValue
             };
 
-            List<University_Majors> universities = await university_MajorsService.List(University_MajorsFilter);
+            List<University_Majors> universities = await university_MajorsService.List(university_MajorsFilter);
 
-            List<University_MajorsDTO> University_MajorsDTOs = universities.Select(u => new University_MajorsDTO
+            List<University_MajorsDTO> university_MajorsDTOs = universities.Select(u => new University_MajorsDTO
             {                                                                                       
                 MajorsId = u.MajorsId,
                 MajorsCode = u.MajorsCode,
@@ -153,7 +153,7 @@ namespace TwelveFinal.Controller.university_majors
                 Year = u.Year
             }).ToList();
 
-            return University_MajorsDTOs;
+            return university_MajorsDTOs;
         }
 
         [Route(University_MajorsRoute.List), HttpPost]

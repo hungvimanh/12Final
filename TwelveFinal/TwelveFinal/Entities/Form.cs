@@ -10,13 +10,10 @@ namespace TwelveFinal.Entities
     public class Form : DataEntity
     {
         public Guid Id { get; set; }
-        public string NumberForm { get; set; }
-        public string DepartmentCode { get; set; }
         public PersonalInformation PersonalInformation { get; set; }
         public RegisterInformation RegisterInformation { get; set; }
         public GraduationInformation GraduationInformation { get; set; }
         public UniversityAdmission UniversityAdmission { get; set; }
-        public DateTime Date { get; set; }
         public Guid UserId { get; set; }
     }
 

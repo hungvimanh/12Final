@@ -76,6 +76,10 @@ namespace TwelveFinal.Repositories
         {
             await tFContext.Form.Where(p => p.Id.Equals(personalInformation.Id)).UpdateFromQueryAsync(p => new FormDAO
             {
+                Date = personalInformation.Date,
+                DepartmentCode = personalInformation.DepartmentCode,
+                NumberForm = personalInformation.NumberForm,
+
                 FullName = personalInformation.FullName,
                 Address = personalInformation.Address,
                 Dob = personalInformation.Dob,

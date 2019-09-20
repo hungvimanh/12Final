@@ -23,17 +23,17 @@ namespace TwelveFinal.Controller.DTO
 
     public class University_MajorsFilterDTO : FilterDTO
     {
-        public GuidFilter UniversityId { get; set; }
+        public Guid? UniversityId { get; set; }
         public StringFilter UniversityCode { get; set; }
         public StringFilter UniversityName { get; set; }
         public StringFilter UniversityAddress { get; set; }
-        public GuidFilter MajorsId { get; set; }
+        public Guid? MajorsId { get; set; }
         public StringFilter MajorsCode { get; set; }
         public StringFilter MajorsName { get; set; }
         public DoubleFilter Benchmark { get; set; }
         public GuidFilter SubjectGroupId { get; set; }
         public StringFilter SubjectGroupCode { get; set; }
         public StringFilter SubjectGroupName { get; set; }
-        public StringFilter Year { get; set; }
+        public string Year { get; set; }
     }
 }

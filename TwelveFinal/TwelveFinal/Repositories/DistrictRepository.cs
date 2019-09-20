@@ -11,7 +11,9 @@ namespace TwelveFinal.Repositories
     public interface IDistrictRepository
     {
         Task<bool> Create(District district);
+        Task<int> Count(DistrictFilter districtFilter);
         Task<District> Get(Guid Id);
+        Task<List<District>> List(DistrictFilter districtFilter);
         Task<bool> Update(District district);
         Task<bool> Delete(Guid Id);
     }
@@ -22,6 +24,96 @@ namespace TwelveFinal.Repositories
         {
             tFContext = _tFContext;
         }
+
+        private IQueryable<DistrictDAO> DynamicFilter(IQueryable<DistrictDAO> query, DistrictFilter districtFilter)
+        {
+            if (districtFilter == null)
+                return query.Where(q => 1 == 0);
+            query.Where(q => q.ProvinceId.Equals(districtFilter.ProvinceId));
+
+            if (districtFilter.Ids != null)
+                query = query.Where(e => districtFilter.Ids.Contains(e.Id));
+            if (districtFilter.ExceptIds != null)
+                query = query.Where(q => !districtFilter.ExceptIds.Contains(q.Id));
+            if (districtFilter.Id != null)
+                query = query.Where(q => q.Id, districtFilter.Id);
+            if (districtFilter.Name != null)
+                query = query.Where(q => q.Name, districtFilter.Name);
+            if (districtFilter.Code != null)
+                query = query.Where(q => q.Code, districtFilter.Code);
+            return query;
+        }
+        private IQueryable<DistrictDAO> DynamicOrder(IQueryable<DistrictDAO> query, DistrictFilter districtFilter)
+        {
+            switch (districtFilter.OrderType)
+            {
+                case OrderType.ASC:
+                    switch (districtFilter.OrderBy)
+                    {
+                        case DistrictOrder.Code:
+                            query = query.OrderBy(q => q.Code);
+                            break;
+                        case DistrictOrder.Name:
+                            query = query.OrderBy(q => q.Name);
+                            break;
+                        default:
+                            query = query.OrderBy(q => q.CX);
+                            break;
+                    }
+                    break;
+                case OrderType.DESC:
+                    switch (districtFilter.OrderBy)
+                    {
+                        case DistrictOrder.Code:
+                            query = query.OrderByDescending(q => q.Code);
+                            break;
+                        case DistrictOrder.Name:
+                            query = query.OrderByDescending(q => q.Name);
+                            break;
+                        default:
+                            query = query.OrderByDescending(q => q.CX);
+                            break;
+                    }
+                    break;
+                default:
+                    query = query.OrderBy(q => q.CX);
+                    break;
+            }
+            query = query.Skip(districtFilter.Skip).Take(districtFilter.Take);
+            return query;
+        }
+        private async Task<List<District>> DynamicSelect(IQueryable<DistrictDAO> query)
+        {
+
+            List<District> districts = await query.Select(q => new District()
+            {
+                Id = q.Id,
+                ProvinceId = q.ProvinceId,
+                ProvinceCode = q.Province.Code,
+                ProvinceName = q.Province.Name,
+                Name = q.Name,
+                Code = q.Code
+            }).ToListAsync();
+            return districts;
+        }
+
+        public async Task<int> Count(DistrictFilter districtFilter)
+        {
+            IQueryable<DistrictDAO> districtDAOs = tFContext.District;
+            districtDAOs = DynamicFilter(districtDAOs, districtFilter);
+            return await districtDAOs.CountAsync();
+        }
+
+        public async Task<List<District>> List(DistrictFilter districtFilter)
+        {
+            if (districtFilter == null) return new List<District>();
+            IQueryable<DistrictDAO> districtDAOs = tFContext.District;
+            districtDAOs = DynamicFilter(districtDAOs, districtFilter);
+            districtDAOs = DynamicOrder(districtDAOs, districtFilter);
+            var districts = await DynamicSelect(districtDAOs);
+            return districts;
+        }
+
         public async Task<bool> Create(District district)
         {
             DistrictDAO DistrictDAO = new DistrictDAO

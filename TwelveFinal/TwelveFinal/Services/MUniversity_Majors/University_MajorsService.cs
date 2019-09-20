@@ -20,6 +20,15 @@ namespace TwelveFinal.Services.MUniversity_Majors_Majors
         private readonly IUOW UOW;
         private readonly IUniversity_MajorsValidator university_MajorsValidator;
 
+        public University_MajorsService(
+            IUOW UOW,
+            IUniversity_MajorsValidator university_MajorsValidator
+            )
+        {
+            this.UOW = UOW;
+            this.university_MajorsValidator = university_MajorsValidator;
+        }
+
         public async Task<University_Majors> Create(University_Majors university_Majors)
         {
             if (!await university_MajorsValidator.Create(university_Majors))

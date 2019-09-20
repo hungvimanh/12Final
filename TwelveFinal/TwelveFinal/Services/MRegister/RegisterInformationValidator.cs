@@ -11,107 +11,100 @@ namespace TwelveFinal.Services.MRegister
 {
     public interface IRegisterInformationValidator : IServiceScoped
     {
-        Task<bool> Create(RegisterInformation registerInformation);
-        Task<bool> Update(RegisterInformation registerInformation);
-        Task<bool> Delete(RegisterInformation registerInformation);
+        Task<bool> Check(RegisterInformation registerInformation);
     }
     public class RegisterInformationValidator : IRegisterInformationValidator
     {
         private IUOW UOW;
-        private ProvinceService ProvinceService;
-        private HighSchoolService HighSchoolService;
+        private IProvinceService ProvinceService;
+        private IHighSchoolService HighSchoolService;
         public enum ErrorCode
         {
-            StudyAtHighSchoolInvalid,
-            PassedInvalid,
-            ContestGroupInvalid,
-            ContestGroupNotExisted,
-            ContestUnitInvalid,
-            ContestUnitNotExisted
+            Invalid,
+            NotExisted
         }
 
-        public RegisterInformationValidator(IUOW _UOW, ProvinceService _ProvinceService, HighSchoolService _HighSchoolService)
+        public RegisterInformationValidator(IUOW _UOW, IProvinceService _ProvinceService, IHighSchoolService _HighSchoolService)
         {
             UOW = _UOW;
             ProvinceService = _ProvinceService;
             HighSchoolService = _HighSchoolService;
         }
 
-        public Task<bool> Create(RegisterInformation registerInformation)
+        public async Task<bool> Check(RegisterInformation registerInformation)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> Delete(RegisterInformation registerInformation)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> Update(RegisterInformation registerInformation)
-        {
-            throw new NotImplementedException();
+            bool IsValid = true;
+            IsValid &= await ValidateStudyAtHighSchool(registerInformation);
+            IsValid &= await ValidateClusterContest(registerInformation);
+            IsValid &= await ValidateRegisterPlaceOfExam(registerInformation);
+            return IsValid;
         }
 
         private async Task<bool> ValidateStudyAtHighSchool(RegisterInformation registerInformation)
         {
             if(registerInformation.StudyAtHighSchool == null)
             {
-                registerInformation.AddError(nameof(RegisterInformationValidator), nameof(registerInformation.StudyAtHighSchool), ErrorCode.StudyAtHighSchoolInvalid);
+                registerInformation.AddError(nameof(RegisterInformationValidator), nameof(registerInformation.StudyAtHighSchool), ErrorCode.Invalid);
                 return registerInformation.IsValidated;
             }
 
             return registerInformation.IsValidated;
         }
 
-        private async Task<bool> ValidatePassed(RegisterInformation registerInformation)
+        private async Task<bool> ValidateClusterContest(RegisterInformation registerInformation)
         {
-            if (registerInformation.Graduated == null)
+            if (string.IsNullOrEmpty(registerInformation.ClusterContestCode))
             {
-                registerInformation.AddError(nameof(RegisterInformationValidator), nameof(registerInformation.Graduated), ErrorCode.PassedInvalid);
+                registerInformation.AddError(nameof(RegisterInformationValidator), nameof(registerInformation.ClusterContestCode), ErrorCode.Invalid);
+                return registerInformation.IsValidated;
+            }
+
+            var filter = new ProvinceFilter
+            {
+                Code = new StringFilter { Equal = registerInformation.ClusterContestCode }
+            };
+            var count = await UOW.ProvinceRepository.Count(filter);
+            if(count == 0)
+            {
+                registerInformation.AddError(nameof(RegisterInformationValidator), nameof(registerInformation.ClusterContestCode), ErrorCode.NotExisted);
                 return registerInformation.IsValidated;
             }
 
             return registerInformation.IsValidated;
         }
 
-        private async Task<bool> ValidateContestGroup(RegisterInformation registerInformation)
+        private async Task<bool> ValidateRegisterPlaceOfExam(RegisterInformation registerInformation)
         {
-            if (registerInformation.ClusterContestId == null || registerInformation.ClusterContestId == Guid.Empty)
+            if (string.IsNullOrEmpty(registerInformation.RegisterPlaceOfExamCode))
             {
-                registerInformation.AddError(nameof(RegisterInformationValidator), nameof(registerInformation.ClusterContestId), ErrorCode.ContestGroupInvalid);
+                registerInformation.AddError(nameof(RegisterInformationValidator), nameof(registerInformation.RegisterPlaceOfExamCode), ErrorCode.Invalid);
                 return registerInformation.IsValidated;
             }
 
-            if(ProvinceService.Get(registerInformation.ClusterContestId) == null)
+            var filter = new HighSchoolFilter
             {
-                registerInformation.AddError(nameof(RegisterInformationValidator), nameof(registerInformation.ClusterContestId), ErrorCode.ContestGroupNotExisted);
-                return registerInformation.IsValidated;
-            }
-
-            return registerInformation.IsValidated;
-        }
-
-        private async Task<bool> ValidateContestUnit(RegisterInformation registerInformation)
-        {
-            if (registerInformation.RegisterPlaceOfExamId == null || registerInformation.RegisterPlaceOfExamId == Guid.Empty)
-            {
-                registerInformation.AddError(nameof(RegisterInformationValidator), nameof(registerInformation.RegisterPlaceOfExamId), ErrorCode.ContestUnitInvalid);
-                return registerInformation.IsValidated;
-            }
-
+                Code = new StringFilter { Equal = registerInformation.RegisterPlaceOfExamCode }
+            };
+            var count = await UOW.HighSchoolRepository.Count(filter);
             if (ProvinceService.Get(registerInformation.RegisterPlaceOfExamId) == null)
             {
-                registerInformation.AddError(nameof(RegisterInformationValidator), nameof(registerInformation.RegisterPlaceOfExamId), ErrorCode.ContestUnitNotExisted);
+                registerInformation.AddError(nameof(RegisterInformationValidator), nameof(registerInformation.RegisterPlaceOfExamCode), ErrorCode.NotExisted);
                 return registerInformation.IsValidated;
             }
 
             return registerInformation.IsValidated;
         }
 
-        //todo
-        private async Task<bool> ValidateTest(RegisterInformation registerInformation)
+        private async Task<bool> ValidateLanguages(RegisterInformation registerInformation)
         {
+            List<string> Languages = new List<string> { "N1", "N2", "N3", "N4", "N5", "N6" };
+
+            if(!string.IsNullOrEmpty(registerInformation.Languages) && !Languages.Contains(registerInformation.Languages))
+            {
+                registerInformation.AddError(nameof(RegisterInformationValidator), nameof(registerInformation.Languages), ErrorCode.Invalid);
+            }
             return registerInformation.IsValidated;
         }
+
     }
 }

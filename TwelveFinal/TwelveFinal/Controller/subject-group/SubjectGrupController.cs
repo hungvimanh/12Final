@@ -9,11 +9,12 @@ using TwelveFinal.Services.MSubjectGroup;
 
 namespace TwelveFinal.Controller.subject_group
 {
-    public class SubjectGrupRoute
+    public class SubjectGrupRoute : ControllerBase
     {
-        private const string Default = "api/TF/subject-group";
+        public const string Default = "api/TF/subject-group";
         public const string Create = Default + "/create";
         public const string Get = Default + "/get";
+        public const string List = Default + "/list";
         public const string Update = Default + "/update";
         public const string Delete = Default+  "/delete";
     }
@@ -70,6 +71,30 @@ namespace TwelveFinal.Controller.subject_group
                 Name = subjectGroup.Name
             };
             return subjectGroupDTO;
+        }
+
+        [Route(SubjectGrupRoute.List), HttpPost]
+        public async Task<List<SubjectGroupDTO>> List([FromBody] SubjectGroupFilterDTO subjectGroupFilterDTO)
+        {
+            SubjectGroupFilter filter = new SubjectGroupFilter
+            {
+                Id = subjectGroupFilterDTO.Id,
+                Code = subjectGroupFilterDTO.Code,
+                Name = subjectGroupFilterDTO.Name,
+                Skip = 0,
+                Take = int.MaxValue
+            };
+
+            List<SubjectGroup> subjectGroups = await SubjectGrupService.List(filter);
+
+            List<SubjectGroupDTO> subjectGroupDTOs = subjectGroups.Select(s => new SubjectGroupDTO
+            {
+                Id = s.Id,
+                Code = s.Code,
+                Name = s.Name
+            }).ToList();
+
+            return subjectGroupDTOs;
         }
 
         [Route(SubjectGrupRoute.Update), HttpPost]

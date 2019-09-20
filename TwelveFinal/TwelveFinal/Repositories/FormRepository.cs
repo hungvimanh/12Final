@@ -28,9 +28,9 @@ namespace TwelveFinal.Repositories
             FormDAO formDAO = new FormDAO
             {
                 Id = form.Id,
-                NumberForm = form.NumberForm,
-                DepartmentCode = form.DepartmentCode,
-                Date = form.Date,
+                NumberForm = form.PersonalInformation.NumberForm,
+                DepartmentCode = form.PersonalInformation.DepartmentCode,
+                Date = form.PersonalInformation.Date,
                 FullName = form.PersonalInformation.FullName,
                 Dob = form.PersonalInformation.Dob,
                 Gender = form.PersonalInformation.Gender,
@@ -109,12 +109,14 @@ namespace TwelveFinal.Repositories
             Form form = await tFContext.Form.Where(f => f.Id.Equals(Id)).Select(f => new Form
             {
                 Id = f.Id,
-                NumberForm = f.NumberForm,
-                DepartmentCode = f.DepartmentCode,
-                Date = f.Date,
+                
                 PersonalInformation = new PersonalInformation
                 {
                     Id = f.Id,
+                    NumberForm = f.NumberForm,
+                    DepartmentCode = f.DepartmentCode,
+                    Date = f.Date,
+
                     FullName = f.FullName,
                     Gender = f.Gender,
                     Dob = f.Dob,
@@ -217,6 +219,7 @@ namespace TwelveFinal.Repositories
                         SubjectGroupCode = d.SubjectGroup.Code,
                         SubjectGroupName = d.SubjectGroup.Name
                     }).ToList(),
+                    TotalAspiration = f.FormDetails.Count
                 }
             }).FirstOrDefaultAsync();
 
@@ -228,9 +231,9 @@ namespace TwelveFinal.Repositories
             await tFContext.Form.Where(f => f.Id.Equals(form.Id)).UpdateFromQueryAsync(f => new FormDAO
             {
                 Id = f.Id,
-                NumberForm = form.NumberForm,
-                DepartmentCode = form.DepartmentCode,
-                Date = form.Date,
+                NumberForm = form.PersonalInformation.NumberForm,
+                DepartmentCode = form.PersonalInformation.DepartmentCode,
+                Date = form.PersonalInformation.Date,
                 UserId = f.UserId,
 
                 FullName = form.PersonalInformation.FullName,

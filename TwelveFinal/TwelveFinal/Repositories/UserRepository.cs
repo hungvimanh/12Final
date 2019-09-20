@@ -54,12 +54,14 @@ namespace TwelveFinal.Repositories
                 Forms = u.Forms.Select(f => new Form
                 {
                     Id = f.Id,
-                    NumberForm = f.NumberForm,
-                    DepartmentCode = f.DepartmentCode,
-                    Date = f.Date,
+                    
                     PersonalInformation = new PersonalInformation
                     {
                         Id = f.Id,
+                        NumberForm = f.NumberForm,
+                        DepartmentCode = f.DepartmentCode,
+                        Date = f.Date,
+
                         FullName = f.FullName,
                         Gender = f.Gender,
                         Dob = f.Dob,
