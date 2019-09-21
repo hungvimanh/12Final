@@ -7,7 +7,7 @@ namespace TwelveFinal.Repositories.Models
     {
         public AreaDAO()
         {
-            Provinces = new HashSet<ProvinceDAO>();
+            HighSchools = new HashSet<HighSchoolDAO>();
         }
 
         public Guid Id { get; set; }
@@ -15,6 +15,6 @@ namespace TwelveFinal.Repositories.Models
         public string Code { get; set; }
         public string Name { get; set; }
 
-        public virtual ICollection<ProvinceDAO> Provinces { get; set; }
+        public virtual ICollection<HighSchoolDAO> HighSchools { get; set; }
     }
 }

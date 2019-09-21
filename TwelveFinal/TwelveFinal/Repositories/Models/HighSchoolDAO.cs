@@ -18,7 +18,10 @@ namespace TwelveFinal.Repositories.Models
         public string Code { get; set; }
         public string Name { get; set; }
         public Guid DistrictId { get; set; }
+        public string Address { get; set; }
+        public Guid AreaId { get; set; }
 
+        public virtual AreaDAO Area { get; set; }
         public virtual DistrictDAO District { get; set; }
         public virtual ICollection<FormDAO> FormHighSchoolGrade10s { get; set; }
         public virtual ICollection<FormDAO> FormHighSchoolGrade11s { get; set; }

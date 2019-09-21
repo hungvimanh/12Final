@@ -258,15 +258,21 @@ namespace TwelveFinal.Repositories.Models
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
+                entity.Property(e => e.Address).HasMaxLength(500);
+
                 entity.Property(e => e.CX).ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Code)
                     .IsRequired()
                     .HasMaxLength(3);
 
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(500);
+                entity.Property(e => e.Name).HasMaxLength(500);
+
+                entity.HasOne(d => d.Area)
+                    .WithMany(p => p.HighSchools)
+                    .HasForeignKey(d => d.AreaId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_HighSchool_Area");
 
                 entity.HasOne(d => d.District)
                     .WithMany(p => p.HighSchools)
@@ -292,7 +298,7 @@ namespace TwelveFinal.Repositories.Models
 
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasMaxLength(100);
+                    .HasMaxLength(200);
             });
 
             modelBuilder.Entity<PriorityTypeDAO>(entity =>
@@ -327,12 +333,6 @@ namespace TwelveFinal.Repositories.Models
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50);
-
-                entity.HasOne(d => d.Area)
-                    .WithMany(p => p.Provinces)
-                    .HasForeignKey(d => d.AreaId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Province_Area");
             });
 
             modelBuilder.Entity<SubjectGroupDAO>(entity =>
@@ -352,7 +352,7 @@ namespace TwelveFinal.Repositories.Models
 
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasMaxLength(50);
+                    .HasMaxLength(500);
             });
 
             modelBuilder.Entity<TownDAO>(entity =>
@@ -400,7 +400,7 @@ namespace TwelveFinal.Repositories.Models
 
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasMaxLength(100);
+                    .HasMaxLength(200);
             });
 
             modelBuilder.Entity<University_MajorsDAO>(entity =>
@@ -417,6 +417,8 @@ namespace TwelveFinal.Repositories.Models
                 entity.Property(e => e.Year).HasMaxLength(10);
 
                 entity.Property(e => e.CX).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Descreption).HasMaxLength(500);
 
                 entity.HasOne(d => d.Majors)
                     .WithMany(p => p.University_Majors)

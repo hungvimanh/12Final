@@ -1,0 +1,14 @@
+F:\Study\Nam 3\He QT CSDL\12Final Project\TwelveFinal\TwelveFinal\DataSeeding\bin\Debug\netcoreapp2.2\DataSeeding.deps.json
+F:\Study\Nam 3\He QT CSDL\12Final Project\TwelveFinal\TwelveFinal\DataSeeding\bin\Debug\netcoreapp2.2\DataSeeding.runtimeconfig.json
+F:\Study\Nam 3\He QT CSDL\12Final Project\TwelveFinal\TwelveFinal\DataSeeding\bin\Debug\netcoreapp2.2\DataSeeding.runtimeconfig.dev.json
+F:\Study\Nam 3\He QT CSDL\12Final Project\TwelveFinal\TwelveFinal\DataSeeding\bin\Debug\netcoreapp2.2\DataSeeding.dll
+F:\Study\Nam 3\He QT CSDL\12Final Project\TwelveFinal\TwelveFinal\DataSeeding\bin\Debug\netcoreapp2.2\DataSeeding.pdb
+F:\Study\Nam 3\He QT CSDL\12Final Project\TwelveFinal\TwelveFinal\DataSeeding\bin\Debug\netcoreapp2.2\TwelveFinal.dll
+F:\Study\Nam 3\He QT CSDL\12Final Project\TwelveFinal\TwelveFinal\DataSeeding\bin\Debug\netcoreapp2.2\TwelveFinal.pdb
+F:\Study\Nam 3\He QT CSDL\12Final Project\TwelveFinal\TwelveFinal\DataSeeding\obj\Debug\netcoreapp2.2\DataSeeding.csprojAssemblyReference.cache
+F:\Study\Nam 3\He QT CSDL\12Final Project\TwelveFinal\TwelveFinal\DataSeeding\obj\Debug\netcoreapp2.2\DataSeeding.csproj.CoreCompileInputs.cache
+F:\Study\Nam 3\He QT CSDL\12Final Project\TwelveFinal\TwelveFinal\DataSeeding\obj\Debug\netcoreapp2.2\DataSeeding.AssemblyInfoInputs.cache
+F:\Study\Nam 3\He QT CSDL\12Final Project\TwelveFinal\TwelveFinal\DataSeeding\obj\Debug\netcoreapp2.2\DataSeeding.AssemblyInfo.cs
+F:\Study\Nam 3\He QT CSDL\12Final Project\TwelveFinal\TwelveFinal\DataSeeding\obj\Debug\netcoreapp2.2\DataSeeding.csproj.CopyComplete
+F:\Study\Nam 3\He QT CSDL\12Final Project\TwelveFinal\TwelveFinal\DataSeeding\obj\Debug\netcoreapp2.2\DataSeeding.dll
+F:\Study\Nam 3\He QT CSDL\12Final Project\TwelveFinal\TwelveFinal\DataSeeding\obj\Debug\netcoreapp2.2\DataSeeding.pdb

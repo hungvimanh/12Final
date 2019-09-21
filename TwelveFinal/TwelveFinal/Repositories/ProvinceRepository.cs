@@ -30,8 +30,6 @@ namespace TwelveFinal.Repositories
             if (provinceFilter == null)
                 return query.Where(q => 1 == 0);
 
-            if (provinceFilter.AreaId.HasValue)
-                query = query.Where(q => provinceFilter.AreaId.Value.Equals(q.AreaId));
             if (provinceFilter.Ids != null)
                 query = query.Where(e => provinceFilter.Ids.Contains(e.Id));
             if (provinceFilter.ExceptIds != null)
@@ -91,9 +89,6 @@ namespace TwelveFinal.Repositories
                 Id = q.Id,
                 Name = q.Name,
                 Code = q.Code,
-                AreaId = q.AreaId,
-                AreaCode = q.Area.Code,
-                AreaName = q.Area.Name
             }).ToListAsync();
             return provinces;
         }
@@ -122,7 +117,6 @@ namespace TwelveFinal.Repositories
                 Id = province.Id,
                 Code = province.Code,
                 Name = province.Name,
-                AreaId = province.AreaId,
                 Districts = province.Districts.Select(d => new DistrictDAO
                 {
                     Id = d.Id,
@@ -188,7 +182,6 @@ namespace TwelveFinal.Repositories
             {
                 Code = province.Code,
                 Name = province.Name,
-                AreaId = province.AreaId
             });
 
             return true;

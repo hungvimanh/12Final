@@ -20,7 +20,7 @@ namespace TwelveFinal.Controller.form
     public class FormRoute
     {
         public const string Default = "api/TF/form";
-        public const string Create = Default + "/create";
+        public const string Save = Default + "/save";
         public const string Get = Default + "/get";
         public const string CheckPersonal = Default + "/check-personal";
         public const string CheckRegister = Default + "/check-register";
@@ -67,14 +67,14 @@ namespace TwelveFinal.Controller.form
             UniversityAdmissionService = universityAdmissionService;
         }
 
-        #region Create
-        [Route(FormRoute.Create), HttpPost]
-        public async Task<FormDTO> Create([FromBody] FormDTO formDTO)
+        #region Save
+        [Route(FormRoute.Save), HttpPost]
+        public async Task<FormDTO> Save([FromBody] FormDTO formDTO)
         {
             if (formDTO == null) formDTO = new FormDTO();
             Form form = await ConvertDTOtoBO(formDTO);
 
-            form = await FormService.Create(form);
+            form = await FormService.Save(form);
 
             formDTO = new FormDTO
             {
@@ -698,125 +698,6 @@ namespace TwelveFinal.Controller.form
                 SubjectGroupCode = m.SubjectGroupCode,
                 SubjectGroupName = m.SubjectGroupName
             }).ToList();
-        }
-        #endregion
-
-        #region Delete
-        [Route(FormRoute.Delete), HttpPost]
-        public async Task<FormDTO> Delete([FromBody] FormDTO formDTO)
-        {
-            if (formDTO == null) formDTO = new FormDTO();
-
-            Form form = await ConvertDTOtoBO(formDTO);
-
-            form = await FormService.Delete(form);
-
-            formDTO = new FormDTO
-            {
-                Id = form.Id,
-                NumberForm = form.PersonalInformation.NumberForm,
-                DepartmentCode = form.PersonalInformation.DepartmentCode,
-                Date = form.PersonalInformation.Date,
-                UserId = form.UserId,
-
-                FullName = form.PersonalInformation.FullName,
-                Dob = form.PersonalInformation.Dob,
-                Gender = form.PersonalInformation.Gender,
-                Identify = form.PersonalInformation.Identify,
-                PlaceOfBirth = form.PersonalInformation.PlaceOfBirth,
-                TownId = form.PersonalInformation.TownId,
-                TownCode = form.PersonalInformation.TownCode,
-                TownName = form.PersonalInformation.TownName,
-                DistrictCode = form.PersonalInformation.DistrictCode,
-                DistrictName = form.PersonalInformation.DistrictName,
-                ProvinceCode = form.PersonalInformation.ProvinceCode,
-                ProvinceName = form.PersonalInformation.ProvinceName,
-                Address = form.PersonalInformation.Address,
-                Phone = form.PersonalInformation.Phone,
-                Email = form.PersonalInformation.Email,
-                Ethnic = form.PersonalInformation.Ethnic,
-                Grade12Name = form.PersonalInformation.Grade12Name,
-                HighSchoolGrade10Id = form.PersonalInformation.HighSchoolGrade10Id,
-                HighSchoolGrade10Code = form.PersonalInformation.HighSchoolGrade10Code,
-                HighSchoolGrade10Name = form.PersonalInformation.HighSchoolGrade10Name,
-                HighSchoolGrade10DistrictCode = form.PersonalInformation.HighSchoolGrade10DistrictCode,
-                HighSchoolGrade10DistrictName = form.PersonalInformation.HighSchoolGrade10DistrictName,
-                HighSchoolGrade10ProvinceCode = form.PersonalInformation.HighSchoolGrade10ProvinceCode,
-                HighSchoolGrade10ProvinceName = form.PersonalInformation.HighSchoolGrade10ProvinceName,
-                HighSchoolGrade11Id = form.PersonalInformation.HighSchoolGrade11Id,
-                HighSchoolGrade11Code = form.PersonalInformation.HighSchoolGrade11Code,
-                HighSchoolGrade11Name = form.PersonalInformation.HighSchoolGrade11Name,
-                HighSchoolGrade11DistrictCode = form.PersonalInformation.HighSchoolGrade11DistrictCode,
-                HighSchoolGrade11DistrictName = form.PersonalInformation.HighSchoolGrade11DistrictName,
-                HighSchoolGrade11ProvinceCode = form.PersonalInformation.HighSchoolGrade11ProvinceCode,
-                HighSchoolGrade11ProvinceName = form.PersonalInformation.HighSchoolGrade11ProvinceName,
-                HighSchoolGrade12Id = form.PersonalInformation.HighSchoolGrade12Id,
-                HighSchoolGrade12Code = form.PersonalInformation.HighSchoolGrade12Code,
-                HighSchoolGrade12Name = form.PersonalInformation.HighSchoolGrade12Name,
-                HighSchoolGrade12DistrictCode = form.PersonalInformation.HighSchoolGrade12DistrictCode,
-                HighSchoolGrade12DistrictName = form.PersonalInformation.HighSchoolGrade12DistrictName,
-                HighSchoolGrade12ProvinceCode = form.PersonalInformation.HighSchoolGrade12ProvinceCode,
-                HighSchoolGrade12ProvinceName = form.PersonalInformation.HighSchoolGrade12ProvinceName,
-                IsPermanentResidenceMore18 = form.PersonalInformation.IsPermanentResidenceMore18,
-                IsPermanentResidenceSpecialMore18 = form.PersonalInformation.IsPermanentResidenceSpecialMore18,
-
-                ResultForUniversity = form.RegisterInformation.ResultForUniversity,
-                StudyAtHighSchool = form.RegisterInformation.StudyAtHighSchool,
-                ClusterContestId = form.RegisterInformation.ClusterContestId,
-                ClusterContestCode = form.RegisterInformation.ClusterContestCode,
-                ClusterContestName = form.RegisterInformation.ClusterContestName,
-                RegisterPlaceOfExamId = form.RegisterInformation.RegisterPlaceOfExamId,
-                RegisterPlaceOfExamCode = form.RegisterInformation.RegisterPlaceOfExamCode,
-                RegisterPlaceOfExamName = form.RegisterInformation.RegisterPlaceOfExamName,
-                Biology = form.RegisterInformation.Biology,
-                Chemistry = form.RegisterInformation.Chemistry,
-                CivicEducation = form.RegisterInformation.CivicEducation,
-                Geography = form.RegisterInformation.Geography,
-                History = form.RegisterInformation.History,
-                Languages = form.RegisterInformation.Languages,
-                Literature = form.RegisterInformation.Literature,
-                Maths = form.RegisterInformation.Maths,
-                NaturalSciences = form.RegisterInformation.NaturalSciences,
-                Physics = form.RegisterInformation.Physics,
-                SocialSciences = form.RegisterInformation.SocialSciences,
-                Graduated = form.RegisterInformation.Graduated,
-
-                ExceptLanguages = form.GraduationInformation.ExceptLanguages,
-                Mark = form.GraduationInformation.Mark,
-                ReserveBiology = form.GraduationInformation.ReserveBiology,
-                ReserveChemistry = form.GraduationInformation.ReserveChemistry,
-                ReserveCivicEducation = form.GraduationInformation.ReserveCivicEducation,
-                ReserveGeography = form.GraduationInformation.ReserveGeography,
-                ReserveHistory = form.GraduationInformation.ReserveHistory,
-                ReserveLanguages = form.GraduationInformation.ReserveLanguages,
-                ReserveLiterature = form.GraduationInformation.ReserveLiterature,
-                ReserveMaths = form.GraduationInformation.ReserveMaths,
-                ReservePhysics = form.GraduationInformation.ReservePhysics,
-
-                Area = form.UniversityAdmission.Area,
-                Connected = form.UniversityAdmission.Connected,
-                GraduateYear = form.UniversityAdmission.GraduateYear,
-                PriorityType = form.UniversityAdmission.PriorityType,
-                FormDetails = form.UniversityAdmission.FormDetails.Select(m => new FormDetailDTO
-                {
-                    Id = m.Id,
-                    FormId = m.FormId,
-                    MajorsId = m.MajorsId,
-                    MajorsCode = m.MajorsCode,
-                    MajorsName = m.MajorsName,
-                    UniversityId = m.UniversityId,
-                    UniversityCode = m.UniversityCode,
-                    UniversityName = m.UniversityName,
-                    UniversityAddress = m.UniversityAddress,
-                    SubjectGroupId = m.SubjectGroupId,
-                    SubjectGroupCode = m.SubjectGroupCode,
-                    SubjectGroupName = m.SubjectGroupName,
-                }).ToList()
-            };
-
-            if (form.IsValidated)
-                return formDTO;
-            else throw new BadRequestException(formDTO);
         }
         #endregion
 

@@ -12,9 +12,6 @@ namespace TwelveFinal.Entities
         public Guid Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
-        public Guid AreaId { get; set; }
-        public string AreaCode { get; set; }
-        public string AreaName { get; set; }
         public List<District> Districts { get; set; }
         public List<HighSchool> HighSchools { get; set; }
     }
@@ -24,9 +21,6 @@ namespace TwelveFinal.Entities
         public GuidFilter Id { get; set; }
         public StringFilter Code { get; set; }
         public StringFilter Name { get; set; }
-        public Guid? AreaId { get; set; }
-        public StringFilter AreaCode { get; set; }
-        public StringFilter AreaName { get; set; }
         public ProvinceOrder OrderBy { get; set; }
         public List<Guid> ExceptIds { get; set; }
         public List<Guid> Ids { get; set; }

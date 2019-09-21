@@ -19,6 +19,7 @@ namespace TwelveFinal.Controller.DTO
         public string SubjectGroupCode { get; set; }
         public string SubjectGroupName { get; set; }
         public string Year { get; set; }
+        public string Descreption { get; set; }
     }
 
     public class University_MajorsFilterDTO : FilterDTO
@@ -35,5 +36,6 @@ namespace TwelveFinal.Controller.DTO
         public StringFilter SubjectGroupCode { get; set; }
         public StringFilter SubjectGroupName { get; set; }
         public string Year { get; set; }
+        
     }
 }

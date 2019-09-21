@@ -31,6 +31,7 @@ namespace TwelveFinal.Services.MHighSchool
         {
             bool IsValid = true;
             IsValid &= await CodeValidate(highSchool);
+            IsValid &= await AreaValidate(highSchool);
             return IsValid;
         }
 
@@ -46,6 +47,7 @@ namespace TwelveFinal.Services.MHighSchool
             bool IsValid = true;
             IsValid &= await IsExisted(highSchool);
             IsValid &= await CodeValidate(highSchool);
+            IsValid &= await AreaValidate(highSchool);
             return IsValid;
         }
 
@@ -72,6 +74,21 @@ namespace TwelveFinal.Services.MHighSchool
             {
                 highSchool.AddError(nameof(HighSchoolValidator), nameof(highSchool.Code), ErrorCode.Duplicate);
             }
+            return highSchool.IsValidated;
+        }
+
+        private async Task<bool> AreaValidate(HighSchool highSchool)
+        {
+            AreaFilter filter = new AreaFilter
+            {
+                Code = new StringFilter { Equal = highSchool.AreaCode }
+            };
+            var count = await UOW.AreaRepository.Count(filter);
+            if(count == 0)
+            {
+                highSchool.AddError(nameof(HighSchoolValidator), nameof(highSchool.AreaCode), ErrorCode.NotExisted);
+            }
+
             return highSchool.IsValidated;
         }
     }

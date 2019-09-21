@@ -9,9 +9,7 @@ namespace TwelveFinal.Services.MForm
 {
     public interface IFormValidator : IServiceScoped
     {
-        Task<bool> Create(Form form);
-        Task<bool> Update(Form form);
-        Task<bool> Delete(Form form);
+        Task<bool> Save(Form form);
     }
     public class FormValidator : IFormValidator
     {
@@ -27,19 +25,7 @@ namespace TwelveFinal.Services.MForm
             UOW = _UOW;
         }
 
-        public async Task<bool> Create(Form form)
-        {
-            return true;
-        }
-
-        public async Task<bool> Delete(Form form)
-        {
-            bool IsValid = true;
-            IsValid &= await IsExisted(form);
-            return IsValid;
-        }
-
-        public async Task<bool> Update(Form form)
+        public async Task<bool> Save(Form form)
         {
             bool IsValid = true;
             IsValid &= await IsExisted(form);
@@ -50,9 +36,9 @@ namespace TwelveFinal.Services.MForm
         {
             if(await UOW.FormRepository.Get(form.Id) == null)
             {
-                form.AddError(nameof(FormValidator), nameof(form.Id), ErrorCode.NotExisted);
+                return false;
             }
-            return form.IsValidated;
+            return true;
         }
     }
 }

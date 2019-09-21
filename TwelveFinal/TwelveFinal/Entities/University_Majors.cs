@@ -19,6 +19,7 @@ namespace TwelveFinal.Entities
         public string SubjectGroupCode { get; set; }
         public string SubjectGroupName { get; set; }
         public string Year { get; set; }
+        public string Descreption { get; set; }
     }
 
     public class University_MajorsFilter : FilterEntity

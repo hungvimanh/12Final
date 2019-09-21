@@ -124,7 +124,8 @@ namespace TwelveFinal.Repositories
                 SubjectGroupCode = q.SubjectGroup.Code,
                 SubjectGroupName = q.SubjectGroup.Name,
                 Benchmark = q.Benchmark,
-                Year = q.Year
+                Year = q.Year,
+                Descreption = q.Descreption
             }).ToListAsync();
             return university_Majorss;
         }
@@ -154,7 +155,8 @@ namespace TwelveFinal.Repositories
                 UniversityId = university_Majors.UniversityId,
                 SubjectGroupId = university_Majors.SubjectGroupId,
                 Benchmark = university_Majors.Benchmark,
-                Year = university_Majors.Year
+                Year = university_Majors.Year,
+                Descreption = university_Majors.Descreption
             };
 
             tFContext.University_Majors.Add(university_MajorsDAO);
@@ -183,7 +185,8 @@ namespace TwelveFinal.Repositories
                 SubjectGroupCode = u.SubjectGroup.Code,
                 SubjectGroupName = u.SubjectGroup.Name,
                 Benchmark = u.Benchmark,
-                Year = u.Year
+                Year = u.Year,
+                Descreption = u.Descreption
             }).FirstOrDefaultAsync();
 
             return University_Majors;
@@ -197,7 +200,8 @@ namespace TwelveFinal.Repositories
                 UniversityId = university_Majors.UniversityId,
                 SubjectGroupId = university_Majors.SubjectGroupId,
                 Benchmark = university_Majors.Benchmark,
-                Year = university_Majors.Year
+                Year = university_Majors.Year,
+                Descreption = university_Majors.Descreption
             });
 
             return true;
