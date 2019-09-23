@@ -29,6 +29,8 @@ namespace TwelveFinal.Repositories
             
             if (ethnicFilter.Id != null)
                 query = query.Where(q => q.Id, ethnicFilter.Id);
+            if (ethnicFilter.Code != null)
+                query = query.Where(q => q.Code, ethnicFilter.Code);
             if (ethnicFilter.Name != null)
                 query = query.Where(q => q.Name, ethnicFilter.Name);
             
@@ -41,6 +43,9 @@ namespace TwelveFinal.Repositories
                 case OrderType.ASC:
                     switch (ethnicFilter.OrderBy)
                     {
+                        case EthnicOrder.Code:
+                            query = query.OrderBy(q => q.Code);
+                            break;
                         case EthnicOrder.Name:
                             query = query.OrderBy(q => q.Name);
                             break;
@@ -52,6 +57,9 @@ namespace TwelveFinal.Repositories
                 case OrderType.DESC:
                     switch (ethnicFilter.OrderBy)
                     {
+                        case EthnicOrder.Code:
+                            query = query.OrderByDescending(q => q.Code);
+                            break;
                         case EthnicOrder.Name:
                             query = query.OrderByDescending(q => q.Name);
                             break;
@@ -73,6 +81,7 @@ namespace TwelveFinal.Repositories
             List<Ethnic> ethnics = await query.Select(q => new Ethnic()
             {
                 Id = q.Id,
+                Code = q.Code,
                 Name = q.Name,
             }).ToListAsync();
             return ethnics;
@@ -100,6 +109,7 @@ namespace TwelveFinal.Repositories
             Ethnic Ethnic = await tFContext.Ethnic.Where(d => d.Id.Equals(Id)).Select(d => new Ethnic
             {
                 Id = d.Id,
+                Code = d.Code,
                 Name = d.Name,
             }).FirstOrDefaultAsync();
 

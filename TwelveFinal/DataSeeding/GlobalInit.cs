@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using TwelveFinal.Repositories.Models;
 
 namespace DataSeeding
@@ -11,20 +12,45 @@ namespace DataSeeding
         public TFContext tFContext;
 
         public AreaInit AreaInit;
+        public DistrictInit DistrictInit;
+        public EthnicInit EthnicInit;
+        public HighSchoolInit HighSchoolInit;
+        public MajorsInit MajorsInit;
         public PriorityTypeInit PriorityTypeInit;
+        public ProvinceInit ProvinceInit;
+        public SubjectGroupInit SubjectGroupInit;
+        public TownInit TownInit;
+        public UniversityInit UniversityInit;
         public GlobalInit(TFContext tFContext)
         {
             this.tFContext = tFContext;
             AreaInit = new AreaInit(tFContext);
+            DistrictInit = new DistrictInit(tFContext);
+            EthnicInit = new EthnicInit(tFContext);
+            HighSchoolInit = new HighSchoolInit(tFContext);
+            MajorsInit = new MajorsInit(tFContext);
             PriorityTypeInit = new PriorityTypeInit(tFContext);
+            ProvinceInit = new ProvinceInit(tFContext);
+            SubjectGroupInit = new SubjectGroupInit(tFContext);
+            TownInit = new TownInit(tFContext);
+            UniversityInit = new UniversityInit(tFContext);
         }
 
-        public bool Init()
+        public void Init()
         {
             Clean();
             AreaInit.Init();
+            DistrictInit.Init();
+            EthnicInit.Init();
+            
+            MajorsInit.Init();
             PriorityTypeInit.Init();
-            return true;
+            ProvinceInit.Init();
+            SubjectGroupInit.Init();
+            TownInit.Init();
+            UniversityInit.Init();
+            HighSchoolInit.Init();
+            tFContext.SaveChanges();
         }
 
         public void Clean()

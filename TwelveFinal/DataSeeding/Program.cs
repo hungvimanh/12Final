@@ -25,6 +25,7 @@ namespace DataSeeding
 
             GlobalInit globalInit = new GlobalInit(tFContext);
             globalInit.Init();
+            Console.WriteLine("Data Seeding Finished");
         }
     }
 }

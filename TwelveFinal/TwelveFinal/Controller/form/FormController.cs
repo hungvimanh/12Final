@@ -613,6 +613,7 @@ namespace TwelveFinal.Controller.form
             EthnicFilter ethnicFilter = new EthnicFilter
             {
                 Id = ethnicFilterDTO.Id,
+                Code = ethnicFilterDTO.Code,
                 Name = ethnicFilterDTO.Name
             };
 
@@ -621,6 +622,7 @@ namespace TwelveFinal.Controller.form
             return listEthnic.Select(e => new EthnicDTO
             {
                 Id = e.Id,
+                Code = e.Code,
                 Name = e.Name
             }).ToList();
         }

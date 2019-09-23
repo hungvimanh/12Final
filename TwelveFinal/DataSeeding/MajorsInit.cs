@@ -2,37 +2,39 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using TwelveFinal.Entities;
 using TwelveFinal.Repositories.Models;
+using System.Linq;
 
 namespace DataSeeding
 {
-    public class EthnicInit : CommonInit
+    public class MajorsInit : CommonInit
     {
-        public EthnicInit(TFContext _context) : base(_context)
+        public MajorsInit(TFContext _context) : base(_context)
         {
 
         }
 
         public void Init()
         {
-            List<EthnicDAO> ethnics = LoadFromExcel("../../../DataSeeding.xlsx");
+            List<MajorsDAO> ethnics = LoadFromExcel("../../../DataSeeding.xlsx");
             DbContext.AddRange(ethnics);
         }
-        private List<EthnicDAO> LoadFromExcel(string path)
+        private List<MajorsDAO> LoadFromExcel(string path)
         {
-            List<EthnicDAO> excelTemplates = new List<EthnicDAO>();
+            List<MajorsDAO> excelTemplates = new List<MajorsDAO>();
             using (var package = new ExcelPackage(new FileInfo(path)))
             {
-                var worksheet = package.Workbook.Worksheets[2];
+                var worksheet = package.Workbook.Worksheets[5];
                 for (int i = worksheet.Dimension.Start.Row + 1; i <= worksheet.Dimension.End.Row; i++)
                 {
-                    EthnicDAO excelTemplate = new EthnicDAO()
+                    if (string.IsNullOrEmpty(worksheet.Cells[i, 1].Value?.ToString()))
                     {
-                        Id = CreateGuid("Ethnic" + worksheet.Cells[i, 1].Value?.ToString()),
+                        continue;
+                    }
+                    MajorsDAO excelTemplate = new MajorsDAO()
+                    {
+                        Id = CreateGuid("Majors" + worksheet.Cells[i, 1].Value?.ToString()),
                         Code = worksheet.Cells[i, 1].Value?.ToString(),
                         Name = worksheet.Cells[i, 2].Value?.ToString(),
                     };

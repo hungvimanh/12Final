@@ -7,6 +7,7 @@ namespace TwelveFinal.Repositories.Models
     {
         public Guid Id { get; set; }
         public long CX { get; set; }
+        public string Code { get; set; }
         public string Name { get; set; }
     }
 }

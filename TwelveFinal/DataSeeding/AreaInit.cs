@@ -1,5 +1,7 @@
-﻿using System;
+﻿using OfficeOpenXml;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using TwelveFinal.Repositories.Models;
 
@@ -14,30 +16,27 @@ namespace DataSeeding
 
         public void Init()
         {
-            DbContext.Area.Add(new AreaDAO
+            List<AreaDAO> ethnics = LoadFromExcel("../../../DataSeeding.xlsx");
+            DbContext.AddRange(ethnics);
+        }
+        private List<AreaDAO> LoadFromExcel(string path)
+        {
+            List<AreaDAO> excelTemplates = new List<AreaDAO>();
+            using (var package = new ExcelPackage(new FileInfo(path)))
             {
-                Id = CreateGuid("KV1"),
-                Code = "1-KV1",
-                Name = "KV1"
-            });
-            DbContext.Area.Add(new AreaDAO
-            {
-                Id = CreateGuid("KV2"),
-                Code = "2-KV2",
-                Name = "KV2",
-            });
-            DbContext.Area.Add(new AreaDAO
-            {
-                Id = CreateGuid("KV2-NT"),
-                Code = "2NT-KV2-NT",
-                Name = "KV2-NT",
-            });
-            DbContext.Area.Add(new AreaDAO
-            {
-                Id = CreateGuid("KV3"),
-                Code = "KV3",
-                Name = "3-KV3",
-            });
+                var worksheet = package.Workbook.Worksheets[0];
+                for (int i = worksheet.Dimension.Start.Row + 1; i <= worksheet.Dimension.End.Row; i++)
+                {
+                    AreaDAO excelTemplate = new AreaDAO()
+                    {
+                        Id = CreateGuid("Area" + worksheet.Cells[i, 2].Value?.ToString()),
+                        Code = worksheet.Cells[i, 1].Value?.ToString(),
+                        Name = worksheet.Cells[i, 2].Value?.ToString(),
+                    };
+                    excelTemplates.Add(excelTemplate);
+                }
+            }
+            return excelTemplates;
         }
     }
 }

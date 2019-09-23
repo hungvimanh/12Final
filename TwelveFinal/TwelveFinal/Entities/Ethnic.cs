@@ -8,12 +8,14 @@ namespace TwelveFinal.Entities
     public class Ethnic : DataEntity
     {
         public Guid Id { get; set; }
+        public string Code { get; set; }
         public string Name { get; set; }
     }
 
     public class EthnicFilter : FilterEntity
     {
         public GuidFilter Id { get; set; }
+        public StringFilter Code { get; set; }
         public StringFilter Name { get; set; }
         public EthnicOrder OrderBy { get; set; }
         public EthnicFilter() : base()
@@ -25,6 +27,7 @@ namespace TwelveFinal.Entities
     public enum EthnicOrder
     {
         CX,
+        Code,
         Name
     }
 }

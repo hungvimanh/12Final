@@ -50,6 +50,8 @@ namespace TwelveFinal.Repositories.Models
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
+                entity.Property(e => e.CX).ValueGeneratedOnAdd();
+
                 entity.Property(e => e.Code)
                     .IsRequired()
                     .HasMaxLength(10);
@@ -93,6 +95,12 @@ namespace TwelveFinal.Repositories.Models
                     .HasAnnotation("SqlServer:Clustered", true);
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.CX).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Code)
+                    .IsRequired()
+                    .HasMaxLength(2);
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -310,6 +318,8 @@ namespace TwelveFinal.Repositories.Models
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
+                entity.Property(e => e.CX).ValueGeneratedOnAdd();
+
                 entity.Property(e => e.Code)
                     .IsRequired()
                     .HasMaxLength(2);
@@ -396,7 +406,7 @@ namespace TwelveFinal.Repositories.Models
 
                 entity.Property(e => e.Code)
                     .IsRequired()
-                    .HasMaxLength(3);
+                    .HasMaxLength(10);
 
                 entity.Property(e => e.Name)
                     .IsRequired()

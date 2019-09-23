@@ -21,8 +21,8 @@ namespace TwelveFinal.Controller.university_majors
     [ApiController]
     public class University_MajorsController : ControllerBase
     {
-        private University_MajorsService university_MajorsService;
-        public University_MajorsController(University_MajorsService university_MajorsService)
+        private IUniversity_MajorsService university_MajorsService;
+        public University_MajorsController(IUniversity_MajorsService university_MajorsService)
         {
             this.university_MajorsService = university_MajorsService;
         }

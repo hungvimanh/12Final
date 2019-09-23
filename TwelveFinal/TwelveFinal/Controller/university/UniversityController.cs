@@ -23,10 +23,10 @@ namespace TwelveFinal.Controller.university
     [ApiController]
     public class UniversityController : ControllerBase
     {
-        private UniversityService universityService;
-        private MajorsService majorsService;
+        private IUniversityService universityService;
+        private IMajorsService majorsService;
 
-        public UniversityController(UniversityService universityService, MajorsService majorsService)
+        public UniversityController(IUniversityService universityService, IMajorsService majorsService)
         {
             this.majorsService = majorsService;
             this.universityService = universityService;
@@ -86,7 +86,7 @@ namespace TwelveFinal.Controller.university
             if (universityDTO.Id == null) return null;
 
             University university = ConvertDTOtoBO(universityDTO);
-            university = await universityService.Update(university);
+            university = await universityService.Get(university.Id);
 
             return university == null ? null : new UniversityDTO()
             {
@@ -123,7 +123,7 @@ namespace TwelveFinal.Controller.university
             return universityDTOs;
         }
 
-        [Route(UniversityRoute.List), HttpPost]
+        [Route(UniversityRoute.Delete), HttpPost]
         public async Task<UniversityDTO> Delete([FromBody] UniversityDTO universityDTO)
         {
             if (universityDTO == null) universityDTO = new UniversityDTO();
