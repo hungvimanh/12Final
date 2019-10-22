@@ -17,5 +17,9 @@ namespace TwelveFinal.Controller.DTO
         public GuidFilter Id { get; set; }
         public StringFilter Code { get; set; }
         public StringFilter Name { get; set; }
+        public AreaFilterDTO() : base()
+        {
+
+        }
     }
 }

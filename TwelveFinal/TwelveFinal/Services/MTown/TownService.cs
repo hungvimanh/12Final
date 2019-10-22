@@ -11,6 +11,7 @@ namespace TwelveFinal.Services.MTown
     {
         Task<Town> Create(Town Town);
         Task<Town> Get(Guid Id);
+        Task<List<Town>> List(TownFilter townFilter);
         Task<Town> Update(Town Town);
         Task<Town> Delete(Town Town);
     }
@@ -65,6 +66,11 @@ namespace TwelveFinal.Services.MTown
                 await UOW.Rollback();
                 throw new MessageException(ex);
             }
+        }
+
+        public async Task<List<Town>> List(TownFilter townFilter)
+        {
+            return await UOW.TownRepository.List(townFilter);
         }
 
         public async Task<Town> Get(Guid Id)

@@ -11,6 +11,15 @@ namespace TwelveFinal.Entities
         public string Username { get; set; }
         public string Password { get; set; }
         public bool IsAdmin { get; set; }
-        public List<Form> Forms { get; set; }
+        public string Jwt { get; set; }
+        public DateTime? ExpiredTime { get; set; }
+        public string Salt { get; set; }
+    }
+
+    public class UserFilter
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public bool? IsAdmin { get; set; }
     }
 }

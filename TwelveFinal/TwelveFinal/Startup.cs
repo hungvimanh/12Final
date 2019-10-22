@@ -15,6 +15,11 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using TwelveFinal.Repositories.Models;
+using TwelveFinal.Common;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TwelveFinal
 {
@@ -46,11 +51,54 @@ namespace TwelveFinal
 
             services.AddDbContext<TFContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("TFContext")));
+
+            services.Scan(scan => scan
+               .FromAssemblyOf<IDateTimeService>()
+                   .AddClasses(classes => classes.AssignableTo<IDateTimeService>())
+                       .AsImplementedInterfaces()
+                       .WithScopedLifetime());
+
             services.Scan(scan => scan
              .FromAssemblyOf<IServiceScoped>()
                  .AddClasses(classes => classes.AssignableTo<IServiceScoped>())
                      .AsImplementedInterfaces()
                      .WithScopedLifetime());
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.JWTSecret);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        context.Token = context.Request.Cookies["token"];
+                        return Task.CompletedTask;
+                    }
+                };
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateLifetime = true,
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+            services.AddScoped<IAuthorizationHandler, PermissionHandler>();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Permission", policy =>
+                    policy.Requirements.Add(new PermissionRequirement()));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,13 +113,9 @@ namespace TwelveFinal
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //}
             app.UseHttpsRedirection();
             app.UseMiddleware<ErrorHandlingMiddleware>();
-
+            app.UseAuthentication();
             app.UseMvc();
         }
     }

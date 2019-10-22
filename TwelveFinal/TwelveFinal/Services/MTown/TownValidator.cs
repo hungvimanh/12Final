@@ -26,6 +26,7 @@ namespace TwelveFinal.Services.MTown
         {
             bool IsValid = true;
             IsValid &= await CodeValidate(town);
+            IsValid &= await DistrictValidate(town);
             return IsValid;
         }
 
@@ -46,6 +47,7 @@ namespace TwelveFinal.Services.MTown
 
         private async Task<bool> IsExisted(Town town)
         {
+            //Kiểm tra Town đã tồn tại hay chưa?
             if (await UOW.TownRepository.Get(town.Id) == null)
             {
                 town.AddError(nameof(TownValidator), nameof(town.Name), ErrorCode.NotExisted);
@@ -55,6 +57,7 @@ namespace TwelveFinal.Services.MTown
 
         private async Task<bool> CodeValidate(Town town)
         {
+            //Kiểm tra sự trùng lặp Code
             TownFilter filter = new TownFilter
             {
                 Id = new GuidFilter { NotEqual = town.Id },
@@ -66,6 +69,17 @@ namespace TwelveFinal.Services.MTown
             if (count > 0)
             {
                 town.AddError(nameof(TownValidator), nameof(town.Code), ErrorCode.Duplicate);
+            }
+            return town.IsValidated;
+        }
+
+        private async Task<bool> DistrictValidate(Town town)
+        {
+            //Kiểm tra Quận/huyện đã tồn tại hay chưa?
+            if(await UOW.DistrictRepository.Get(town.DistrictId) == null)
+            {
+                town.AddError(nameof(TownValidator), nameof(town.DistrictName), ErrorCode.NotExisted);
+                return town.IsValidated;
             }
             return town.IsValidated;
         }

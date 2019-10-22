@@ -51,6 +51,7 @@ namespace TwelveFinal.Services.MMajors
 
         private async Task<bool> IsExisted(Majors majors)
         {
+            //Kiểm tra sự tồn tại trong DB
             if (await UOW.MajorsRepository.Get(majors.Id) == null)
             {
                 majors.AddError(nameof(MajorsValidator), nameof(majors.Name), ErrorCode.NotExisted);
@@ -60,6 +61,7 @@ namespace TwelveFinal.Services.MMajors
 
         private async Task<bool> CodeValidate(Majors majors)
         {
+            //Kiểm tra sự trùng lặp Code
             MajorsFilter filter = new MajorsFilter
             {
                 Id = new GuidFilter { NotEqual = majors.Id },

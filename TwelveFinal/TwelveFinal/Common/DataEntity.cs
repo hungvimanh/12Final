@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace TwelveFinal
 {
@@ -117,6 +119,13 @@ namespace TwelveFinal
             }
         }
 
+        public bool HasError {
+            get
+            {
+                return !IsValidated;
+            }
+        }
+
         public Dictionary<string, string> Errors { get; private set; }
 
         public DataEntity()
@@ -140,17 +149,5 @@ namespace TwelveFinal
             else
                 Errors.Add(Key, content);
         }
-
-        public string GetErrorMessage(string path, string Value)
-        {
-            if (string.IsNullOrEmpty(_BaseLanguage))
-                _BaseLanguage = "VN";
-
-            JToken token = ErrorResource.GetValueOrDefault(_BaseLanguage).SelectToken(path + "." + Value);
-
-            return token?.Value<string>();
-        }
-
     }
-
 }

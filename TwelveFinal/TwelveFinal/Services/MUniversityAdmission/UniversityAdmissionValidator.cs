@@ -38,6 +38,8 @@ namespace TwelveFinal.Services.MUniversityAdmission
 
         private async Task<bool> ValidatePriorityType(UniversityAdmission universityAdmission)
         {
+            //Kiểm tra đối tượng ưu tiên đã được chọn chưa?
+            //và đối tượng được chọn có tồn tại hay không?
             if (string.IsNullOrEmpty(universityAdmission.PriorityType))
             {
                 universityAdmission.AddError(nameof(UniversityAdmissionValidator), nameof(universityAdmission.PriorityType), ErrorCode.Invalid);
@@ -60,6 +62,8 @@ namespace TwelveFinal.Services.MUniversityAdmission
 
         private async Task<bool> ValidateArea(UniversityAdmission universityAdmission)
         {
+            //Kiểm tra khu vực xét tuyển đã được chọn chưa?
+            //và khu vực được chọn có tồn tại hay không?
             if (string.IsNullOrEmpty(universityAdmission.Area))
             {
                 universityAdmission.AddError(nameof(UniversityAdmissionValidator), nameof(universityAdmission.Area), ErrorCode.Invalid);
@@ -82,6 +86,7 @@ namespace TwelveFinal.Services.MUniversityAdmission
 
         private async Task<bool> ValidateGraduateYear(UniversityAdmission universityAdmission)
         {
+            //Kiểm tra năm tốt nghiệp đã điền chính xác chưa?
             if (string.IsNullOrEmpty(universityAdmission.GraduateYear) || universityAdmission.GraduateYear.Length != 4)
             {
                 universityAdmission.AddError(nameof(UniversityAdmissionValidator), nameof(universityAdmission.GraduateYear), ErrorCode.Invalid);
@@ -91,6 +96,7 @@ namespace TwelveFinal.Services.MUniversityAdmission
 
         private async Task<bool> ValidateTotalAdmission(UniversityAdmission universityAdmission)
         {
+            //Kiểm tra tổng số nguyện vọng đăng ký
             if(universityAdmission.TotalAspiration != universityAdmission.FormDetails.Count || universityAdmission.TotalAspiration == null)
             {
                 universityAdmission.AddError(nameof(UniversityAdmissionValidator), nameof(universityAdmission.TotalAspiration), ErrorCode.Invalid);
@@ -100,6 +106,7 @@ namespace TwelveFinal.Services.MUniversityAdmission
 
         private async Task<bool> ValidateAdmission(UniversityAdmission universityAdmission)
         {
+            //Kiểm tra các nguyện vọng
             foreach (var admission in universityAdmission.FormDetails)
             {
                 if(!await AdmissionValidation(admission))
@@ -115,6 +122,7 @@ namespace TwelveFinal.Services.MUniversityAdmission
 
         private async Task<bool> AdmissionValidation(FormDetail formDetail)
         {
+            //kiểm tra sự tồn tại của ngành học
             University_MajorsFilter filter = new University_MajorsFilter
             {
                 UniversityId = formDetail.UniversityId,

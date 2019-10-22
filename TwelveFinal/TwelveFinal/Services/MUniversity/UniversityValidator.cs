@@ -51,6 +51,7 @@ namespace TwelveFinal.Services.MUniversity
 
         private async Task<bool> IsExisted(University university)
         {
+            //Kiểm tra sự tồn tại của Trường CĐ-ĐH
             if (await UOW.UniversityRepository.Get(university.Id) == null)
             {
                 university.AddError(nameof(UniversityValidator), nameof(university.Name), ErrorCode.NotExisted);
@@ -60,6 +61,7 @@ namespace TwelveFinal.Services.MUniversity
 
         private async Task<bool> CodeValidate(University university)
         {
+            //Kiểm tra Code nhập vào có tồn tại trong Db
             UniversityFilter filter = new UniversityFilter
             {
                 Id = new GuidFilter { NotEqual = university.Id },

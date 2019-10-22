@@ -58,7 +58,7 @@ namespace TwelveFinal.Services.MUniversity_Majors_Majors
                 await UOW.Begin();
                 await UOW.University_MajorsRepository.Delete(university_Majors);
                 await UOW.Commit();
-                return await Get(university_Majors);
+                return university_Majors;
             }
             catch (Exception ex)
             {

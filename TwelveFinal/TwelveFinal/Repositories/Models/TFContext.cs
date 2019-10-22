@@ -64,7 +64,7 @@ namespace TwelveFinal.Repositories.Models
             modelBuilder.Entity<DistrictDAO>(entity =>
             {
                 entity.HasIndex(e => e.CX)
-                    .HasName("CX_Table_1")
+                    .HasName("CX_District")
                     .IsUnique()
                     .HasAnnotation("SqlServer:Clustered", true);
 
@@ -463,6 +463,8 @@ namespace TwelveFinal.Repositories.Models
                 entity.Property(e => e.Password)
                     .IsRequired()
                     .HasMaxLength(50);
+
+                entity.Property(e => e.Salt).HasMaxLength(50);
 
                 entity.Property(e => e.Username)
                     .IsRequired()

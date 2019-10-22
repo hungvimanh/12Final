@@ -21,19 +21,17 @@ namespace TwelveFinal.Controller.university
     }
 
     [ApiController]
-    public class UniversityController : ControllerBase
+    public class UniversityController : ApiController
     {
         private IUniversityService universityService;
-        private IMajorsService majorsService;
 
-        public UniversityController(IUniversityService universityService, IMajorsService majorsService)
+        public UniversityController(IUniversityService universityService)
         {
-            this.majorsService = majorsService;
             this.universityService = universityService;
         }
 
         [Route(UniversityRoute.Create), HttpPost]
-        public async Task<UniversityDTO> Create([FromBody] UniversityDTO universityDTO)
+        public async Task<ActionResult<UniversityDTO>> Create([FromBody] UniversityDTO universityDTO)
         {
             if (universityDTO == null) universityDTO = new UniversityDTO();
 
@@ -45,19 +43,19 @@ namespace TwelveFinal.Controller.university
                 Id = university.Id,
                 Code = university.Code,
                 Name = university.Name,
-                Address = university.Address
+                Address = university.Address,
+                Errors = university.Errors
             };
             if (university.IsValidated)
-                return universityDTO;
+                return Ok(universityDTO);
             else
             {
-                universityDTO.Id = null;
-                throw new BadRequestException(universityDTO);
+                return BadRequest(universityDTO);
             }
         }
 
         [Route(UniversityRoute.Update), HttpPost]
-        public async Task<UniversityDTO> Update([FromBody] UniversityDTO universityDTO)
+        public async Task<ActionResult<UniversityDTO>> Update([FromBody] UniversityDTO universityDTO)
         {
             if (universityDTO == null) universityDTO = new UniversityDTO();
 
@@ -69,13 +67,14 @@ namespace TwelveFinal.Controller.university
                 Id = university.Id,
                 Code = university.Code,
                 Name = university.Name,
-                Address = university.Address
+                Address = university.Address,
+                Errors = university.Errors
             };
             if (university.IsValidated)
-                return universityDTO;
+                return Ok(universityDTO);
             else
             {
-                throw new BadRequestException(universityDTO);
+                return BadRequest(universityDTO);
             }
         }
 
@@ -83,9 +82,8 @@ namespace TwelveFinal.Controller.university
         public async Task<UniversityDTO> Get([FromBody] UniversityDTO universityDTO)
         {
             if (universityDTO == null) universityDTO = new UniversityDTO();
-            if (universityDTO.Id == null) return null;
 
-            University university = ConvertDTOtoBO(universityDTO);
+            University university = new University { Id = universityDTO.Id ?? default };
             university = await universityService.Get(university.Id);
 
             return university == null ? null : new UniversityDTO()
@@ -93,7 +91,8 @@ namespace TwelveFinal.Controller.university
                 Id = university.Id,
                 Code = university.Code,
                 Name = university.Name,
-                Address = university.Address
+                Address = university.Address,
+                Errors = university.Errors
             };
         }
 
@@ -106,8 +105,8 @@ namespace TwelveFinal.Controller.university
                 Address = universityFilterDTO.Address,
                 Code = universityFilterDTO.Code,
                 Name = universityFilterDTO.Name,
-                Skip = 0,
-                Take = int.MaxValue
+                Skip = universityFilterDTO.Skip,
+                Take = universityFilterDTO.Take
             };
 
             List<University> universities = await universityService.List(universityFilter);
@@ -124,11 +123,11 @@ namespace TwelveFinal.Controller.university
         }
 
         [Route(UniversityRoute.Delete), HttpPost]
-        public async Task<UniversityDTO> Delete([FromBody] UniversityDTO universityDTO)
+        public async Task<ActionResult<UniversityDTO>> Delete([FromBody] UniversityDTO universityDTO)
         {
             if (universityDTO == null) universityDTO = new UniversityDTO();
 
-            University university = ConvertDTOtoBO(universityDTO);
+            University university = new University { Id = universityDTO.Id ?? default};
             university = await universityService.Delete(university);
 
             universityDTO = new UniversityDTO
@@ -136,13 +135,14 @@ namespace TwelveFinal.Controller.university
                 Id = university.Id,
                 Code = university.Code,
                 Name = university.Name,
-                Address = university.Address
+                Address = university.Address,
+                Errors = university.Errors
             };
             if (university.IsValidated)
-                return universityDTO;
+                return Ok(universityDTO);
             else
             {
-                throw new BadRequestException(universityDTO);
+                return BadRequest(universityDTO);
             }
         }
 

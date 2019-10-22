@@ -11,7 +11,7 @@ namespace TwelveFinal.Repositories
     public interface IUserRepository
     {
         Task<bool> Create(User user);
-        Task<User> Get(Guid Id);
+        Task<User> Get(UserFilter userFilter);
         Task<bool> Update(User user);
         Task<bool> Delete(Guid Id);
     }
@@ -22,6 +22,20 @@ namespace TwelveFinal.Repositories
         {
             tFContext = _tFContext;
         }
+
+        private IQueryable<UserDAO> DynamicFilter(IQueryable<UserDAO> query, UserFilter userFilter)
+        {
+            if (!string.IsNullOrEmpty(userFilter.Username))
+            {
+                query = query.Where(u => u.Username.Equals(userFilter.Username));
+            }
+            if (userFilter.IsAdmin.HasValue)
+            {
+                query = query.Where(u => u.IsAdmin.Equals(userFilter.IsAdmin.Value));
+            }
+            return query;
+        }
+
         public async Task<bool> Create(User user)
         {
             UserDAO userDAO = new UserDAO
@@ -30,6 +44,7 @@ namespace TwelveFinal.Repositories
                 IsAdmin = false,
                 Username = user.Username,
                 Password = user.Password,
+                Salt = user.Salt
             };
 
             tFContext.User.Add(userDAO);
@@ -43,132 +58,19 @@ namespace TwelveFinal.Repositories
             return true;
         }
 
-        public async Task<User> Get(Guid Id)
+        public async Task<User> Get(UserFilter userFilter)
         {
-            User user = await tFContext.User.Where(u => u.Id.Equals(Id)).Select(u => new User
+            IQueryable<UserDAO> users = tFContext.User;
+            UserDAO userDAO = await DynamicFilter(users, userFilter).FirstOrDefaultAsync();
+            if (userDAO == null) return null;
+            else return new User()
             {
-                Id = u.Id,
-                IsAdmin = u.IsAdmin,
-                Username = u.Username,
-                Password = u.Password,
-                Forms = u.Forms.Select(f => new Form
-                {
-                    Id = f.Id,
-                    
-                    PersonalInformation = new PersonalInformation
-                    {
-                        Id = f.Id,
-                        NumberForm = f.NumberForm,
-                        DepartmentCode = f.DepartmentCode,
-                        Date = f.Date,
-
-                        FullName = f.FullName,
-                        Gender = f.Gender,
-                        Dob = f.Dob,
-                        PlaceOfBirth = f.PlaceOfBirth,
-                        Ethnic = f.Ethnic,
-                        Identify = f.Identify,
-                        Address = f.Address,
-                        TownId = f.TownId,
-                        TownCode = f.Town.Code,
-                        TownName = f.Town.Name,
-                        DistrictCode = f.Town.District.Code,
-                        DistrictName = f.Town.District.Name,
-                        ProvinceCode = f.Town.District.Province.Code,
-                        ProvinceName = f.Town.District.Province.Name,
-                        IsPermanentResidenceMore18 = f.IsPermanentResidenceMore18,
-                        IsPermanentResidenceSpecialMore18 = f.IsPermanentResidenceSpecialMore18,
-                        HighSchoolGrade10Id = f.HighSchoolGrade10Id,
-                        HighSchoolGrade10Code = f.HighSchoolGrade10.Code,
-                        HighSchoolGrade10Name = f.HighSchoolGrade10.Name,
-                        HighSchoolGrade10DistrictCode = f.HighSchoolGrade10.District.Code,
-                        HighSchoolGrade10DistrictName = f.HighSchoolGrade10.District.Name,
-                        HighSchoolGrade10ProvinceCode = f.HighSchoolGrade10.District.Province.Code,
-                        HighSchoolGrade10ProvinceName = f.HighSchoolGrade10.District.Province.Name,
-                        HighSchoolGrade11Id = f.HighSchoolGrade11Id,
-                        HighSchoolGrade11Code = f.HighSchoolGrade11.Code,
-                        HighSchoolGrade11Name = f.HighSchoolGrade11.Name,
-                        HighSchoolGrade11DistrictCode = f.HighSchoolGrade11.District.Code,
-                        HighSchoolGrade11DistrictName = f.HighSchoolGrade11.District.Name,
-                        HighSchoolGrade11ProvinceCode = f.HighSchoolGrade11.District.Province.Code,
-                        HighSchoolGrade11ProvinceName = f.HighSchoolGrade11.District.Province.Name,
-                        HighSchoolGrade12Id = f.HighSchoolGrade12Id,
-                        HighSchoolGrade12Code = f.HighSchoolGrade12.Code,
-                        HighSchoolGrade12Name = f.HighSchoolGrade12.Name,
-                        HighSchoolGrade12DistrictCode = f.HighSchoolGrade12.District.Code,
-                        HighSchoolGrade12DistrictName = f.HighSchoolGrade12.District.Name,
-                        HighSchoolGrade12ProvinceCode = f.HighSchoolGrade12.District.Province.Code,
-                        HighSchoolGrade12ProvinceName = f.HighSchoolGrade12.District.Province.Name,
-                        Grade12Name = f.Grade12Name,
-                        Phone = f.Phone,
-                        Email = f.Email,
-                    },
-                    RegisterInformation = new RegisterInformation
-                    {
-                        Id = f.Id,
-                        ResultForUniversity = f.ResultForUniversity,
-                        StudyAtHighSchool = f.StudyAtHighSchool,
-                        Graduated = f.Graduated,
-                        ClusterContestId = f.ClusterContestId,
-                        ClusterContestCode = f.ClusterContest.Code,
-                        ClusterContestName = f.ClusterContest.Name,
-                        RegisterPlaceOfExamId = f.RegisterPlaceOfExamId,
-                        RegisterPlaceOfExamCode = f.RegisterPlaceOfExam.Code,
-                        RegisterPlaceOfExamName = f.RegisterPlaceOfExam.Name,
-                        Biology = f.Biology,
-                        Chemistry = f.Chemistry,
-                        CivicEducation = f.CivicEducation,
-                        Geography = f.Geography,
-                        History = f.History,
-                        Languages = f.Languages,
-                        Literature = f.Literature,
-                        Maths = f.Maths,
-                        NaturalSciences = f.NaturalSciences,
-                        Physics = f.Physics,
-                        SocialSciences = f.SocialSciences
-                    },
-                    GraduationInformation = new GraduationInformation
-                    {
-                        Id = f.Id,
-                        ExceptLanguages = f.ExceptLanguages,
-                        Mark = f.Mark,
-                        ReserveBiology = f.ReserveBiology,
-                        ReserveChemistry = f.ReserveChemistry,
-                        ReserveCivicEducation = f.ReserveCivicEducation,
-                        ReserveGeography = f.ReserveGeography,
-                        ReserveHistory = f.ReserveHistory,
-                        ReserveLanguages = f.ReserveLanguages,
-                        ReserveLiterature = f.ReserveLiterature,
-                        ReserveMaths = f.ReserveMaths,
-                        ReservePhysics = f.ReservePhysics
-                    },
-                    UniversityAdmission = new UniversityAdmission
-                    {
-                        Id = f.Id,
-                        Area = f.Area,
-                        PriorityType = f.PriorityType,
-                        GraduateYear = f.GraduateYear,
-                        Connected = f.Connected,
-                        FormDetails = f.FormDetails.Select(d => new FormDetail
-                        {
-                            Id = d.Id,
-                            FormId = d.FormId,
-                            MajorsId = d.MajorsId,
-                            MajorsCode = d.Majors.Code,
-                            MajorsName = d.Majors.Name,
-                            UniversityId = d.UniversityId,
-                            UniversityCode = d.University.Code,
-                            UniversityName = d.University.Name,
-                            UniversityAddress = d.University.Address,
-                            SubjectGroupId = d.SubjectGroupId,
-                            SubjectGroupCode = d.SubjectGroup.Code,
-                            SubjectGroupName = d.SubjectGroup.Name,
-                        }).ToList()
-                    }
-                }).ToList()
-            }).FirstOrDefaultAsync();
-
-            return user;
+                Id = userDAO.Id,
+                Username = userDAO.Username,
+                Password = userDAO.Password,
+                Salt = userDAO.Salt,
+                IsAdmin = userDAO.IsAdmin
+            };
         }
 
         public async Task<bool> Update(User user)

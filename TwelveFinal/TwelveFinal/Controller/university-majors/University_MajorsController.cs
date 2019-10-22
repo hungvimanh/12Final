@@ -19,7 +19,7 @@ namespace TwelveFinal.Controller.university_majors
         public const string Delete = Default + "/delete";
     }
     [ApiController]
-    public class University_MajorsController : ControllerBase
+    public class University_MajorsController : ApiController
     {
         private IUniversity_MajorsService university_MajorsService;
         public University_MajorsController(IUniversity_MajorsService university_MajorsService)
@@ -28,7 +28,7 @@ namespace TwelveFinal.Controller.university_majors
         }
 
         [Route(University_MajorsRoute.Create), HttpPost]
-        public async Task<University_MajorsDTO> Create([FromBody] University_MajorsDTO university_MajorsDTO)
+        public async Task<ActionResult<University_MajorsDTO>> Create([FromBody] University_MajorsDTO university_MajorsDTO)
         {
             if (university_MajorsDTO == null) university_MajorsDTO = new University_MajorsDTO();
 
@@ -48,18 +48,20 @@ namespace TwelveFinal.Controller.university_majors
                 SubjectGroupId = university_Majors.SubjectGroupId,
                 SubjectGroupCode = university_Majors.SubjectGroupCode,
                 SubjectGroupName = university_Majors.SubjectGroupName,
-                Year = university_Majors.Year
+                Year = university_Majors.Year,
+                Descreption = university_Majors.Descreption,
+                Errors = university_Majors.Errors
             };
             if (university_Majors.IsValidated)
-                return university_MajorsDTO;
+                return Ok(university_MajorsDTO);
             else
             {
-                throw new BadRequestException(university_MajorsDTO);
+                return BadRequest(university_MajorsDTO);
             }
         }
 
         [Route(University_MajorsRoute.Update), HttpPost]
-        public async Task<University_MajorsDTO> Update([FromBody] University_MajorsDTO university_MajorsDTO)
+        public async Task<ActionResult<University_MajorsDTO>> Update([FromBody] University_MajorsDTO university_MajorsDTO)
         {
             if (university_MajorsDTO == null) university_MajorsDTO = new University_MajorsDTO();
 
@@ -79,13 +81,15 @@ namespace TwelveFinal.Controller.university_majors
                 SubjectGroupId = university_Majors.SubjectGroupId,
                 SubjectGroupCode = university_Majors.SubjectGroupCode,
                 SubjectGroupName = university_Majors.SubjectGroupName,
-                Year = university_Majors.Year
+                Year = university_Majors.Year,
+                Descreption = university_Majors.Descreption,
+                Errors = university_Majors.Errors
             };
             if (university_Majors.IsValidated)
-                return university_MajorsDTO;
+                return Ok(university_MajorsDTO);
             else
             {
-                throw new BadRequestException(university_MajorsDTO);
+                return BadRequest(university_MajorsDTO);
             }
         }
 
@@ -111,7 +115,9 @@ namespace TwelveFinal.Controller.university_majors
                 SubjectGroupId = university_Majors.SubjectGroupId,
                 SubjectGroupCode = university_Majors.SubjectGroupCode,
                 SubjectGroupName = university_Majors.SubjectGroupName,
-                Year = university_Majors.Year
+                Year = university_Majors.Year,
+                Descreption = university_Majors.Descreption,
+                Errors = university_Majors.Errors
             };
         }
 
@@ -131,8 +137,9 @@ namespace TwelveFinal.Controller.university_majors
                 SubjectGroupName = university_MajorsFilterDTO.SubjectGroupName,
                 UniversityAddress = university_MajorsFilterDTO.UniversityAddress,
                 Benchmark = university_MajorsFilterDTO.Benchmark,
-                Skip = 0,
-                Take = int.MaxValue
+                Year = university_MajorsFilterDTO.Year,
+                Skip = university_MajorsFilterDTO.Skip,
+                Take = university_MajorsFilterDTO.Take
             };
 
             List<University_Majors> universities = await university_MajorsService.List(university_MajorsFilter);
@@ -150,14 +157,15 @@ namespace TwelveFinal.Controller.university_majors
                 SubjectGroupId = u.SubjectGroupId,
                 SubjectGroupCode = u.SubjectGroupCode,
                 SubjectGroupName = u.SubjectGroupName,
-                Year = u.Year
+                Year = u.Year,
+                Descreption = u.Descreption
             }).ToList();
 
             return university_MajorsDTOs;
         }
 
         [Route(University_MajorsRoute.List), HttpPost]
-        public async Task<University_MajorsDTO> Delete([FromBody] University_MajorsDTO university_MajorsDTO)
+        public async Task<ActionResult<University_MajorsDTO>> Delete([FromBody] University_MajorsDTO university_MajorsDTO)
         {
             if (university_MajorsDTO == null) university_MajorsDTO = new University_MajorsDTO();
 
@@ -177,13 +185,15 @@ namespace TwelveFinal.Controller.university_majors
                 SubjectGroupId = university_Majors.SubjectGroupId,
                 SubjectGroupCode = university_Majors.SubjectGroupCode,
                 SubjectGroupName = university_Majors.SubjectGroupName,
-                Year = university_Majors.Year
+                Year = university_Majors.Year,
+                Descreption = university_Majors.Descreption,
+                Errors = university_Majors.Errors
             };
             if (university_Majors.IsValidated)
-                return university_MajorsDTO;
+                return Ok(university_MajorsDTO);
             else
             {
-                throw new BadRequestException(university_MajorsDTO);
+                return BadRequest(university_MajorsDTO);
             }
         }
 
@@ -202,7 +212,8 @@ namespace TwelveFinal.Controller.university_majors
                 SubjectGroupId = university_MajorsDTO.SubjectGroupId,
                 SubjectGroupCode = university_MajorsDTO.SubjectGroupCode,
                 SubjectGroupName = university_MajorsDTO.SubjectGroupName,
-                Year = university_MajorsDTO.Year
+                Year = university_MajorsDTO.Year,
+                Descreption = university_MajorsDTO.Descreption
             };
             return University_Majors;
         }

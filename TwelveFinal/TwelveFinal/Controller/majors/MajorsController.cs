@@ -9,9 +9,9 @@ using TwelveFinal.Services.MMajors;
 
 namespace TwelveFinal.Controller.majors
 {
-    public class MajorsRoute
+    public class MajorsRoute : Root
     {
-        public const string Default = "api/TF/majors";
+        public const string Default = Base + "/majors";
         public const string Create = Default + "/create";
         public const string Get = Default + "/get";
         public const string List = Default + "/list";
@@ -20,7 +20,7 @@ namespace TwelveFinal.Controller.majors
     }
 
     [ApiController]
-    public class MajorsController : ControllerBase
+    public class MajorsController : ApiController
     {
         private IMajorsService MajorsService;
 
@@ -30,47 +30,48 @@ namespace TwelveFinal.Controller.majors
         }
 
         [Route(MajorsRoute.Create), HttpPost]
-        public async Task<MajorsDTO> Create([FromBody] MajorsDTO MajorsDTO)
+        public async Task<ActionResult<MajorsDTO>> Create([FromBody] MajorsDTO majorsDTO)
         {
-            if (MajorsDTO == null) MajorsDTO = new MajorsDTO();
+            if (majorsDTO == null) majorsDTO = new MajorsDTO();
 
-            Majors Majors = ConvertDTOtoBO(MajorsDTO);
-            Majors = await MajorsService.Create(Majors);
+            Majors majors = ConvertDTOtoBO(majorsDTO);
+            majors = await MajorsService.Create(majors);
 
-            MajorsDTO = new MajorsDTO
+            majorsDTO = new MajorsDTO
             {
-                Id = Majors.Id,
-                Code = Majors.Code,
-                Name = Majors.Name,
+                Id = majors.Id,
+                Code = majors.Code,
+                Name = majors.Name,
+                Errors = majors.Errors
             };
-            if (Majors.IsValidated)
-                return MajorsDTO;
+            if (majors.IsValidated)
+                return Ok(majorsDTO);
             else
             {
-                MajorsDTO.Id = null;
-                throw new BadRequestException(MajorsDTO);
+                return BadRequest(majorsDTO);
             }
         }
 
         [Route(MajorsRoute.Update), HttpPost]
-        public async Task<MajorsDTO> Update([FromBody] MajorsDTO MajorsDTO)
+        public async Task<ActionResult<MajorsDTO>> Update([FromBody] MajorsDTO majorsDTO)
         {
-            if (MajorsDTO == null) MajorsDTO = new MajorsDTO();
+            if (majorsDTO == null) majorsDTO = new MajorsDTO();
 
-            Majors Majors = ConvertDTOtoBO(MajorsDTO);
-            Majors = await MajorsService.Update(Majors);
+            Majors majors = ConvertDTOtoBO(majorsDTO);
+            majors = await MajorsService.Update(majors);
 
-            MajorsDTO = new MajorsDTO
+            majorsDTO = new MajorsDTO
             {
-                Id = Majors.Id,
-                Code = Majors.Code,
-                Name = Majors.Name,
+                Id = majors.Id,
+                Code = majors.Code,
+                Name = majors.Name,
+                Errors = majors.Errors
             };
-            if (Majors.IsValidated)
-                return MajorsDTO;
+            if (majors.IsValidated)
+                return Ok(majorsDTO);
             else
             {
-                throw new BadRequestException(MajorsDTO);
+                return BadRequest(majorsDTO);
             }
         }
 
@@ -78,74 +79,75 @@ namespace TwelveFinal.Controller.majors
         public async Task<MajorsDTO> Get([FromBody] MajorsDTO MajorsDTO)
         {
             if (MajorsDTO == null) MajorsDTO = new MajorsDTO();
-            if (MajorsDTO.Id == null) return null;
 
-            Majors Majors = ConvertDTOtoBO(MajorsDTO);
-            Majors = await MajorsService.Update(Majors);
+            Majors majors = ConvertDTOtoBO(MajorsDTO);
+            majors = await MajorsService.Get(majors.Id);
 
-            return Majors == null ? null : new MajorsDTO()
+            return majors == null ? null : new MajorsDTO()
             {
-                Id = Majors.Id,
-                Code = Majors.Code,
-                Name = Majors.Name,
+                Id = majors.Id,
+                Code = majors.Code,
+                Name = majors.Name,
+                Errors = majors.Errors
             };
         }
 
         [Route(MajorsRoute.List), HttpPost]
-        public async Task<List<MajorsDTO>> List([FromBody] MajorsFilterDTO MajorsFilterDTO)
+        public async Task<List<MajorsDTO>> List([FromBody] MajorsFilterDTO majorsFilterDTO)
         {
-            MajorsFilter MajorsFilter = new MajorsFilter
+            MajorsFilter majorsFilter = new MajorsFilter
             {
-                Id = MajorsFilterDTO.Id,
-                Code = MajorsFilterDTO.Code,
-                Name = MajorsFilterDTO.Name,
-                Skip = 0,
-                Take = int.MaxValue
+                Id = majorsFilterDTO.Id,
+                Code = majorsFilterDTO.Code,
+                Name = majorsFilterDTO.Name,
+                Skip = majorsFilterDTO.Skip,
+                Take = majorsFilterDTO.Take
             };
 
-            List<Majors> universities = await MajorsService.List(MajorsFilter);
+            List<Majors> universities = await MajorsService.List(majorsFilter);
 
-            List<MajorsDTO> MajorsDTOs = universities.Select(u => new MajorsDTO
+            List<MajorsDTO> majorsDTOs = universities.Select(u => new MajorsDTO
             {
                 Id = u.Id,
                 Code = u.Code,
                 Name = u.Name
             }).ToList();
 
-            return MajorsDTOs;
+            return majorsDTOs;
         }
 
-        [Route(MajorsRoute.List), HttpPost]
-        public async Task<MajorsDTO> Delete([FromBody] MajorsDTO MajorsDTO)
+        [Route(MajorsRoute.Delete), HttpPost]
+        public async Task<ActionResult<MajorsDTO>> Delete([FromBody] MajorsDTO majorsDTO)
         {
-            if (MajorsDTO == null) MajorsDTO = new MajorsDTO();
+            if (majorsDTO == null) majorsDTO = new MajorsDTO();
 
-            Majors Majors = ConvertDTOtoBO(MajorsDTO);
-            Majors = await MajorsService.Delete(Majors);
+            Majors majors = ConvertDTOtoBO(majorsDTO);
+            majors = await MajorsService.Delete(majors);
 
-            MajorsDTO = new MajorsDTO
+            majorsDTO = new MajorsDTO
             {
-                Id = Majors.Id,
-                Code = Majors.Code,
-                Name = Majors.Name,
+                Id = majors.Id,
+                Code = majors.Code,
+                Name = majors.Name,
+                Errors = majors.Errors
             };
-            if (Majors.IsValidated)
-                return MajorsDTO;
+            if (majors.IsValidated)
+                return Ok(majorsDTO);
             else
             {
-                throw new BadRequestException(MajorsDTO);
+                return BadRequest(majorsDTO);
             }
         }
 
-        private Majors ConvertDTOtoBO(MajorsDTO MajorsDTO)
+        private Majors ConvertDTOtoBO(MajorsDTO majorsDTO)
         {
-            Majors Majors = new Majors
+            Majors majors = new Majors
             {
-                Id = MajorsDTO.Id ?? Guid.Empty,
-                Code = MajorsDTO.Code,
-                Name = MajorsDTO.Name,
+                Id = majorsDTO.Id ?? Guid.Empty,
+                Code = majorsDTO.Code,
+                Name = majorsDTO.Name,
             };
-            return Majors;
+            return majors;
         }
     }
 }

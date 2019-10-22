@@ -37,12 +37,14 @@ namespace TwelveFinal.Services.MRegister
             IsValid &= await ValidateStudyAtHighSchool(registerInformation);
             IsValid &= await ValidateClusterContest(registerInformation);
             IsValid &= await ValidateRegisterPlaceOfExam(registerInformation);
+            IsValid &= await ValidateLanguages(registerInformation);
             return IsValid;
         }
 
         private async Task<bool> ValidateStudyAtHighSchool(RegisterInformation registerInformation)
         {
-            if(registerInformation.StudyAtHighSchool == null)
+            //Kiểm tra StudyAtHighSchool
+            if (registerInformation.StudyAtHighSchool == null)
             {
                 registerInformation.AddError(nameof(RegisterInformationValidator), nameof(registerInformation.StudyAtHighSchool), ErrorCode.Invalid);
                 return registerInformation.IsValidated;
@@ -53,6 +55,7 @@ namespace TwelveFinal.Services.MRegister
 
         private async Task<bool> ValidateClusterContest(RegisterInformation registerInformation)
         {
+            //Kiểm tra cụm dự thi
             if (string.IsNullOrEmpty(registerInformation.ClusterContestCode))
             {
                 registerInformation.AddError(nameof(RegisterInformationValidator), nameof(registerInformation.ClusterContestCode), ErrorCode.Invalid);
@@ -75,6 +78,7 @@ namespace TwelveFinal.Services.MRegister
 
         private async Task<bool> ValidateRegisterPlaceOfExam(RegisterInformation registerInformation)
         {
+            //Kiểm tra nơi đăng ký dự thi
             if (string.IsNullOrEmpty(registerInformation.RegisterPlaceOfExamCode))
             {
                 registerInformation.AddError(nameof(RegisterInformationValidator), nameof(registerInformation.RegisterPlaceOfExamCode), ErrorCode.Invalid);
@@ -97,6 +101,7 @@ namespace TwelveFinal.Services.MRegister
 
         private async Task<bool> ValidateLanguages(RegisterInformation registerInformation)
         {
+            //Kiểm tra kí hiệu ngoại ngữ
             List<string> Languages = new List<string> { "N1", "N2", "N3", "N4", "N5", "N6" };
 
             if(!string.IsNullOrEmpty(registerInformation.Languages) && !Languages.Contains(registerInformation.Languages))

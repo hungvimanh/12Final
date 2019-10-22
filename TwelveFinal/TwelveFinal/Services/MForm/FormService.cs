@@ -46,6 +46,9 @@ namespace TwelveFinal.Services.MForm
 
         public async Task<Form> Save(Form form)
         {
+            //Nếu Form chưa tồn tại với user
+            //Tạo mới form
+            //Update nếu form đã tồn tại
             if (!await FormValidator.Save(form))
                 return await Create(form);
             return await Update(form);

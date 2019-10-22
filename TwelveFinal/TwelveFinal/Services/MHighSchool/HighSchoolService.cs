@@ -11,6 +11,7 @@ namespace TwelveFinal.Services.MHighSchool
     {
         Task<HighSchool> Create(HighSchool HighSchool);
         Task<HighSchool> Get(Guid Id);
+        Task<List<HighSchool>> List(HighSchoolFilter highSchoolFilter);
         Task<HighSchool> Update(HighSchool HighSchool);
         Task<HighSchool> Delete(HighSchool HighSchool);
     }
@@ -64,6 +65,11 @@ namespace TwelveFinal.Services.MHighSchool
                 await UOW.Rollback();
                 throw new MessageException(ex);
             }
+        }
+
+        public async Task<List<HighSchool>> List(HighSchoolFilter highSchoolFilter)
+        {
+            return await UOW.HighSchoolRepository.List(highSchoolFilter);
         }
 
         public async Task<HighSchool> Get(Guid Id)

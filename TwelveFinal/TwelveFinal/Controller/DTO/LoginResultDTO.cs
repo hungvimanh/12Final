@@ -5,11 +5,10 @@ using System.Threading.Tasks;
 
 namespace TwelveFinal.Controller.DTO
 {
-    public class UserDTO : DataDTO
+    public class LoginResultDTO
     {
-        public Guid Id { get; set; }
         public string Username { get; set; }
-        public string Password { get; set; }
-        public bool IsAdmin { get; set; }
+        public string Token { get; set; }
+        public DateTime? ExpiredTime { get; set; }
     }
 }

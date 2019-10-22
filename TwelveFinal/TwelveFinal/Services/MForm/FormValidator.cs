@@ -34,6 +34,7 @@ namespace TwelveFinal.Services.MForm
 
         private async Task<bool> IsExisted(Form form)
         {
+            //Kiểm tra Form đã tồn tại hay chưa?
             if(await UOW.FormRepository.Get(form.Id) == null)
             {
                 return false;

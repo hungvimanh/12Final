@@ -51,6 +51,7 @@ namespace TwelveFinal.Services.MSubjectGroup
 
         private async Task<bool> IsExisted(SubjectGroup subjectGroup)
         {
+            //Kiểm tra Khối xét tuyển đã tồn tại chưa?
             if (await UOW.SubjectGroupRepository.Get(subjectGroup.Id) == null)
             {
                 subjectGroup.AddError(nameof(SubjectGroupValidator), nameof(subjectGroup.Name), ErrorCode.NotExisted);
@@ -60,6 +61,7 @@ namespace TwelveFinal.Services.MSubjectGroup
 
         private async Task<bool> CodeValidate(SubjectGroup subjectGroup)
         {
+            //Kiểm tra sự trùng lặp Code
             SubjectGroupFilter filter = new SubjectGroupFilter
             {
                 Id = new GuidFilter { NotEqual = subjectGroup.Id },

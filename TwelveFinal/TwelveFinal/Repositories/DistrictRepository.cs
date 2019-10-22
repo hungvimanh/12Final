@@ -84,7 +84,6 @@ namespace TwelveFinal.Repositories
         }
         private async Task<List<District>> DynamicSelect(IQueryable<DistrictDAO> query)
         {
-
             List<District> districts = await query.Select(q => new District()
             {
                 Id = q.Id,

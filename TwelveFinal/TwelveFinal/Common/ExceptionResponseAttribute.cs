@@ -25,6 +25,7 @@ namespace TwelveFinal
             }
             catch (Exception ex)
             {
+
                 await HandleExceptionAsync(context, ex);
             }
         }

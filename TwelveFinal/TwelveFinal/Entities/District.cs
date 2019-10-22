@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace TwelveFinal.Entities
 {
-    public class District : DataEntity
+    public class District : DataEntity  //Quận/Huyện
     {
         public Guid Id { get; set; }
-        public string Code { get; set; }
-        public string Name { get; set; }
-        public Guid ProvinceId { get; set; }
-        public string ProvinceCode { get; set; }
-        public string ProvinceName { get; set; }
-        public List<Town> Towns { get; set; }
+        public string Code { get; set; }    //Mã quận/huyện
+        public string Name { get; set; }    //Tên quận/huyện
+        public Guid ProvinceId { get; set; }    //Id tỉnh/ thành phố huyện đó trực thuộc
+        public string ProvinceCode { get; set; }    //Mã tỉnh
+        public string ProvinceName { get; set; }    //Tên tỉnh
+        public List<Town> Towns { get; set; }   //Danh sách các phường/xã đặc biệt khó khăn trực thuộc tỉnh
     }
 
     public class DistrictFilter : FilterEntity

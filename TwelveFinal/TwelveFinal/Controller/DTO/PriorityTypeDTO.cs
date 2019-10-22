@@ -15,5 +15,9 @@ namespace TwelveFinal.Controller.DTO
     {
         public GuidFilter Id { get; set; }
         public StringFilter Code { get; set; }
+        public PriorityTypeFilterDTO(): base()
+        {
+
+        }
     }
 }

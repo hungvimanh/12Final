@@ -51,6 +51,7 @@ namespace TwelveFinal.Services.MUniversity_Majors_Majors
 
         private async Task<bool> IsExisted(University_Majors university_Majors)
         {
+            //Kiểm tra sự tồn tại trong DB
             if (await UOW.University_MajorsRepository.Get(university_Majors) == null)
             {
                 university_Majors.AddError(nameof(University_MajorsValidator), nameof(university_Majors.MajorsName), ErrorCode.NotExisted);
@@ -60,6 +61,7 @@ namespace TwelveFinal.Services.MUniversity_Majors_Majors
 
         private async Task<bool> CodeValidate(University_Majors university_Majors)
         {
+            //Kiểm tra Code nhập vào đã tồn tại trong Db chưa
             University_MajorsFilter filter = new University_MajorsFilter
             {
                 MajorsId = university_Majors.MajorsId,

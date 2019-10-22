@@ -53,6 +53,7 @@ namespace TwelveFinal.Services.MHighSchool
 
         private async Task<bool> IsExisted(HighSchool highSchool)
         {
+            //Kiểm tra sự tồn tại trong DB
             if(await UOW.HighSchoolRepository.Get(highSchool.Id) == null)
             {
                 highSchool.AddError(nameof(HighSchoolValidator), nameof(highSchool.Name), ErrorCode.NotExisted);
@@ -62,6 +63,7 @@ namespace TwelveFinal.Services.MHighSchool
 
         private async Task<bool> CodeValidate(HighSchool highSchool)
         {
+            //Kiểm tra sự trùng lặp Code
             HighSchoolFilter filter = new HighSchoolFilter
             {
                 Id = new GuidFilter { NotEqual = highSchool.Id },
@@ -79,6 +81,7 @@ namespace TwelveFinal.Services.MHighSchool
 
         private async Task<bool> AreaValidate(HighSchool highSchool)
         {
+            //Kiểm tra khu vực có hợp lệ?
             AreaFilter filter = new AreaFilter
             {
                 Code = new StringFilter { Equal = highSchool.AreaCode }

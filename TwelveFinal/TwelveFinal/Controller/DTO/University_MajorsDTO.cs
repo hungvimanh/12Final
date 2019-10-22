@@ -36,6 +36,9 @@ namespace TwelveFinal.Controller.DTO
         public StringFilter SubjectGroupCode { get; set; }
         public StringFilter SubjectGroupName { get; set; }
         public string Year { get; set; }
-        
+        public University_MajorsFilterDTO() : base()
+        {
+
+        }
     }
 }

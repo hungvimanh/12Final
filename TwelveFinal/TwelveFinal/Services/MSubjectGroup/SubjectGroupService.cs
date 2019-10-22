@@ -9,11 +9,11 @@ namespace TwelveFinal.Services.MSubjectGroup
 {
     public interface ISubjectGroupService : IServiceScoped
     {
-        Task<SubjectGroup> Create(SubjectGroup SubjectGroup);
+        Task<SubjectGroup> Create(SubjectGroup subjectGroup);
         Task<SubjectGroup> Get(Guid Id);
-        Task<List<SubjectGroup>> List(SubjectGroupFilter SubjectGroupFilter);
-        Task<SubjectGroup> Update(SubjectGroup SubjectGroup);
-        Task<SubjectGroup> Delete(SubjectGroup SubjectGroup);
+        Task<List<SubjectGroup>> List(SubjectGroupFilter subjectGroupFilter);
+        Task<SubjectGroup> Update(SubjectGroup subjectGroup);
+        Task<SubjectGroup> Delete(SubjectGroup subjectGroup);
     }
     public class SubjectGroupService : ISubjectGroupService
     {
@@ -29,18 +29,18 @@ namespace TwelveFinal.Services.MSubjectGroup
             this.SubjectGroupValidator = SubjectGroupValidator;
         }
 
-        public async Task<SubjectGroup> Create(SubjectGroup SubjectGroup)
+        public async Task<SubjectGroup> Create(SubjectGroup subjectGroup)
         {
-            SubjectGroup.Id = Guid.NewGuid();
-            if (!await SubjectGroupValidator.Create(SubjectGroup))
-                return SubjectGroup;
+            subjectGroup.Id = Guid.NewGuid();
+            if (!await SubjectGroupValidator.Create(subjectGroup))
+                return subjectGroup;
 
             try
             {
                 await UOW.Begin();
-                await UOW.SubjectGroupRepository.Create(SubjectGroup);
+                await UOW.SubjectGroupRepository.Create(subjectGroup);
                 await UOW.Commit();
-                return await Get(SubjectGroup.Id);
+                return await Get(subjectGroup.Id);
             }
             catch (Exception ex)
             {
@@ -49,17 +49,17 @@ namespace TwelveFinal.Services.MSubjectGroup
             }
         }
 
-        public async Task<SubjectGroup> Delete(SubjectGroup SubjectGroup)
+        public async Task<SubjectGroup> Delete(SubjectGroup subjectGroup)
         {
-            if (!await SubjectGroupValidator.Delete(SubjectGroup))
-                return SubjectGroup;
+            if (!await SubjectGroupValidator.Delete(subjectGroup))
+                return subjectGroup;
 
             try
             {
                 await UOW.Begin();
-                await UOW.SubjectGroupRepository.Delete(SubjectGroup.Id);
+                await UOW.SubjectGroupRepository.Delete(subjectGroup.Id);
                 await UOW.Commit();
-                return await Get(SubjectGroup.Id);
+                return subjectGroup;
             }
             catch (Exception ex)
             {
@@ -71,26 +71,26 @@ namespace TwelveFinal.Services.MSubjectGroup
         public async Task<SubjectGroup> Get(Guid Id)
         {
             if (Id == Guid.Empty) return null;
-            SubjectGroup SubjectGroup = await UOW.SubjectGroupRepository.Get(Id);
-            return SubjectGroup;
+            SubjectGroup subjectGroup = await UOW.SubjectGroupRepository.Get(Id);
+            return subjectGroup;
         }
 
-        public async Task<List<SubjectGroup>> List(SubjectGroupFilter SubjectGroupFilter)
+        public async Task<List<SubjectGroup>> List(SubjectGroupFilter subjectGroupFilter)
         {
-            return await UOW.SubjectGroupRepository.List(SubjectGroupFilter);
+            return await UOW.SubjectGroupRepository.List(subjectGroupFilter);
         }
 
-        public async Task<SubjectGroup> Update(SubjectGroup SubjectGroup)
+        public async Task<SubjectGroup> Update(SubjectGroup subjectGroup)
         {
-            if (!await SubjectGroupValidator.Update(SubjectGroup))
-                return SubjectGroup;
+            if (!await SubjectGroupValidator.Update(subjectGroup))
+                return subjectGroup;
 
             try
             {
                 await UOW.Begin();
-                await UOW.SubjectGroupRepository.Update(SubjectGroup);
+                await UOW.SubjectGroupRepository.Update(subjectGroup);
                 await UOW.Commit();
-                return await Get(SubjectGroup.Id);
+                return await Get(subjectGroup.Id);
             }
             catch (Exception ex)
             {

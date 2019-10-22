@@ -6,26 +6,30 @@ using System.Threading.Tasks;
 using TwelveFinal.Controller.DTO;
 using TwelveFinal.Entities;
 using TwelveFinal.Services.MAreaService;
+using TwelveFinal.Services.MDistrict;
 using TwelveFinal.Services.MEthnic;
 using TwelveFinal.Services.MForm;
 using TwelveFinal.Services.MGraduation;
+using TwelveFinal.Services.MHighSchool;
 using TwelveFinal.Services.MPersonal;
 using TwelveFinal.Services.MPriorityType;
+using TwelveFinal.Services.MProvince;
 using TwelveFinal.Services.MRegister;
+using TwelveFinal.Services.MTown;
 using TwelveFinal.Services.MUniversity_Majors_Majors;
 using TwelveFinal.Services.MUniversityAdmission;
 
 namespace TwelveFinal.Controller.form
 {
-    public class FormRoute
+    public class FormRoute : Root
     {
-        public const string Default = "api/TF/form";
+        public const string Default = Base + "/form";
         public const string Save = Default + "/save";
         public const string Get = Default + "/get";
-        public const string CheckPersonal = Default + "/check-personal";
-        public const string CheckRegister = Default + "/check-register";
-        public const string CheckGraduate = Default + "/check-graduate";
-        public const string CheckUniversity = Default + "/check-university";
+        public const string DropListProvince = Default + "/province";
+        public const string DropListDistrict = Default + "/district";
+        public const string DropListTown = Default + "/town";
+        public const string DropListHighSchool = Default + "/high-school";
         public const string DropListEthnic = Default + "/drop-list-ethnic";
         public const string DropListPriorityType = Default + "/drop-list-priority-type";
         public const string DropListArea = Default + "/drop-list-area";
@@ -33,43 +37,43 @@ namespace TwelveFinal.Controller.form
         public const string Delete = Default + "/delete";
     }
 
-    public class FormController : ControllerBase
+    public class FormController : ApiController
     {
         private IFormService FormService;
         private IAreaService AreaService;
+        private IProvinceService ProvinceService;
+        private IDistrictService DistrictService;
+        private ITownService TownService;
+        private IHighSchoolService HighSchoolService;
         private IEthnicService EthnicService;
-        private IPersonalInformationService PeronalInformationService;
         private IPriorityTypeService PriorityTypeService;
-        private IRegisterInformationService RegisterInformationService;
-        private IGraduationInformationService GraduationInformationService;
         private IUniversity_MajorsService University_MajorsService;
-        private IUniversityAdmissionService UniversityAdmissionService;
         public FormController(
             IFormService formService,
             IAreaService areaService,
+            IProvinceService provinceService,
+            IDistrictService districtService,
+            ITownService townService,
+            IHighSchoolService highSchoolService,
             IEthnicService ethnicService,
-            IPersonalInformationService peronalInformationService,
             IPriorityTypeService priorityTypeService,
-            IRegisterInformationService registerInformationService,
-            IGraduationInformationService graduationInformationService,
-            IUniversity_MajorsService university_MajorsService,
-            IUniversityAdmissionService universityAdmissionService
+            IUniversity_MajorsService university_MajorsService
             )
         {
             FormService = formService;
+            ProvinceService = provinceService;
+            DistrictService = districtService;
+            TownService = townService;
+            HighSchoolService = highSchoolService;
             AreaService = areaService;
             EthnicService = ethnicService;
-            PeronalInformationService = peronalInformationService;
             PriorityTypeService = priorityTypeService;
-            RegisterInformationService = registerInformationService;
-            GraduationInformationService = graduationInformationService;
             University_MajorsService = university_MajorsService;
-            UniversityAdmissionService = universityAdmissionService;
         }
 
         #region Save
         [Route(FormRoute.Save), HttpPost]
-        public async Task<FormDTO> Save([FromBody] FormDTO formDTO)
+        public async Task<ActionResult<FormDTO>> Save([FromBody] FormDTO formDTO)
         {
             if (formDTO == null) formDTO = new FormDTO();
             Form form = await ConvertDTOtoBO(formDTO);
@@ -176,29 +180,29 @@ namespace TwelveFinal.Controller.form
                     SubjectGroupId = m.SubjectGroupId,
                     SubjectGroupCode = m.SubjectGroupCode,
                     SubjectGroupName = m.SubjectGroupName
-                }).ToList()
+                }).ToList(),
+                Errors = form.Errors
             };
 
             if (form.IsValidated)
             {
-                return formDTO;
+                return Ok(formDTO);
             }
             else
             {
-                formDTO.Id = null;
-                throw new BadRequestException(formDTO);
+                return BadRequest(formDTO);
             }
         }
         #endregion
 
         #region Get
         [Route(FormRoute.Get), HttpPost]
-        public async Task<FormDTO> Get([FromBody] FormDTO formDTO)
+        public async Task<FormDTO> Get([FromBody] UserDTO userDTO)
         {
-            if (formDTO == null) formDTO = new FormDTO();
-            Form form = await ConvertDTOtoBO(formDTO);
+            if (userDTO == null) userDTO = new UserDTO();
+            Form form = new Form { UserId = userDTO.Id };
 
-            form = await FormService.Get(form.Id);
+            form = await FormService.Get(form.UserId);
             return new FormDTO
             {
                 Id = form.Id,
@@ -285,7 +289,7 @@ namespace TwelveFinal.Controller.form
                 Connected = form.UniversityAdmission.Connected,
                 GraduateYear = form.UniversityAdmission.GraduateYear,
                 PriorityType = form.UniversityAdmission.PriorityType,
-                FormDetails = formDTO.FormDetails.Select(m => new FormDetailDTO
+                FormDetails = form.UniversityAdmission.FormDetails.Select(m => new FormDetailDTO
                 {
                     Id = m.Id,
                     FormId = m.FormId,
@@ -304,305 +308,97 @@ namespace TwelveFinal.Controller.form
         }
         #endregion
 
-        #region Personal
-        [Route(FormRoute.CheckPersonal), HttpPost]
-        public async Task<PersonalInformationDTO> UpdatePersonal([FromBody] PersonalInformationDTO personalInformationDTO)
+        #region DropListProvince
+        [Route(FormRoute.DropListProvince), HttpPost]
+        public async Task<List<ProvinceDTO>> ListProvince([FromBody] ProvinceFilterDTO provinceFilterDTO)
         {
-            if (personalInformationDTO == null) personalInformationDTO = new PersonalInformationDTO();
-            
-            PersonalInformation personal = new PersonalInformation
+            ProvinceFilter provinceFilter = new ProvinceFilter
             {
-                Id = personalInformationDTO.Id,
-                DepartmentCode = personalInformationDTO.DepartmentCode,
-                NumberForm = personalInformationDTO.NumberForm,
-                Date = personalInformationDTO.Date,
-
-                FullName = personalInformationDTO.FullName,
-                Dob = personalInformationDTO.Dob,
-                Gender = personalInformationDTO.Gender,
-                Identify = personalInformationDTO.Identify,
-                PlaceOfBirth = personalInformationDTO.PlaceOfBirth,
-                TownId = personalInformationDTO.TownId,
-                TownCode = personalInformationDTO.TownCode,
-                TownName = personalInformationDTO.TownName,
-                DistrictCode = personalInformationDTO.DistrictCode,
-                DistrictName = personalInformationDTO.DistrictName,
-                ProvinceCode = personalInformationDTO.ProvinceCode,
-                ProvinceName = personalInformationDTO.ProvinceName,
-                Address = personalInformationDTO.Address,
-                Phone = personalInformationDTO.Phone,
-                Email = personalInformationDTO.Email,
-                Ethnic = personalInformationDTO.Ethnic,
-                Grade12Name = personalInformationDTO.Grade12Name,
-                HighSchoolGrade10Id = personalInformationDTO.HighSchoolGrade10Id,
-                HighSchoolGrade10Code = personalInformationDTO.HighSchoolGrade10Code,
-                HighSchoolGrade10Name = personalInformationDTO.HighSchoolGrade10Name,
-                HighSchoolGrade10DistrictCode = personalInformationDTO.HighSchoolGrade10DistrictCode,
-                HighSchoolGrade10DistrictName = personalInformationDTO.HighSchoolGrade10DistrictName,
-                HighSchoolGrade10ProvinceCode = personalInformationDTO.HighSchoolGrade10ProvinceCode,
-                HighSchoolGrade10ProvinceName = personalInformationDTO.HighSchoolGrade10ProvinceName,
-                HighSchoolGrade11Id = personalInformationDTO.HighSchoolGrade11Id,
-                HighSchoolGrade11Code = personalInformationDTO.HighSchoolGrade11Code,
-                HighSchoolGrade11Name = personalInformationDTO.HighSchoolGrade11Name,
-                HighSchoolGrade11DistrictCode = personalInformationDTO.HighSchoolGrade11DistrictCode,
-                HighSchoolGrade11DistrictName = personalInformationDTO.HighSchoolGrade11DistrictName,
-                HighSchoolGrade11ProvinceCode = personalInformationDTO.HighSchoolGrade11ProvinceCode,
-                HighSchoolGrade11ProvinceName = personalInformationDTO.HighSchoolGrade11ProvinceName,
-                HighSchoolGrade12Id = personalInformationDTO.HighSchoolGrade12Id,
-                HighSchoolGrade12Code = personalInformationDTO.HighSchoolGrade12Code,
-                HighSchoolGrade12Name = personalInformationDTO.HighSchoolGrade12Name,
-                HighSchoolGrade12DistrictCode = personalInformationDTO.HighSchoolGrade12DistrictCode,
-                HighSchoolGrade12DistrictName = personalInformationDTO.HighSchoolGrade12DistrictName,
-                HighSchoolGrade12ProvinceCode = personalInformationDTO.HighSchoolGrade12ProvinceCode,
-                HighSchoolGrade12ProvinceName = personalInformationDTO.HighSchoolGrade12ProvinceName,
-                IsPermanentResidenceMore18 = personalInformationDTO.IsPermanentResidenceMore18,
-                IsPermanentResidenceSpecialMore18 = personalInformationDTO.IsPermanentResidenceSpecialMore18,
+                Id = provinceFilterDTO.Id,
+                Code = provinceFilterDTO.Code,
+                Name = provinceFilterDTO.Name
             };
 
-            personal = await PeronalInformationService.Check(personal);
-
-            personalInformationDTO = new PersonalInformationDTO
+            var listProvince = await ProvinceService.List(provinceFilter);
+            if (listProvince == null) return null;
+            return listProvince.Select(p => new ProvinceDTO
             {
-                Id = personal.Id,
-                NumberForm = personal.NumberForm,
-                DepartmentCode = personal.DepartmentCode,
-                Date = personal.Date,
-                
-                FullName = personal.FullName,
-                Dob = personal.Dob,
-                Gender = personal.Gender,
-                Identify = personal.Identify,
-                PlaceOfBirth = personal.PlaceOfBirth,
-                TownId = personal.TownId,
-                TownCode = personal.TownCode,
-                TownName = personal.TownName,
-                DistrictCode = personal.DistrictCode,
-                DistrictName = personal.DistrictName,
-                ProvinceCode = personal.ProvinceCode,
-                ProvinceName = personal.ProvinceName,
-                Address = personal.Address,
-                Phone = personal.Phone,
-                Email = personal.Email,
-                Ethnic = personal.Ethnic,
-                Grade12Name = personal.Grade12Name,
-                HighSchoolGrade10Id = personal.HighSchoolGrade10Id,
-                HighSchoolGrade10Code = personal.HighSchoolGrade10Code,
-                HighSchoolGrade10Name = personal.HighSchoolGrade10Name,
-                HighSchoolGrade10DistrictCode = personal.HighSchoolGrade10DistrictCode,
-                HighSchoolGrade10DistrictName = personal.HighSchoolGrade10DistrictName,
-                HighSchoolGrade10ProvinceCode = personal.HighSchoolGrade10ProvinceCode,
-                HighSchoolGrade10ProvinceName = personal.HighSchoolGrade10ProvinceName,
-                HighSchoolGrade11Id = personal.HighSchoolGrade11Id,
-                HighSchoolGrade11Code = personal.HighSchoolGrade11Code,
-                HighSchoolGrade11Name = personal.HighSchoolGrade11Name,
-                HighSchoolGrade11DistrictCode = personal.HighSchoolGrade11DistrictCode,
-                HighSchoolGrade11DistrictName = personal.HighSchoolGrade11DistrictName,
-                HighSchoolGrade11ProvinceCode = personal.HighSchoolGrade11ProvinceCode,
-                HighSchoolGrade11ProvinceName = personal.HighSchoolGrade11ProvinceName,
-                HighSchoolGrade12Id = personal.HighSchoolGrade12Id,
-                HighSchoolGrade12Code = personal.HighSchoolGrade12Code,
-                HighSchoolGrade12Name = personal.HighSchoolGrade12Name,
-                HighSchoolGrade12DistrictCode = personal.HighSchoolGrade12DistrictCode,
-                HighSchoolGrade12DistrictName = personal.HighSchoolGrade12DistrictName,
-                HighSchoolGrade12ProvinceCode = personal.HighSchoolGrade12ProvinceCode,
-                HighSchoolGrade12ProvinceName = personal.HighSchoolGrade12ProvinceName,
-                IsPermanentResidenceMore18 = personal.IsPermanentResidenceMore18,
-                IsPermanentResidenceSpecialMore18 = personal.IsPermanentResidenceSpecialMore18
-            };
-
-            if (personal.IsValidated)
-            {
-                return personalInformationDTO;
-            }
-            else
-            {
-                throw new BadRequestException(personalInformationDTO);
-            }
+                Id = p.Id,
+                Code = p.Code,
+                Name = p.Name
+            }).ToList();
         }
         #endregion
 
-        #region Register
-        [Route(FormRoute.CheckRegister), HttpPost]
-        public async Task<RegisterInformationDTO> UpdateRegister([FromBody] RegisterInformationDTO registerInformationDTO)
+        #region DropListDistrict
+        [Route(FormRoute.DropListDistrict), HttpPost]
+        public async Task<List<DistrictDTO>> ListDistrict([FromBody] DistrictFilterDTO districtFilterDTO)
         {
-            if (registerInformationDTO == null) registerInformationDTO = new RegisterInformationDTO();
-            RegisterInformation register = new RegisterInformation
+            DistrictFilter districtFilter = new DistrictFilter
             {
-                Id = registerInformationDTO.Id,
-                ResultForUniversity = registerInformationDTO.ResultForUniversity,
-                StudyAtHighSchool = registerInformationDTO.StudyAtHighSchool,
-                ClusterContestId = registerInformationDTO.ClusterContestId,
-                ClusterContestCode = registerInformationDTO.ClusterContestCode,
-                ClusterContestName = registerInformationDTO.ClusterContestName,
-                RegisterPlaceOfExamId = registerInformationDTO.RegisterPlaceOfExamId,
-                RegisterPlaceOfExamCode = registerInformationDTO.RegisterPlaceOfExamCode,
-                RegisterPlaceOfExamName = registerInformationDTO.RegisterPlaceOfExamName,
-                Biology = registerInformationDTO.Biology,
-                Chemistry = registerInformationDTO.Chemistry,
-                CivicEducation = registerInformationDTO.CivicEducation,
-                Geography = registerInformationDTO.Geography,
-                History = registerInformationDTO.History,
-                Languages = registerInformationDTO.Languages,
-                Literature = registerInformationDTO.Literature,
-                Maths = registerInformationDTO.Maths,
-                NaturalSciences = registerInformationDTO.NaturalSciences,
-                Physics = registerInformationDTO.Physics,
-                SocialSciences = registerInformationDTO.SocialSciences,
-                Graduated = registerInformationDTO.Graduated,
-                
+                Id = districtFilterDTO.Id,
+                Code = districtFilterDTO.Code,
+                Name = districtFilterDTO.Name,
+                ProvinceId = districtFilterDTO.ProvinceId
             };
 
-            register = await RegisterInformationService.Check(register);
-
-            registerInformationDTO = new RegisterInformationDTO
+            var listDistrict = await DistrictService.List(districtFilter);
+            if (listDistrict == null) return null;
+            return listDistrict.Select(p => new DistrictDTO
             {
-                Id = register.Id,
-                ResultForUniversity = register.ResultForUniversity,
-                StudyAtHighSchool = register.StudyAtHighSchool,
-                ClusterContestId = register.ClusterContestId,
-                ClusterContestCode = register.ClusterContestCode,
-                ClusterContestName = register.ClusterContestName,
-                RegisterPlaceOfExamId = register.RegisterPlaceOfExamId,
-                RegisterPlaceOfExamCode = register.RegisterPlaceOfExamCode,
-                RegisterPlaceOfExamName = register.RegisterPlaceOfExamName,
-                Biology = register.Biology,
-                Chemistry = register.Chemistry,
-                CivicEducation = register.CivicEducation,
-                Geography = register.Geography,
-                History = register.History,
-                Languages = register.Languages,
-                Literature = register.Literature,
-                Maths = register.Maths,
-                NaturalSciences = register.NaturalSciences,
-                Physics = register.Physics,
-                SocialSciences = register.SocialSciences,
-                Graduated = register.Graduated
-            };
-
-            if (register.IsValidated)
-            {
-                return registerInformationDTO;
-            }
-            else
-            {
-                throw new BadRequestException(registerInformationDTO);
-            }
+                Id = p.Id,
+                Code = p.Code,
+                Name = p.Name,
+                ProvinceId = p.ProvinceId
+            }).ToList();
         }
         #endregion
 
-        #region Graduation
-        [Route(FormRoute.CheckGraduate), HttpPost]
-        public async Task<GraduationInformationDTO> UpdateGraduate([FromBody] GraduationInformationDTO graduationInformationDTO)
+        #region DropListTown
+        [Route(FormRoute.DropListTown), HttpPost]
+        public async Task<List<TownDTO>> ListTown([FromBody] TownFilterDTO townFilterDTO)
         {
-            if (graduationInformationDTO == null) graduationInformationDTO = new GraduationInformationDTO();
-            GraduationInformation graduation = new GraduationInformation
+            TownFilter townFilter = new TownFilter
             {
-                Id = graduationInformationDTO.Id,
-                ExceptLanguages = graduationInformationDTO.ExceptLanguages,
-                Mark = graduationInformationDTO.Mark,
-                ReserveBiology = graduationInformationDTO.ReserveBiology,
-                ReserveChemistry = graduationInformationDTO.ReserveChemistry,
-                ReserveCivicEducation = graduationInformationDTO.ReserveCivicEducation,
-                ReserveGeography = graduationInformationDTO.ReserveGeography,
-                ReserveHistory = graduationInformationDTO.ReserveHistory,
-                ReserveLanguages = graduationInformationDTO.ReserveLanguages,
-                ReserveLiterature = graduationInformationDTO.ReserveLiterature,
-                ReserveMaths = graduationInformationDTO.ReserveMaths,
-                ReservePhysics = graduationInformationDTO.ReservePhysics,
+                Id = townFilterDTO.Id,
+                Code = townFilterDTO.Code,
+                Name = townFilterDTO.Name,
+                DistrictId = townFilterDTO.DistrictId
             };
 
-            graduation = await GraduationInformationService.Check(graduation);
-
-            graduationInformationDTO = new GraduationInformationDTO
+            var listTown = await TownService.List(townFilter);
+            if (listTown == null) return null;
+            return listTown.Select(t => new TownDTO
             {
-                Id = graduation.Id,
-                ExceptLanguages = graduation.ExceptLanguages,
-                Mark = graduation.Mark,
-                ReserveBiology = graduation.ReserveBiology,
-                ReserveChemistry = graduation.ReserveChemistry,
-                ReserveCivicEducation = graduation.ReserveCivicEducation,
-                ReserveGeography = graduation.ReserveGeography,
-                ReserveHistory = graduation.ReserveHistory,
-                ReserveLanguages = graduation.ReserveLanguages,
-                ReserveLiterature = graduation.ReserveLiterature,
-                ReserveMaths = graduation.ReserveMaths,
-                ReservePhysics = graduation.ReservePhysics
-            };
-
-            if (graduation.IsValidated)
-            {
-                return graduationInformationDTO;
-            }
-            else
-            {
-                throw new BadRequestException(graduationInformationDTO);
-            }
+                Id = t.Id,
+                Code = t.Code,
+                Name = t.Name,
+                DistrictId = t.DistrictId
+            }).ToList();
         }
         #endregion
 
-        #region University
-        [Route(FormRoute.CheckUniversity), HttpPost]
-        public async Task<UniversityAdmissionDTO> UpdateUniversity([FromBody] UniversityAdmissionDTO universityAdmissionDTO)
+        #region DropListHighSchool
+        [Route(FormRoute.DropListHighSchool), HttpPost]
+        public async Task<List<HighSchoolDTO>> ListHighSchool([FromBody] HighSchoolFilterDTO highSchoolFilterDTO)
         {
-            if (universityAdmissionDTO == null) universityAdmissionDTO = new UniversityAdmissionDTO();
-            UniversityAdmission university = new UniversityAdmission
+            HighSchoolFilter highSchoolFilter = new HighSchoolFilter
             {
-                Id = universityAdmissionDTO.Id,
-                Area = universityAdmissionDTO.Area,
-                Connected = universityAdmissionDTO.Connected,
-                GraduateYear = universityAdmissionDTO.GraduateYear,
-                PriorityType = universityAdmissionDTO.PriorityType,
-                FormDetails = universityAdmissionDTO.FormDetailDTOs.Select(m => new FormDetail
-                {
-                    Id = m.Id ?? Guid.Empty,
-                    FormId = m.FormId,
-                    MajorsCode = m.MajorsCode,
-                    MajorsId = m.MajorsId,
-                    MajorsName = m.MajorsName,
-                    UniversityId = m.UniversityId,
-                    UniversityCode = m.UniversityCode,
-                    UniversityName = m.UniversityName,
-                    UniversityAddress = m.UniversityAddress,
-                    SubjectGroupId = m.SubjectGroupId,
-                    SubjectGroupCode = m.SubjectGroupCode,
-                    SubjectGroupName = m.SubjectGroupName
-                }).ToList()
+                Id = highSchoolFilterDTO.Id,
+                Code = highSchoolFilterDTO.Code,
+                Name = highSchoolFilterDTO.Name,
+                DistrictId = highSchoolFilterDTO.DistrictId
             };
 
-            university = await UniversityAdmissionService.Check(university);
-
-            universityAdmissionDTO = new UniversityAdmissionDTO
+            var listHighSchool = await HighSchoolService.List(highSchoolFilter);
+            if (listHighSchool == null) return null;
+            return listHighSchool.Select(t => new HighSchoolDTO
             {
-                Id = university.Id,
-                Area = universityAdmissionDTO.Area,
-                Connected = universityAdmissionDTO.Connected,
-                GraduateYear = universityAdmissionDTO.GraduateYear,
-                PriorityType = universityAdmissionDTO.PriorityType,
-                FormDetailDTOs = universityAdmissionDTO.FormDetailDTOs.Select(m => new FormDetailDTO
-                {
-                    Id = m.Id,
-                    FormId = m.FormId,
-                    MajorsCode = m.MajorsCode,
-                    MajorsId = m.MajorsId,
-                    MajorsName = m.MajorsName,
-                    UniversityId = m.UniversityId,
-                    UniversityCode = m.UniversityCode,
-                    UniversityName = m.UniversityName,
-                    UniversityAddress = m.UniversityAddress,
-                    SubjectGroupId = m.SubjectGroupId,
-                    SubjectGroupCode = m.SubjectGroupCode,
-                    SubjectGroupName = m.SubjectGroupName
-                }).ToList()
-            };
-
-            if (university.IsValidated)
-            {
-                return universityAdmissionDTO;
-            }
-            else
-            {
-                throw new BadRequestException(universityAdmissionDTO);
-            }
+                Id = t.Id,
+                Code = t.Code,
+                Name = t.Name,
+                DistrictId = t.DistrictId
+            }).ToList();
         }
         #endregion
 
@@ -644,7 +440,7 @@ namespace TwelveFinal.Controller.form
             {
                 Id = p.Id,
                 Code = p.Code
-            }).ToList();
+            }).OrderBy(p => p.Code).ToList();
         }
         #endregion
 

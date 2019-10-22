@@ -60,6 +60,7 @@ namespace TwelveFinal.Services.MPersonal
 
         private async Task<bool> ValidateDepartmentCode(PersonalInformation personalInformation)
         {
+            //Kiểm tra mã sở GD DT
             ProvinceFilter filter = new ProvinceFilter
             {
                 Code = new StringFilter { Equal = personalInformation.DepartmentCode }
@@ -75,6 +76,7 @@ namespace TwelveFinal.Services.MPersonal
 
         private async Task<bool> ValidateDate(PersonalInformation personalInformation)
         {
+            //Kiểm tra ngày viết phiếu
             if(personalInformation.Date == null || personalInformation.Date == default(DateTime))
             {
                 personalInformation.AddError(nameof(PersonalInformationValidator), nameof(personalInformation.Date), ErrorCode.Invalid);
@@ -84,6 +86,8 @@ namespace TwelveFinal.Services.MPersonal
 
         private async Task<bool> ValidateName(PersonalInformation personalInformation)
         {
+            //Kiểm tra họ và tên nhập hợp lệ
+            // tên phải được viết in hoa
             if (string.IsNullOrEmpty(personalInformation.FullName))
             {
                 personalInformation.AddError(nameof(PersonalInformationValidator), nameof(personalInformation.FullName), ErrorCode.Invalid);
@@ -101,6 +105,7 @@ namespace TwelveFinal.Services.MPersonal
 
         private async Task<bool> ValidateGender(PersonalInformation personalInformation)
         {
+            //Kiểm tra đã tick giới tính chưa?
             if(personalInformation.Gender == null)
             {
                 personalInformation.AddError(nameof(PersonalInformationValidator), nameof(personalInformation.Gender), ErrorCode.Invalid);
@@ -110,6 +115,7 @@ namespace TwelveFinal.Services.MPersonal
 
         private async Task<bool> ValidateDob(PersonalInformation personalInformation)
         {
+            //Kiểm tra ngày tháng năm sinh
             if(personalInformation.Dob == null || personalInformation.Dob == default(DateTime))
             {
                 personalInformation.AddError(nameof(PersonalInformationValidator), nameof(personalInformation.Dob), ErrorCode.Invalid);
@@ -119,6 +125,7 @@ namespace TwelveFinal.Services.MPersonal
 
         private async Task<bool> ValidateIdentify(PersonalInformation personalInformation)
         {
+            //Kiểm tra số CMND/Căn cước công dân
             if(string.IsNullOrEmpty(personalInformation.Identify))
             {
                 personalInformation.AddError(nameof(PersonalInformationValidator), nameof(personalInformation.Identify), ErrorCode.Invalid);
@@ -128,6 +135,7 @@ namespace TwelveFinal.Services.MPersonal
 
         private async Task<bool> ValidatePlateOfBirth(PersonalInformation personalInformation)
         {
+            //Kiểm tra nơi sinh có tồn tại?
             if (string.IsNullOrEmpty(personalInformation.PlaceOfBirth))
             {
                 personalInformation.AddError(nameof(PersonalInformationValidator), nameof(personalInformation.PlaceOfBirth), ErrorCode.Invalid);
@@ -148,6 +156,7 @@ namespace TwelveFinal.Services.MPersonal
 
         private async Task<bool> ValidateEthnic(PersonalInformation personalInformation)
         {
+            //Kiểm tra dân tộc có hợp lệ hay ko?
             if (string.IsNullOrEmpty(personalInformation.Ethnic))
             {
                 personalInformation.AddError(nameof(PersonalInformationValidator), nameof(personalInformation.Ethnic), ErrorCode.Invalid);
@@ -167,6 +176,7 @@ namespace TwelveFinal.Services.MPersonal
 
         private async Task<bool> ValidateGrade12Name(PersonalInformation personalInformation)
         {
+            //Tên lớp 12
             if (string.IsNullOrEmpty(personalInformation.Grade12Name))
             {
                 personalInformation.AddError(nameof(PersonalInformationValidator), nameof(personalInformation.Grade12Name), ErrorCode.Invalid);
@@ -176,6 +186,7 @@ namespace TwelveFinal.Services.MPersonal
 
         private async Task<bool> ValidateAddress(PersonalInformation personalInformation)
         {
+            //Kiểm tra địa chỉ
             if(string.IsNullOrEmpty(personalInformation.TownCode))
             {
                 personalInformation.AddError(nameof(PersonalInformationValidator), nameof(personalInformation.TownId), ErrorCode.Invalid);
@@ -184,6 +195,7 @@ namespace TwelveFinal.Services.MPersonal
 
             TownFilter filter = new TownFilter
             {
+                Id = new GuidFilter { Equal = personalInformation.TownId},
                 Code = new StringFilter { Equal = personalInformation.TownCode }
             };
             var count = await UOW.TownRepository.Count(filter);
@@ -204,6 +216,7 @@ namespace TwelveFinal.Services.MPersonal
 
         private async Task<bool> ValidateHighShool(PersonalInformation personalInformation)
         {
+            //Kiểm tra trường c3
             if(string.IsNullOrEmpty(personalInformation.HighSchoolGrade10Code))
             {
                 personalInformation.AddError(nameof(PersonalInformationValidator), nameof(personalInformation.HighSchoolGrade10Code), ErrorCode.Invalid);
@@ -257,6 +270,7 @@ namespace TwelveFinal.Services.MPersonal
 
         private async Task<bool> ValidatePhone(PersonalInformation personalInformation)
         {
+            //Kiểm tra số điện thoại
             if (string.IsNullOrEmpty(personalInformation.Phone))
             {
                 personalInformation.AddError(nameof(PersonalInformationValidator), nameof(personalInformation.Phone), ErrorCode.Invalid);
@@ -268,6 +282,7 @@ namespace TwelveFinal.Services.MPersonal
 
         private async Task<bool> ValidateEmail(PersonalInformation personalInformation)
         {
+            //Kiểm tra email
             if (string.IsNullOrEmpty(personalInformation.Email))
             {
                 personalInformation.AddError(nameof(PersonalInformationValidator), nameof(personalInformation.Email), ErrorCode.Invalid);

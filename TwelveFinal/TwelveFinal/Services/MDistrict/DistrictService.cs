@@ -11,6 +11,7 @@ namespace TwelveFinal.Services.MDistrict
     {
         Task<District> Create(District District);
         Task<District> Get(Guid Id);
+        Task<List<District>> List(DistrictFilter districtFilter);
         Task<District> Update(District District);
         Task<District> Delete(District District);
     }
@@ -64,6 +65,11 @@ namespace TwelveFinal.Services.MDistrict
                 await UOW.Rollback();
                 throw new MessageException(ex);
             }
+        }
+
+        public async Task<List<District>> List(DistrictFilter districtFilter)
+        {
+            return await UOW.DistrictRepository.List(districtFilter);
         }
 
         public async Task<District> Get(Guid Id)

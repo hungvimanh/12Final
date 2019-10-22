@@ -33,6 +33,9 @@ namespace TwelveFinal.Services.MGraduation
 
         private async Task<bool> InputValidate(GraduationInformation graduationInformation)
         {
+            //Kiểm tra miễn thi ngoại ngữ
+            //Nếu chọn miễn thi ngoại ngữ
+            //Cần ghi tên chứng chỉ và số điểm
             if(!string.IsNullOrEmpty(graduationInformation.ExceptLanguages) && graduationInformation.ExceptLanguages.Length > 500)
             {
                 graduationInformation.AddError(nameof(GraduationInformationValidator), nameof(graduationInformation.ExceptLanguages), ErrorCode.Invalid);
@@ -43,6 +46,7 @@ namespace TwelveFinal.Services.MGraduation
                 graduationInformation.AddError(nameof(GraduationInformationValidator), nameof(graduationInformation.Mark), ErrorCode.Invalid);
             }
 
+            //Kiểm tra số điểm các môn bảo lưu nếu có 
             if(graduationInformation.ReserveMaths != null && !(graduationInformation.ReserveMaths >= 0 && graduationInformation.ReserveMaths <= 10))
             {
                 graduationInformation.AddError(nameof(GraduationInformationValidator), nameof(graduationInformation.ReserveMaths), ErrorCode.Invalid);

@@ -31,6 +31,7 @@ namespace TwelveFinal.Services.MDistrict
         {
             bool IsValid = true;
             IsValid &= await CodeValidate(district);
+            IsValid &= await ProvinceValidate(district);
             return IsValid;
         }
 
@@ -51,6 +52,7 @@ namespace TwelveFinal.Services.MDistrict
 
         private async Task<bool> IsExisted(District district)
         {
+            //Kiểm tra sự tồn tại trong DB
             if (await UOW.DistrictRepository.Get(district.Id) == null)
             {
                 district.AddError(nameof(DistrictValidator), nameof(district.Name), ErrorCode.NotExisted);
@@ -60,6 +62,7 @@ namespace TwelveFinal.Services.MDistrict
 
         private async Task<bool> CodeValidate(District district)
         {
+            //Kiểm tra sự trùng lặp Code
             DistrictFilter filter = new DistrictFilter
             {
                 Id = new GuidFilter { NotEqual = district.Id },
@@ -71,6 +74,23 @@ namespace TwelveFinal.Services.MDistrict
             if (count > 0)
             {
                 district.AddError(nameof(DistrictValidator), nameof(district.Code), ErrorCode.Duplicate);
+            }
+            return district.IsValidated;
+        }
+
+        private async Task<bool> ProvinceValidate(District district)
+        {
+            //Kiểm tra tỉnh/thành phố đã tồn tại hay chưa?
+            ProvinceFilter filter = new ProvinceFilter
+            {
+                Id = new GuidFilter { Equal = district.ProvinceId }
+            };
+
+            var count = await UOW.ProvinceRepository.Count(filter);
+            if(count == 0)
+            {
+                district.AddError(nameof(DistrictValidator), nameof(district.ProvinceName), ErrorCode.NotExisted);
+                return district.IsValidated;
             }
             return district.IsValidated;
         }

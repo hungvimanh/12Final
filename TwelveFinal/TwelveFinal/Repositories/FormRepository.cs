@@ -106,10 +106,11 @@ namespace TwelveFinal.Repositories
 
         public async Task<Form> Get(Guid Id)
         {
-            Form form = await tFContext.Form.Where(f => f.Id.Equals(Id)).Select(f => new Form
+            Form form = await tFContext.Form.Where(f => f.UserId.Equals(Id)).Select(f => new Form
             {
                 Id = f.Id,
-                
+                UserId = f.UserId,
+
                 PersonalInformation = new PersonalInformation
                 {
                     Id = f.Id,

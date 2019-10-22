@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace TwelveFinal.Entities
 {
-    public class Area : DataEntity
+    public class Area : DataEntity  //Khu vực tuyển sinh
     {
         public Guid Id { get; set; }
-        public string Code { get; set; }
-        public string Name { get; set; }
+        public string Code { get; set; }    //Mã khu vực
+        public string Name { get; set; }    //Tên khu vực
     }
 
     public class AreaFilter : FilterEntity

@@ -51,6 +51,7 @@ namespace TwelveFinal.Services.MProvince
 
         private async Task<bool> IsExisted(Province province)
         {
+            //Kiểm tra sự tồn tại
             if (await UOW.ProvinceRepository.Get(province.Id) == null)
             {
                 province.AddError(nameof(ProvinceValidator), nameof(province.Name), ErrorCode.NotExisted);
@@ -60,6 +61,7 @@ namespace TwelveFinal.Services.MProvince
 
         private async Task<bool> CodeValidate(Province province)
         {
+            //Kiểm tra sự trùng lặp Code
             ProvinceFilter filter = new ProvinceFilter
             {
                 Id = new GuidFilter { NotEqual = province.Id },

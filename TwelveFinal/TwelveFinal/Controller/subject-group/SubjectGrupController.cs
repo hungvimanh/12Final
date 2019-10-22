@@ -9,7 +9,7 @@ using TwelveFinal.Services.MSubjectGroup;
 
 namespace TwelveFinal.Controller.subject_group
 {
-    public class SubjectGrupRoute : ControllerBase
+    public class SubjectGrupRoute
     {
         public const string Default = "api/TF/subject-group";
         public const string Create = Default + "/create";
@@ -20,7 +20,7 @@ namespace TwelveFinal.Controller.subject_group
     }
 
     [ApiController]
-    public class SubjectGrupController
+    public class SubjectGrupController : ApiController
     {
         private ISubjectGroupService SubjectGrupService;
         public SubjectGrupController(ISubjectGroupService SubjectGrupService)
@@ -29,11 +29,9 @@ namespace TwelveFinal.Controller.subject_group
         }
 
         [Route(SubjectGrupRoute.Create), HttpPost]
-        public async Task<SubjectGroupDTO> Create([FromBody] SubjectGroupDTO subjectGroupDTO)
+        public async Task<ActionResult<SubjectGroupDTO>> Create([FromBody] SubjectGroupDTO subjectGroupDTO)
         {
             if (subjectGroupDTO == null) subjectGroupDTO = new SubjectGroupDTO();
-
-            if (subjectGroupDTO.Id == null || subjectGroupDTO.Id == Guid.Empty) return null;
 
             SubjectGroup subjectGroup = ConvertDTOtoBO(subjectGroupDTO);
 
@@ -42,15 +40,15 @@ namespace TwelveFinal.Controller.subject_group
             {
                 Id = subjectGroup.Id,
                 Code = subjectGroup.Code,
-                Name = subjectGroup.Name
+                Name = subjectGroup.Name,
+                Errors = subjectGroup.Errors
             };
 
             if (subjectGroup.IsValidated)
-                return subjectGroupDTO;
+                return Ok(subjectGroupDTO);
             else
             {
-                subjectGroupDTO.Id = null;
-                throw new BadRequestException(subjectGroupDTO);
+                return BadRequest(subjectGroupDTO);
             }
         }
 
@@ -59,16 +57,15 @@ namespace TwelveFinal.Controller.subject_group
         {
             if (subjectGroupDTO == null) subjectGroupDTO = new SubjectGroupDTO();
 
-            if (subjectGroupDTO.Id == null || subjectGroupDTO.Id == Guid.Empty) return null;
-
-            SubjectGroup subjectGroup = ConvertDTOtoBO(subjectGroupDTO);
+            SubjectGroup subjectGroup = new SubjectGroup { Id = subjectGroupDTO.Id ?? default};
 
             subjectGroup = await SubjectGrupService.Get(subjectGroup.Id);
             subjectGroupDTO = new SubjectGroupDTO
             {
                 Id = subjectGroup.Id,
                 Code = subjectGroup.Code,
-                Name = subjectGroup.Name
+                Name = subjectGroup.Name,
+                Errors = subjectGroup.Errors
             };
             return subjectGroupDTO;
         }
@@ -81,8 +78,8 @@ namespace TwelveFinal.Controller.subject_group
                 Id = subjectGroupFilterDTO.Id,
                 Code = subjectGroupFilterDTO.Code,
                 Name = subjectGroupFilterDTO.Name,
-                Skip = 0,
-                Take = int.MaxValue
+                Skip = subjectGroupFilterDTO.Skip,
+                Take = subjectGroupFilterDTO.Take
             };
 
             List<SubjectGroup> subjectGroups = await SubjectGrupService.List(filter);
@@ -98,11 +95,9 @@ namespace TwelveFinal.Controller.subject_group
         }
 
         [Route(SubjectGrupRoute.Update), HttpPost]
-        public async Task<SubjectGroupDTO> Update([FromBody] SubjectGroupDTO subjectGroupDTO)
+        public async Task<ActionResult<SubjectGroupDTO>> Update([FromBody] SubjectGroupDTO subjectGroupDTO)
         {
             if (subjectGroupDTO == null) subjectGroupDTO = new SubjectGroupDTO();
-
-            if (subjectGroupDTO.Id == null || subjectGroupDTO.Id == Guid.Empty) return null;
 
             SubjectGroup subjectGroup = ConvertDTOtoBO(subjectGroupDTO);
 
@@ -111,39 +106,39 @@ namespace TwelveFinal.Controller.subject_group
             {
                 Id = subjectGroup.Id,
                 Code = subjectGroup.Code,
-                Name = subjectGroup.Name
+                Name = subjectGroup.Name,
+                Errors = subjectGroup.Errors
             };
 
             if (subjectGroup.IsValidated)
-                return subjectGroupDTO;
+                return Ok(subjectGroupDTO);
             else
             {
-                throw new BadRequestException(subjectGroupDTO);
+                return BadRequest(subjectGroupDTO);
             }
         }
 
         [Route(SubjectGrupRoute.Delete), HttpPost]
-        public async Task<SubjectGroupDTO> Delete([FromBody] SubjectGroupDTO subjectGroupDTO)
+        public async Task<ActionResult<SubjectGroupDTO>> Delete([FromBody] SubjectGroupDTO subjectGroupDTO)
         {
             if (subjectGroupDTO == null) subjectGroupDTO = new SubjectGroupDTO();
 
-            if (subjectGroupDTO.Id == null || subjectGroupDTO.Id == Guid.Empty) return null;
-
-            SubjectGroup subjectGroup = ConvertDTOtoBO(subjectGroupDTO);
+            SubjectGroup subjectGroup = new SubjectGroup { Id = subjectGroupDTO.Id ?? default };
 
             subjectGroup = await SubjectGrupService.Delete(subjectGroup);
             subjectGroupDTO = new SubjectGroupDTO
             {
                 Id = subjectGroup.Id,
                 Code = subjectGroup.Code,
-                Name = subjectGroup.Name
+                Name = subjectGroup.Name,
+                Errors = subjectGroup.Errors
             };
 
             if (subjectGroup.IsValidated)
-                return subjectGroupDTO;
+                return Ok(subjectGroupDTO);
             else
             {
-                throw new BadRequestException(subjectGroupDTO);
+                return BadRequest(subjectGroupDTO);
             }
         }
 

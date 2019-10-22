@@ -11,6 +11,7 @@ namespace TwelveFinal.Services.MProvince
     {
         Task<Province> Create(Province Province);
         Task<Province> Get(Guid Id);
+        Task<List<Province>> List(ProvinceFilter provinceFilter);
         Task<Province> Update(Province Province);
         Task<Province> Delete(Province Province);
     }
@@ -65,6 +66,11 @@ namespace TwelveFinal.Services.MProvince
                 await UOW.Rollback();
                 throw new MessageException(ex);
             }
+        }
+
+        public async Task<List<Province>> List(ProvinceFilter provinceFilter)
+        {
+            return await UOW.ProvinceRepository.List(provinceFilter);
         }
 
         public async Task<Province> Get(Guid Id)

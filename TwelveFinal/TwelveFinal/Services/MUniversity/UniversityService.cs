@@ -9,11 +9,11 @@ namespace TwelveFinal.Services.MUniversity
 {
     public interface IUniversityService : IServiceScoped
     {
-        Task<University> Create(University University);
+        Task<University> Create(University university);
         Task<University> Get(Guid Id);
         Task<List<University>> List(UniversityFilter universityFilter);
-        Task<University> Update(University University);
-        Task<University> Delete(University University);
+        Task<University> Update(University university);
+        Task<University> Delete(University university);
     }
     public class UniversityService : IUniversityService
     {
@@ -29,18 +29,18 @@ namespace TwelveFinal.Services.MUniversity
             this.UniversityValidator = UniversityValidator;
         }
 
-        public async Task<University> Create(University University)
+        public async Task<University> Create(University university)
         {
-            University.Id = Guid.NewGuid();
-            if (!await UniversityValidator.Create(University))
-                return University;
+            university.Id = Guid.NewGuid();
+            if (!await UniversityValidator.Create(university))
+                return university;
 
             try
             {
                 await UOW.Begin();
-                await UOW.UniversityRepository.Create(University);
+                await UOW.UniversityRepository.Create(university);
                 await UOW.Commit();
-                return await Get(University.Id);
+                return await Get(university.Id);
             }
             catch (Exception ex)
             {
@@ -49,17 +49,17 @@ namespace TwelveFinal.Services.MUniversity
             }
         }
 
-        public async Task<University> Delete(University University)
+        public async Task<University> Delete(University university)
         {
-            if (!await UniversityValidator.Delete(University))
-                return University;
+            if (!await UniversityValidator.Delete(university))
+                return university;
 
             try
             {
                 await UOW.Begin();
-                await UOW.UniversityRepository.Delete(University.Id);
+                await UOW.UniversityRepository.Delete(university.Id);
                 await UOW.Commit();
-                return await Get(University.Id);
+                return university;
             }
             catch (Exception ex)
             {
@@ -71,8 +71,8 @@ namespace TwelveFinal.Services.MUniversity
         public async Task<University> Get(Guid Id)
         {
             if (Id == Guid.Empty) return null;
-            University University = await UOW.UniversityRepository.Get(Id);
-            return University;
+            University university = await UOW.UniversityRepository.Get(Id);
+            return university;
         }
 
         public async Task<List<University>> List(UniversityFilter universityFilter)
@@ -80,17 +80,17 @@ namespace TwelveFinal.Services.MUniversity
             return await UOW.UniversityRepository.List(universityFilter);
         }
 
-        public async Task<University> Update(University University)
+        public async Task<University> Update(University university)
         {
-            if (!await UniversityValidator.Update(University))
-                return University;
+            if (!await UniversityValidator.Update(university))
+                return university;
 
             try
             {
                 await UOW.Begin();
-                await UOW.UniversityRepository.Update(University);
+                await UOW.UniversityRepository.Update(university);
                 await UOW.Commit();
-                return await Get(University.Id);
+                return await Get(university.Id);
             }
             catch (Exception ex)
             {
