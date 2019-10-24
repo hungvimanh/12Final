@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TwelveFinal.Entities
 {
-    public class PriorityType : DataEntity
+    public class PriorityType : DataEntity      //Đối tượng ưu tiên
     {
         public Guid Id { get; set; }
         public string Code { get; set; }

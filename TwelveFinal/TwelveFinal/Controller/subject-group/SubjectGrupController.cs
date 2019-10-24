@@ -9,9 +9,9 @@ using TwelveFinal.Services.MSubjectGroup;
 
 namespace TwelveFinal.Controller.subject_group
 {
-    public class SubjectGrupRoute
+    public class SubjectGrupRoute : Root
     {
-        public const string Default = "api/TF/subject-group";
+        public const string Default = Base + "/subject-group";
         public const string Create = Default + "/create";
         public const string Get = Default + "/get";
         public const string List = Default + "/list";
@@ -19,7 +19,6 @@ namespace TwelveFinal.Controller.subject_group
         public const string Delete = Default+  "/delete";
     }
 
-    [ApiController]
     public class SubjectGrupController : ApiController
     {
         private ISubjectGroupService SubjectGrupService;

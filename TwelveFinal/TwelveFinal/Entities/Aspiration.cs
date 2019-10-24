@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TwelveFinal.Entities
 {
-    public class FormDetail : DataEntity
+    public class Aspiration : DataEntity
     {
         public Guid Id { get; set; }
         public Guid UniversityId { get; set; }
@@ -19,5 +19,6 @@ namespace TwelveFinal.Entities
         public string SubjectGroupCode { get; set; }
         public string SubjectGroupName { get; set; }
         public Guid FormId { get; set; }
+        public int Sequence { get; set; }
     }
 }

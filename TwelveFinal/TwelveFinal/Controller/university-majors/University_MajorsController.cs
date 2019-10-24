@@ -9,16 +9,15 @@ using TwelveFinal.Services.MUniversity_Majors_Majors;
 
 namespace TwelveFinal.Controller.university_majors
 {
-    public class University_MajorsRoute
+    public class University_MajorsRoute : Root
     {
-        public const string Default = "api/TF/university-majors";
+        public const string Default = Base + "/university-majors";
         public const string Create = Default + "/create";
         public const string Get = Default + "/get";
         public const string List = Default + "/list";
         public const string Update = Default + "/update";
         public const string Delete = Default + "/delete";
-    }
-    [ApiController]
+    }   
     public class University_MajorsController : ApiController
     {
         private IUniversity_MajorsService university_MajorsService;

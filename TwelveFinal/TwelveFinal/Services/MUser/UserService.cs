@@ -35,6 +35,42 @@ namespace TwelveFinal.Services.MUser
             this.appSettings = options.Value;
             UserValidator = userValidator;
         }
+
+        public async Task<User> Register(User user)
+        {
+            if (!await UserValidator.Create(user))
+                return user;
+
+            try
+            {
+                await UOW.Begin();
+                //Generate Salt Random
+                string salt = Convert.ToBase64String(CryptographyExtentions.GenerateSalt());
+                await UOW.UserRepository.Create(new User()
+                {
+                    FullName = user.FullName,
+                    Id = CreateGuid(user.FullName),
+                    Password = CryptographyExtentions.HashHMACSHA256(user.Password, salt),
+                    Salt = salt,
+                    Email = user.Email,
+                    Gender = user.Gender,
+                    Phone = user.Phone,
+                    IsAdmin = false
+                });
+
+                await UOW.Commit();
+                return await UOW.UserRepository.Get(new UserFilter
+                {
+                    FullName = user.FullName,
+                });
+            }
+            catch (Exception ex)
+            {
+                await UOW.Rollback();
+                throw new MessageException(ex);
+            }
+        }
+
         public async Task<User> Login(UserFilter userFilter)
         {
             User user = await this.Verify(userFilter);
@@ -52,7 +88,7 @@ namespace TwelveFinal.Services.MUser
             bool IsValid = await this.UOW.UserRepository.Update(user);
             if (!IsValid)
             {
-                throw new BadRequestException(Unauthorized);
+                throw new BadRequestException(ChangePasswordFalse);
             }
             return user;
         }
@@ -65,7 +101,7 @@ namespace TwelveFinal.Services.MUser
             //compare password + salt
             if (!CompareSaltHashedPassword(user.Password, userFilter.Password, user.Salt))
             {
-                throw new BadRequestException(ChangePasswordFalse);
+                throw new BadRequestException(Unauthorized);
             }
             return user;
         }
@@ -91,7 +127,7 @@ namespace TwelveFinal.Services.MUser
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.Name, user.FullName),
                     new Claim("IsAdmin", user.IsAdmin.ToString())
                 }),
                 Expires = this.DateTimeService.UtcNow.AddSeconds(LifeTime),
@@ -104,39 +140,6 @@ namespace TwelveFinal.Services.MUser
             user.ExpiredTime = tokenDescriptor.Expires;
             return user;
         }
-
-        public async Task<User> Register(User user)
-        {
-            if (!await UserValidator.Create(user))
-                return user;
-
-            try
-            {
-                await UOW.Begin();
-                //Generate Salt Random
-                string salt = Convert.ToBase64String(CryptographyExtentions.GenerateSalt());
-                await UOW.UserRepository.Create(new User()
-                {
-                    Username = user.Username,
-                    Id = CreateGuid(user.Username),
-                    Password = CryptographyExtentions.HashHMACSHA256(user.Password, salt),
-                    Salt = salt
-                });
-
-                await UOW.Commit();
-                return await UOW.UserRepository.Get(new UserFilter
-                {
-                    Username = user.Username,
-                });
-            }
-            catch (Exception ex)
-            {
-                await UOW.Rollback();
-                throw new MessageException(ex);
-            }
-
-        }
-
 
         private static Guid CreateGuid(string name)
         {

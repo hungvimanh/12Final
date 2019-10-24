@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TwelveFinal.Entities
 {
-    public class Ethnic : DataEntity
+    public class Ethnic : DataEntity    //Dân tộc
     {
         public Guid Id { get; set; }
         public string Code { get; set; }

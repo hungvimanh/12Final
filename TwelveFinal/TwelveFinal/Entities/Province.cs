@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TwelveFinal.Entities
 {
-    public class Province : DataEntity
+    public class Province : DataEntity      //Tỉnh/thành phố
     {
         public Guid Id { get; set; }
         public string Code { get; set; }

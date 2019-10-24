@@ -59,10 +59,10 @@ namespace TwelveFinal.Services.MUser
             //Nếu tồn tại thì trả ra lỗi Username đã được sử dụng
             if(UOW.UserRepository.Get(new UserFilter
             {
-                Username = user.Username
+                FullName = user.FullName
             }) == null)
             {
-                user.AddError(nameof(UserValidator), nameof(user.Username), ErrorCode.Duplicate);
+                user.AddError(nameof(UserValidator), nameof(user.FullName), ErrorCode.Duplicate);
                 return user.IsValidated;
             }
             return true;
@@ -75,16 +75,16 @@ namespace TwelveFinal.Services.MUser
             //chứa các chữ cái in hoa và in thường từ A - Z và dấu . hoặc _
             //không bắt đầu bằng . hoặc _
             //không có hai dấu . hoặc _ liên tiếp 
-            if(string.IsNullOrEmpty(user.Username) || user.Username.Length > 50)
+            if(string.IsNullOrEmpty(user.FullName) || user.FullName.Length > 50)
             {
-                user.AddError(nameof(UserValidator), nameof(user.Username), ErrorCode.Invalid);
+                user.AddError(nameof(UserValidator), nameof(user.FullName), ErrorCode.Invalid);
                 return user.IsValidated;
             }
 
             var rule = new Regex(@"^(?=.{5,50}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$");
-            if (!rule.IsMatch(user.Username))
+            if (!rule.IsMatch(user.FullName))
             {
-                user.AddError(nameof(UserValidator), nameof(user.Username), ErrorCode.Invalid);
+                user.AddError(nameof(UserValidator), nameof(user.FullName), ErrorCode.Invalid);
                 return user.IsValidated;
             }
             return true;

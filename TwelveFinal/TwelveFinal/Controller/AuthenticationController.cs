@@ -23,14 +23,15 @@ namespace TwelveFinal.Controller
         {
             UserFilter userFilter = new UserFilter()
             {
-                Username = loginDTO.Username,
+                Email = loginDTO.EmailOrPhone,
+                Phone = loginDTO.EmailOrPhone,
                 Password = loginDTO.Password
             };
             User user = await this.userService.Login(userFilter);
             Response.Cookies.Append("token", user.Jwt);
             return new LoginResultDTO()
             {
-                Username = user.Username,
+                FullName = user.FullName,
                 Token = user.Jwt,
                 ExpiredTime = user.ExpiredTime
             };
@@ -42,7 +43,8 @@ namespace TwelveFinal.Controller
         {
             UserFilter userFilter = new UserFilter()
             {
-                Username = changePasswordDTO.Username,
+                Email = changePasswordDTO.Email,
+                Phone = changePasswordDTO.Phone,
                 Password = changePasswordDTO.Password
             };
             User user = await this.userService.ChangePassword(userFilter, changePasswordDTO.NewPassword);
@@ -52,19 +54,19 @@ namespace TwelveFinal.Controller
         [Route("Register"), HttpPost]
         public async Task<ActionResult<RegisterDTO>> Register([FromBody] RegisterDTO registerDTO)
         {
-            if (!ModelState.IsValid)
-                throw new BadRequestException(ModelState);
-
             User user = new User
             {
-                Username = registerDTO.Username,
-                Password = registerDTO.Password
+                FullName = registerDTO.FullName,
+                Password = registerDTO.Password,
+                Gender = registerDTO.Gender,
+                Email = registerDTO.Email,
+                Phone = registerDTO.Phone
             };
             user = await userService.Register(user);
 
             registerDTO = new RegisterDTO
             {
-                Username = user.Username,
+                FullName = user.FullName,
                 Errors = user.Errors
             };
             if (user.IsValidated)

@@ -9,11 +9,11 @@ namespace TwelveFinal.Services.MProvince
 {
     public interface IProvinceService : IServiceScoped
     {
-        Task<Province> Create(Province Province);
+        Task<Province> Create(Province province);
         Task<Province> Get(Guid Id);
         Task<List<Province>> List(ProvinceFilter provinceFilter);
-        Task<Province> Update(Province Province);
-        Task<Province> Delete(Province Province);
+        Task<Province> Update(Province province);
+        Task<Province> Delete(Province province);
     }
     public class ProvinceService : IProvinceService
     {
@@ -29,18 +29,18 @@ namespace TwelveFinal.Services.MProvince
             this.ProvinceValidator = ProvinceValidator;
         }
 
-        public async Task<Province> Create(Province Province)
+        public async Task<Province> Create(Province province)
         {
-            Province.Id = Guid.NewGuid();
-            if (!await ProvinceValidator.Create(Province))
-                return Province;
+            province.Id = Guid.NewGuid();
+            if (!await ProvinceValidator.Create(province))
+                return province;
 
             try
             {
                 await UOW.Begin();
-                await UOW.ProvinceRepository.Create(Province);
+                await UOW.ProvinceRepository.Create(province);
                 await UOW.Commit();
-                return await Get(Province.Id);
+                return await Get(province.Id);
             }
             catch (Exception ex)
             {
@@ -49,17 +49,17 @@ namespace TwelveFinal.Services.MProvince
             }
         }
 
-        public async Task<Province> Delete(Province Province)
+        public async Task<Province> Delete(Province province)
         {
-            if (!await ProvinceValidator.Delete(Province))
-                return Province;
+            if (!await ProvinceValidator.Delete(province))
+                return province;
 
             try
             {
                 await UOW.Begin();
-                await UOW.ProvinceRepository.Delete(Province.Id);
+                await UOW.ProvinceRepository.Delete(province.Id);
                 await UOW.Commit();
-                return await Get(Province.Id);
+                return await Get(province.Id);
             }
             catch (Exception ex)
             {
@@ -80,17 +80,17 @@ namespace TwelveFinal.Services.MProvince
             return Province;
         }
 
-        public async Task<Province> Update(Province Province)
+        public async Task<Province> Update(Province province)
         {
-            if (!await ProvinceValidator.Update(Province))
-                return Province;
+            if (!await ProvinceValidator.Update(province))
+                return province;
 
             try
             {
                 await UOW.Begin();
-                await UOW.ProvinceRepository.Update(Province);
+                await UOW.ProvinceRepository.Update(province);
                 await UOW.Commit();
-                return await Get(Province.Id);
+                return await Get(province.Id);
             }
             catch (Exception ex)
             {

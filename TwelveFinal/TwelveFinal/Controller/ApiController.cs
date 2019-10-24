@@ -22,8 +22,8 @@ namespace TwelveFinal.Controller
 
     }
 
-    [Authorize]
-    [Authorize(Policy = "Permission")]
+    //[Authorize]
+    //[Authorize(Policy = "Permission")]
     public class ApiController : ControllerBase
     {
 

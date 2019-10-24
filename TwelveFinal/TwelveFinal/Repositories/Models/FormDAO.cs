@@ -7,14 +7,11 @@ namespace TwelveFinal.Repositories.Models
     {
         public FormDAO()
         {
-            FormDetails = new HashSet<FormDetailDAO>();
+            Aspirations = new HashSet<AspirationDAO>();
         }
 
         public Guid Id { get; set; }
         public long CX { get; set; }
-        public string NumberForm { get; set; }
-        public string DepartmentCode { get; set; }
-        public DateTime Date { get; set; }
         public Guid UserId { get; set; }
         public string FullName { get; set; }
         public DateTime Dob { get; set; }
@@ -28,7 +25,6 @@ namespace TwelveFinal.Repositories.Models
         public Guid HighSchoolGrade10Id { get; set; }
         public Guid HighSchoolGrade11Id { get; set; }
         public Guid HighSchoolGrade12Id { get; set; }
-        public string Grade12Name { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
@@ -61,7 +57,6 @@ namespace TwelveFinal.Repositories.Models
         public int? ReserveLanguages { get; set; }
         public string PriorityType { get; set; }
         public string Area { get; set; }
-        public string GraduateYear { get; set; }
         public bool? Connected { get; set; }
 
         public virtual ProvinceDAO ClusterContest { get; set; }
@@ -71,6 +66,6 @@ namespace TwelveFinal.Repositories.Models
         public virtual HighSchoolDAO RegisterPlaceOfExam { get; set; }
         public virtual TownDAO Town { get; set; }
         public virtual UserDAO User { get; set; }
-        public virtual ICollection<FormDetailDAO> FormDetails { get; set; }
+        public virtual ICollection<AspirationDAO> Aspirations { get; set; }
     }
 }

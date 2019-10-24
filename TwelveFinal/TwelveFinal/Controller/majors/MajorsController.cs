@@ -19,7 +19,6 @@ namespace TwelveFinal.Controller.majors
         public const string Delete = Default + "/delete";
     }
 
-    [ApiController]
     public class MajorsController : ApiController
     {
         private IMajorsService MajorsService;

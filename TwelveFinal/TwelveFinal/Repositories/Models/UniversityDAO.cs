@@ -7,7 +7,7 @@ namespace TwelveFinal.Repositories.Models
     {
         public UniversityDAO()
         {
-            FormDetails = new HashSet<FormDetailDAO>();
+            Aspirations = new HashSet<AspirationDAO>();
             University_Majors = new HashSet<University_MajorsDAO>();
         }
 
@@ -17,7 +17,7 @@ namespace TwelveFinal.Repositories.Models
         public string Name { get; set; }
         public string Address { get; set; }
 
-        public virtual ICollection<FormDetailDAO> FormDetails { get; set; }
+        public virtual ICollection<AspirationDAO> Aspirations { get; set; }
         public virtual ICollection<University_MajorsDAO> University_Majors { get; set; }
     }
 }

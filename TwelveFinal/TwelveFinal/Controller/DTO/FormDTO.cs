@@ -7,12 +7,7 @@ namespace TwelveFinal.Controller.DTO
 {
     public class FormDTO : DataDTO
     {
-        public Guid? Id { get; set; }
-        public long CX { get; set; }
-        public string NumberForm { get; set; }
-        public string DepartmentCode { get; set; }
-        public DateTime Date { get; set; }
-
+        public Guid Id { get; set; }
         public Guid UserId { get; set; }
 
         public string FullName { get; set; }
@@ -33,25 +28,12 @@ namespace TwelveFinal.Controller.DTO
         public Guid HighSchoolGrade10Id { get; set; }
         public string HighSchoolGrade10Code { get; set; }
         public string HighSchoolGrade10Name { get; set; }
-        public string HighSchoolGrade10DistrictCode { get; set; }
-        public string HighSchoolGrade10DistrictName { get; set; }
-        public string HighSchoolGrade10ProvinceCode { get; set; }
-        public string HighSchoolGrade10ProvinceName { get; set; }
         public Guid HighSchoolGrade11Id { get; set; }
         public string HighSchoolGrade11Code { get; set; }
         public string HighSchoolGrade11Name { get; set; }
-        public string HighSchoolGrade11DistrictCode { get; set; }
-        public string HighSchoolGrade11DistrictName { get; set; }
-        public string HighSchoolGrade11ProvinceCode { get; set; }
-        public string HighSchoolGrade11ProvinceName { get; set; }
         public Guid HighSchoolGrade12Id { get; set; }
         public string HighSchoolGrade12Code { get; set; }
         public string HighSchoolGrade12Name { get; set; }
-        public string HighSchoolGrade12DistrictCode { get; set; }
-        public string HighSchoolGrade12DistrictName { get; set; }
-        public string HighSchoolGrade12ProvinceCode { get; set; }
-        public string HighSchoolGrade12ProvinceName { get; set; }
-        public string Grade12Name { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
@@ -91,9 +73,7 @@ namespace TwelveFinal.Controller.DTO
 
         public string PriorityType { get; set; }
         public string Area { get; set; }
-        public string GraduateYear { get; set; }
-        public bool? Connected { get; set; }
 
-        public List<FormDetailDTO> FormDetails { get; set; }
+        public List<AspirationDTO> Aspirations { get; set; }
     }
 }

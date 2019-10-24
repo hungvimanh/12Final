@@ -3,10 +3,11 @@ using System.Collections.Generic;
 
 namespace TwelveFinal.Repositories.Models
 {
-    public partial class FormDetailDAO
+    public partial class AspirationDAO
     {
         public Guid Id { get; set; }
         public long CX { get; set; }
+        public int Sequence { get; set; }
         public Guid UniversityId { get; set; }
         public Guid MajorsId { get; set; }
         public Guid SubjectGroupId { get; set; }

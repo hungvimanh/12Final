@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TwelveFinal.Entities
 {
-    public class Majors : DataEntity
+    public class Majors : DataEntity        //Ngành học
     {
         public Guid Id { get; set; }
         public string Code { get; set; }

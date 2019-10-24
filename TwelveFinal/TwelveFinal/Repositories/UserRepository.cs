@@ -25,9 +25,17 @@ namespace TwelveFinal.Repositories
 
         private IQueryable<UserDAO> DynamicFilter(IQueryable<UserDAO> query, UserFilter userFilter)
         {
-            if (!string.IsNullOrEmpty(userFilter.Username))
+            if (!string.IsNullOrEmpty(userFilter.FullName))
             {
-                query = query.Where(u => u.Username.Equals(userFilter.Username));
+                query = query.Where(u => u.FullName.Equals(userFilter.FullName));
+            }
+            if (!string.IsNullOrEmpty(userFilter.Email))
+            {
+                query = query.Where(u => u.Email.Equals(userFilter.Email));
+            }
+            if (!string.IsNullOrEmpty(userFilter.Phone))
+            {
+                query = query.Where(u => u.Phone.Equals(userFilter.Phone));
             }
             if (userFilter.IsAdmin.HasValue)
             {
@@ -41,10 +49,13 @@ namespace TwelveFinal.Repositories
             UserDAO userDAO = new UserDAO
             {
                 Id = user.Id,
-                IsAdmin = false,
-                Username = user.Username,
+                IsAdmin = user.IsAdmin,
+                FullName = user.FullName,
                 Password = user.Password,
-                Salt = user.Salt
+                Salt = user.Salt,
+                Email = user.Email,
+                Phone = user.Phone,
+                Gender = user.Gender
             };
 
             tFContext.User.Add(userDAO);
@@ -66,10 +77,13 @@ namespace TwelveFinal.Repositories
             else return new User()
             {
                 Id = userDAO.Id,
-                Username = userDAO.Username,
+                FullName = userDAO.FullName,
                 Password = userDAO.Password,
                 Salt = userDAO.Salt,
-                IsAdmin = userDAO.IsAdmin
+                IsAdmin = userDAO.IsAdmin,
+                Email = userDAO.Email,
+                Phone = userDAO.Phone,
+                Gender = userDAO.Gender
             };
         }
 
@@ -78,6 +92,9 @@ namespace TwelveFinal.Repositories
             await tFContext.User.Where(u => u.Id.Equals(user.Id)).UpdateFromQueryAsync(u => new UserDAO
             {
                 Password = u.Password,
+                Email = u.Email,
+                Phone = u.Phone,
+                Gender = u.Gender
             });
 
             return true;

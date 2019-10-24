@@ -5,14 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using TwelveFinal.Controller.DTO;
 using TwelveFinal.Entities;
-using TwelveFinal.Services.MMajors;
 using TwelveFinal.Services.MUniversity;
 
 namespace TwelveFinal.Controller.university
 {
-    public class UniversityRoute
+    public class UniversityRoute : Root
     {
-        public const string Default = "api/TF/university";
+        public const string Default = Base + "/university";
         public const string Create = Default + "/create";
         public const string Get = Default + "/get";
         public const string List = Default + "/list";
@@ -20,7 +19,6 @@ namespace TwelveFinal.Controller.university
         public const string Delete = Default + "/delete";
     }
 
-    [ApiController]
     public class UniversityController : ApiController
     {
         private IUniversityService universityService;

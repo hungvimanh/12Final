@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TwelveFinal.Controller.DTO
 {
-    public class FormDetailDTO : DataDTO
+    public class AspirationDTO : DataDTO
     {
         public Guid? Id { get; set; }
         public Guid UniversityId { get; set; }

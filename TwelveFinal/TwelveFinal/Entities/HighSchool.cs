@@ -30,13 +30,8 @@ namespace TwelveFinal.Entities
         public StringFilter Code { get; set; }
         public StringFilter Name { get; set; }
         public Guid? DistrictId { get; set; }
-        public StringFilter DistrictCode { get; set; }
-        public StringFilter DistrictName { get; set; }
-        public StringFilter ProvinceCode { get; set; }
-        public StringFilter ProvinceName { get; set; }
+        public Guid? ProvinceId { get; set; }
         public GuidFilter AreaId { get; set; }
-        public StringFilter AreaCode { get; set; }
-        public StringFilter AreaName { get; set; }
 
         public List<Guid> ExceptIds { get; set; }
         public List<Guid> Ids { get; set; }

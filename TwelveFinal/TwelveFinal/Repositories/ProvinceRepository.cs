@@ -116,21 +116,7 @@ namespace TwelveFinal.Repositories
             {
                 Id = province.Id,
                 Code = province.Code,
-                Name = province.Name,
-                Districts = province.Districts.Select(d => new DistrictDAO
-                {
-                    Id = d.Id,
-                    Code = d.Code,
-                    Name = d.Name,
-                    ProvinceId = d.ProvinceId,
-                    Towns = d.Towns.Select(t => new TownDAO
-                    {
-                        Id = t.Id,
-                        Code = t.Code,
-                        Name = t.Name,
-                        DistrictId = t.DistrictId
-                    }).ToList() ?? null
-                }).ToList() ?? null
+                Name = province.Name
             };
 
             tFContext.Province.Add(provinceDAO);
@@ -161,15 +147,15 @@ namespace TwelveFinal.Repositories
                     ProvinceId = d.ProvinceId,
                     ProvinceCode = d.Province.Code,
                     ProvinceName = d.Province.Name,
-                    Towns = tFContext.Town.Where(t => t.District.ProvinceId.Equals(Id)).Select(t => new Town
-                    {
-                        Id = t.Id,
-                        Code = t.Code,
-                        Name = t.Name,
-                        DistrictId = t.DistrictId,
-                        DistrictCode = t.District.Code,
-                        DistrictName = t.District.Name
-                    }).ToList()
+                    //Towns = tFContext.Town.Where(t => t.District.ProvinceId.Equals(Id)).Select(t => new Town
+                    //{
+                    //    Id = t.Id,
+                    //    Code = t.Code,
+                    //    Name = t.Name,
+                    //    DistrictId = t.DistrictId,
+                    //    DistrictCode = t.District.Code,
+                    //    DistrictName = t.District.Name
+                    //}).ToList()
                 }).ToList()
             }).FirstOrDefaultAsync();
 
