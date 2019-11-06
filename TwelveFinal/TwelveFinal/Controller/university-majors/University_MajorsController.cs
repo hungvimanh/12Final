@@ -48,6 +48,7 @@ namespace TwelveFinal.Controller.university_majors
                 SubjectGroupCode = university_Majors.SubjectGroupCode,
                 SubjectGroupName = university_Majors.SubjectGroupName,
                 Year = university_Majors.Year,
+                Quantity = university_MajorsDTO.Quantity,
                 Descreption = university_Majors.Descreption,
                 Errors = university_Majors.Errors
             };
@@ -81,6 +82,7 @@ namespace TwelveFinal.Controller.university_majors
                 SubjectGroupCode = university_Majors.SubjectGroupCode,
                 SubjectGroupName = university_Majors.SubjectGroupName,
                 Year = university_Majors.Year,
+                Quantity = university_MajorsDTO.Quantity,
                 Descreption = university_Majors.Descreption,
                 Errors = university_Majors.Errors
             };
@@ -115,6 +117,7 @@ namespace TwelveFinal.Controller.university_majors
                 SubjectGroupCode = university_Majors.SubjectGroupCode,
                 SubjectGroupName = university_Majors.SubjectGroupName,
                 Year = university_Majors.Year,
+                Quantity = university_MajorsDTO.Quantity,
                 Descreption = university_Majors.Descreption,
                 Errors = university_Majors.Errors
             };
@@ -134,7 +137,6 @@ namespace TwelveFinal.Controller.university_majors
                 SubjectGroupId = university_MajorsFilterDTO.SubjectGroupId,
                 SubjectGroupCode = university_MajorsFilterDTO.SubjectGroupCode,
                 SubjectGroupName = university_MajorsFilterDTO.SubjectGroupName,
-                UniversityAddress = university_MajorsFilterDTO.UniversityAddress,
                 Benchmark = university_MajorsFilterDTO.Benchmark,
                 Year = university_MajorsFilterDTO.Year,
                 Skip = university_MajorsFilterDTO.Skip,
@@ -157,6 +159,7 @@ namespace TwelveFinal.Controller.university_majors
                 SubjectGroupCode = u.SubjectGroupCode,
                 SubjectGroupName = u.SubjectGroupName,
                 Year = u.Year,
+                Quantity = u.Quantity,
                 Descreption = u.Descreption
             }).ToList();
 
@@ -185,6 +188,7 @@ namespace TwelveFinal.Controller.university_majors
                 SubjectGroupCode = university_Majors.SubjectGroupCode,
                 SubjectGroupName = university_Majors.SubjectGroupName,
                 Year = university_Majors.Year,
+                Quantity = university_MajorsDTO.Quantity,
                 Descreption = university_Majors.Descreption,
                 Errors = university_Majors.Errors
             };
@@ -212,6 +216,7 @@ namespace TwelveFinal.Controller.university_majors
                 SubjectGroupCode = university_MajorsDTO.SubjectGroupCode,
                 SubjectGroupName = university_MajorsDTO.SubjectGroupName,
                 Year = university_MajorsDTO.Year,
+                Quantity = university_MajorsDTO.Quantity,
                 Descreption = university_MajorsDTO.Descreption
             };
             return University_Majors;

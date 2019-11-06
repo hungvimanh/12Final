@@ -14,8 +14,8 @@ namespace TwelveFinal.Entities
         public Guid UserId { get; set; }
 
         public string FullName { get; set; }    //họ và tên đầy đủ
-        public DateTime Dob { get; set; }   //Ngày tháng năm sinh
-        public bool Gender { get; set; }    //Giới tính
+        public DateTime? Dob { get; set; }   //Ngày tháng năm sinh
+        public bool? Gender { get; set; }    //Giới tính
         public string PlaceOfBirth { get; set; }    //Nơi sinh
         public string Ethnic { get; set; }      //Dân tộc
         public string Identify { get; set; }    //số CMT/Căn cước công dân

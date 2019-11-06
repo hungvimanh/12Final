@@ -21,6 +21,7 @@ namespace DataSeeding
         public SubjectGroupInit SubjectGroupInit;
         public TownInit TownInit;
         public UniversityInit UniversityInit;
+        public University_MajorsInit University_MajorsInit;
         public GlobalInit(TFContext tFContext)
         {
             this.tFContext = tFContext;
@@ -34,6 +35,7 @@ namespace DataSeeding
             SubjectGroupInit = new SubjectGroupInit(tFContext);
             TownInit = new TownInit(tFContext);
             UniversityInit = new UniversityInit(tFContext);
+            University_MajorsInit = new University_MajorsInit(tFContext);
         }
 
         public void Init()
@@ -50,6 +52,7 @@ namespace DataSeeding
             TownInit.Init();
             UniversityInit.Init();
             HighSchoolInit.Init();
+            University_MajorsInit.Init();
             tFContext.SaveChanges();
         }
 

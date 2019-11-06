@@ -11,8 +11,8 @@ namespace TwelveFinal.Controller.DTO
         public Guid UserId { get; set; }
 
         public string FullName { get; set; }
-        public DateTime Dob { get; set; }
-        public bool Gender { get; set; }
+        public DateTime? Dob { get; set; }
+        public bool? Gender { get; set; }
         public string PlaceOfBirth { get; set; }
         public string Ethnic { get; set; }
         public string Identify { get; set; }

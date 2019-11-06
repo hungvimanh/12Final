@@ -18,7 +18,10 @@ namespace TwelveFinal.Repositories.Models
         public string Password { get; set; }
         public string Salt { get; set; }
         public bool IsAdmin { get; set; }
-        public bool Gender { get; set; }
+        public bool? Gender { get; set; }
+        public string Identify { get; set; }
+        public DateTime? Dob { get; set; }
+        public string Ethnic { get; set; }
 
         public virtual ICollection<FormDAO> Forms { get; set; }
     }

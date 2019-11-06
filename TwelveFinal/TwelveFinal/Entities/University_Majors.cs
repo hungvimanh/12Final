@@ -19,6 +19,7 @@ namespace TwelveFinal.Entities
         public string SubjectGroupCode { get; set; }
         public string SubjectGroupName { get; set; }
         public string Year { get; set; }
+        public int? Quantity { get; set; }
         public string Descreption { get; set; }
     }
 
@@ -27,7 +28,6 @@ namespace TwelveFinal.Entities
         public Guid? UniversityId { get; set; }
         public StringFilter UniversityCode { get; set; }
         public StringFilter UniversityName { get; set; }
-        public StringFilter UniversityAddress { get; set; }
         public Guid? MajorsId { get; set; }
         public StringFilter MajorsCode { get; set; }
         public StringFilter MajorsName { get; set; }

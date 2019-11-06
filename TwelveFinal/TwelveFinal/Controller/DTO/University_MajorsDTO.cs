@@ -19,6 +19,7 @@ namespace TwelveFinal.Controller.DTO
         public string SubjectGroupCode { get; set; }
         public string SubjectGroupName { get; set; }
         public string Year { get; set; }
+        public int? Quantity { get; set; }
         public string Descreption { get; set; }
     }
 

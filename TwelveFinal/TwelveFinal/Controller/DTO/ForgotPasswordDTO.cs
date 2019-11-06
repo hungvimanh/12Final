@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 
 namespace TwelveFinal.Controller.DTO
 {
-    public class ChangePasswordDTO
+    public class ForgotPasswordDTO : DataDTO
     {
         public string Identify { get; set; }
-        public string Password { get; set; }
-        public string NewPassword { get; set; }
+        public string Email { get; set; }
     }
 }

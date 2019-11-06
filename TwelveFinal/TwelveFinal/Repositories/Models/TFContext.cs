@@ -33,7 +33,7 @@ namespace TwelveFinal.Repositories.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("data source=.;initial catalog=12Final;persist security info=True;user id=sa;password=123456a@;multipleactiveresultsets=True;");
+                optionsBuilder.UseSqlServer("data source=.;initial catalog=TF;persist security info=True;user id=sa;password=123456a@;multipleactiveresultsets=True;");
             }
         }
 
@@ -162,25 +162,11 @@ namespace TwelveFinal.Repositories.Models
 
                 entity.Property(e => e.CX).ValueGeneratedOnAdd();
 
-                entity.Property(e => e.Dob).HasColumnType("date");
-
                 entity.Property(e => e.Email)
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.Property(e => e.Ethnic)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
                 entity.Property(e => e.ExceptLanguages).HasMaxLength(500);
-
-                entity.Property(e => e.FullName)
-                    .IsRequired()
-                    .HasMaxLength(100);
-
-                entity.Property(e => e.Identify)
-                    .IsRequired()
-                    .HasMaxLength(12);
 
                 entity.Property(e => e.Languages).HasMaxLength(2);
 
@@ -442,13 +428,19 @@ namespace TwelveFinal.Repositories.Models
 
                 entity.Property(e => e.CX).ValueGeneratedOnAdd();
 
+                entity.Property(e => e.Dob).HasColumnType("date");
+
                 entity.Property(e => e.Email)
                     .IsRequired()
                     .HasMaxLength(50);
 
+                entity.Property(e => e.Ethnic).HasMaxLength(50);
+
                 entity.Property(e => e.FullName)
                     .IsRequired()
                     .HasMaxLength(50);
+
+                entity.Property(e => e.Identify).HasMaxLength(20);
 
                 entity.Property(e => e.Password)
                     .IsRequired()

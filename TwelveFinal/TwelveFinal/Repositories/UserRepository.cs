@@ -11,9 +11,11 @@ namespace TwelveFinal.Repositories
     public interface IUserRepository
     {
         Task<bool> Create(User user);
+        Task<bool> BulkInsert(List<User> users);
         Task<User> Get(UserFilter userFilter);
         Task<bool> Update(User user);
         Task<bool> Delete(Guid Id);
+        Task<bool> ChangePassword(User user);
     }
     public class UserRepository : IUserRepository
     {
@@ -25,17 +27,9 @@ namespace TwelveFinal.Repositories
 
         private IQueryable<UserDAO> DynamicFilter(IQueryable<UserDAO> query, UserFilter userFilter)
         {
-            if (!string.IsNullOrEmpty(userFilter.FullName))
+            if (!string.IsNullOrEmpty(userFilter.Identify))
             {
-                query = query.Where(u => u.FullName.Equals(userFilter.FullName));
-            }
-            if (!string.IsNullOrEmpty(userFilter.Email))
-            {
-                query = query.Where(u => u.Email.Equals(userFilter.Email));
-            }
-            if (!string.IsNullOrEmpty(userFilter.Phone))
-            {
-                query = query.Where(u => u.Phone.Equals(userFilter.Phone));
+                query = query.Where(u => u.Identify.Equals(userFilter.Identify));
             }
             if (userFilter.IsAdmin.HasValue)
             {
@@ -55,12 +49,40 @@ namespace TwelveFinal.Repositories
                 Salt = user.Salt,
                 Email = user.Email,
                 Phone = user.Phone,
-                Gender = user.Gender
+                Gender = user.Gender,
+                Identify = user.Identify
             };
 
             tFContext.User.Add(userDAO);
             await tFContext.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<bool> BulkInsert(List<User> users)
+        {
+            try
+            {
+                List<UserDAO> userDAOs = users.Select(user => new UserDAO()
+                {
+                    Id = user.Id,
+                    IsAdmin = user.IsAdmin,
+                    FullName = user.FullName,
+                    Password = user.Password,
+                    Salt = user.Salt,
+                    Email = user.Email,
+                    Phone = user.Phone,
+                    Gender = user.Gender,
+                    Identify = user.Identify
+                }).ToList();
+
+                tFContext.User.AddRange(userDAOs);
+                await tFContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         public async Task<bool> Delete(Guid Id)
@@ -83,7 +105,8 @@ namespace TwelveFinal.Repositories
                 IsAdmin = userDAO.IsAdmin,
                 Email = userDAO.Email,
                 Phone = userDAO.Phone,
-                Gender = userDAO.Gender
+                Gender = userDAO.Gender,
+                Identify = userDAO.Identify
             };
         }
 
@@ -91,10 +114,23 @@ namespace TwelveFinal.Repositories
         {
             await tFContext.User.Where(u => u.Id.Equals(user.Id)).UpdateFromQueryAsync(u => new UserDAO
             {
-                Password = u.Password,
-                Email = u.Email,
-                Phone = u.Phone,
-                Gender = u.Gender
+                Email = user.Email,
+                Phone = user.Phone,
+                Gender = user.Gender,
+                FullName = user.FullName,
+                Dob = user.Dob,
+                Ethnic = user.Ethnic,
+                Identify = user.Identify
+            });
+
+            return true;
+        }
+
+        public async Task<bool> ChangePassword(User user)
+        {
+            await tFContext.User.Where(u => u.Id.Equals(user.Id)).UpdateFromQueryAsync(u => new UserDAO
+            {
+                Password = user.Password,
             });
 
             return true;

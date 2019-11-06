@@ -43,38 +43,49 @@ namespace TwelveFinal.Controller
         {
             UserFilter userFilter = new UserFilter()
             {
-                Email = changePasswordDTO.Email,
-                Phone = changePasswordDTO.Phone,
+                Identify = changePasswordDTO.Identify,
                 Password = changePasswordDTO.Password
             };
             User user = await this.userService.ChangePassword(userFilter, changePasswordDTO.NewPassword);
             return user != null;
         }
 
-        [Route("Register"), HttpPost]
-        public async Task<ActionResult<RegisterDTO>> Register([FromBody] RegisterDTO registerDTO)
+        [Route("ForgotPassword"), HttpPost]
+        public async Task<bool> ForgotPassword([FromBody] ForgotPasswordDTO forgotPasswordDTO)
         {
-            User user = new User
+            UserFilter userFilter = new UserFilter()
             {
-                FullName = registerDTO.FullName,
-                Password = registerDTO.Password,
-                Gender = registerDTO.Gender,
-                Email = registerDTO.Email,
-                Phone = registerDTO.Phone
+                Identify = forgotPasswordDTO.Identify,
+                Email = forgotPasswordDTO.Email
             };
-            user = await userService.Register(user);
-
-            registerDTO = new RegisterDTO
-            {
-                FullName = user.FullName,
-                Errors = user.Errors
-            };
-            if (user.IsValidated)
-                return registerDTO;
-            else
-            {
-                return BadRequest(registerDTO);
-            }
+            await this.userService.ForgotPassword(userFilter);
+            return true;
         }
+
+        //[Route("Register"), HttpPost]
+        //public async Task<ActionResult<RegisterDTO>> Register([FromBody] RegisterDTO registerDTO)
+        //{
+        //    User user = new User
+        //    {
+        //        FullName = registerDTO.FullName,
+        //        Password = registerDTO.Password,
+        //        Gender = registerDTO.Gender,
+        //        Email = registerDTO.Email,
+        //        Phone = registerDTO.Phone
+        //    };
+        //    user = await userService.Register(user);
+
+        //    registerDTO = new RegisterDTO
+        //    {
+        //        FullName = user.FullName,
+        //        Errors = user.Errors
+        //    };
+        //    if (user.IsValidated)
+        //        return registerDTO;
+        //    else
+        //    {
+        //        return BadRequest(registerDTO);
+        //    }
+        //}
     }
 }

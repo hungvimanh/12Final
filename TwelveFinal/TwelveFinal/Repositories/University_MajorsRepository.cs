@@ -125,6 +125,7 @@ namespace TwelveFinal.Repositories
                 SubjectGroupName = q.SubjectGroup.Name,
                 Benchmark = q.Benchmark,
                 Year = q.Year,
+                Quantity = q.Quantity,
                 Descreption = q.Descreption
             }).ToListAsync();
             return university_Majorss;
@@ -156,6 +157,7 @@ namespace TwelveFinal.Repositories
                 SubjectGroupId = university_Majors.SubjectGroupId,
                 Benchmark = university_Majors.Benchmark,
                 Year = university_Majors.Year,
+                Quantity = university_Majors.Quantity,
                 Descreption = university_Majors.Descreption
             };
 
@@ -186,6 +188,7 @@ namespace TwelveFinal.Repositories
                 SubjectGroupName = u.SubjectGroup.Name,
                 Benchmark = u.Benchmark,
                 Year = u.Year,
+                Quantity = u.Quantity,
                 Descreption = u.Descreption
             }).FirstOrDefaultAsync();
 
@@ -201,6 +204,7 @@ namespace TwelveFinal.Repositories
                 SubjectGroupId = university_Majors.SubjectGroupId,
                 Benchmark = university_Majors.Benchmark,
                 Year = university_Majors.Year,
+                Quantity = university_Majors.Quantity,
                 Descreption = university_Majors.Descreption
             });
 

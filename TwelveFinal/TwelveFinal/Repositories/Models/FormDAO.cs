@@ -13,12 +13,7 @@ namespace TwelveFinal.Repositories.Models
         public Guid Id { get; set; }
         public long CX { get; set; }
         public Guid UserId { get; set; }
-        public string FullName { get; set; }
-        public DateTime Dob { get; set; }
-        public bool Gender { get; set; }
         public string PlaceOfBirth { get; set; }
-        public string Ethnic { get; set; }
-        public string Identify { get; set; }
         public Guid TownId { get; set; }
         public bool? IsPermanentResidenceMore18 { get; set; }
         public bool? IsPermanentResidenceSpecialMore18 { get; set; }
