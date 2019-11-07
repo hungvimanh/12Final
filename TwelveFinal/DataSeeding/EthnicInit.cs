@@ -32,7 +32,7 @@ namespace DataSeeding
                 {
                     EthnicDAO excelTemplate = new EthnicDAO()
                     {
-                        Id = CreateGuid("Ethnic" + worksheet.Cells[i, 1].Value?.ToString()),
+                        Id = CreateGuid("Ethnic" + worksheet.Cells[i, 2].Value?.ToString()),
                         Code = worksheet.Cells[i, 1].Value?.ToString(),
                         Name = worksheet.Cells[i, 2].Value?.ToString(),
                     };

@@ -30,10 +30,6 @@ namespace TwelveFinal.Repositories
             if (majorsFilter == null)
                 return query.Where(q => 1 == 0);
 
-            if (majorsFilter.Ids != null)
-                query = query.Where(e => majorsFilter.Ids.Contains(e.Id));
-            if (majorsFilter.ExceptIds != null)
-                query = query.Where(q => !majorsFilter.ExceptIds.Contains(q.Id));
             if (majorsFilter.Id != null)
                 query = query.Where(q => q.Id, majorsFilter.Id);
             if (majorsFilter.Name != null)

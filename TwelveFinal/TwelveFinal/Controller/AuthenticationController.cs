@@ -23,27 +23,25 @@ namespace TwelveFinal.Controller
         {
             UserFilter userFilter = new UserFilter()
             {
-                Email = loginDTO.EmailOrPhone,
-                Phone = loginDTO.EmailOrPhone,
+                Username = loginDTO.Username,
                 Password = loginDTO.Password
             };
             User user = await this.userService.Login(userFilter);
             Response.Cookies.Append("token", user.Jwt);
             return new LoginResultDTO()
             {
-                FullName = user.FullName,
+                Username = user.Username,
                 Token = user.Jwt,
                 ExpiredTime = user.ExpiredTime
             };
         }
-
 
         [Route("ChangePassword"), HttpPost]
         public async Task<bool> ChangePassword([FromBody] ChangePasswordDTO changePasswordDTO)
         {
             UserFilter userFilter = new UserFilter()
             {
-                Identify = changePasswordDTO.Identify,
+                Username = changePasswordDTO.Username,
                 Password = changePasswordDTO.Password
             };
             User user = await this.userService.ChangePassword(userFilter, changePasswordDTO.NewPassword);
@@ -55,37 +53,11 @@ namespace TwelveFinal.Controller
         {
             UserFilter userFilter = new UserFilter()
             {
-                Identify = forgotPasswordDTO.Identify,
+                Username = forgotPasswordDTO.Username,
                 Email = forgotPasswordDTO.Email
             };
             await this.userService.ForgotPassword(userFilter);
             return true;
         }
-
-        //[Route("Register"), HttpPost]
-        //public async Task<ActionResult<RegisterDTO>> Register([FromBody] RegisterDTO registerDTO)
-        //{
-        //    User user = new User
-        //    {
-        //        FullName = registerDTO.FullName,
-        //        Password = registerDTO.Password,
-        //        Gender = registerDTO.Gender,
-        //        Email = registerDTO.Email,
-        //        Phone = registerDTO.Phone
-        //    };
-        //    user = await userService.Register(user);
-
-        //    registerDTO = new RegisterDTO
-        //    {
-        //        FullName = user.FullName,
-        //        Errors = user.Errors
-        //    };
-        //    if (user.IsValidated)
-        //        return registerDTO;
-        //    else
-        //    {
-        //        return BadRequest(registerDTO);
-        //    }
-        //}
     }
 }

@@ -20,12 +20,11 @@ namespace TwelveFinal.Services.MUser
 {
     public interface IUserService : IServiceScoped
     {
-        Task<User> Register(User user);
+        
         Task<User> Login(UserFilter userFilter);
-        Task<User> EditProfile(User user);
         Task<User> ChangePassword(UserFilter userFilter, string newPassword);
         Task<bool> ForgotPassword(UserFilter userFilter);
-        Task<List<User>> ImportExcel(byte[] file);
+        
         //Task<byte[]> Export();
     }
     public class UserService : IUserService
@@ -42,61 +41,6 @@ namespace TwelveFinal.Services.MUser
             this.DateTimeService = dateTimeService;
             this.appSettings = options.Value;
             UserValidator = userValidator;
-        }
-
-        public async Task<User> Register(User user)
-        {
-            if (!await UserValidator.Create(user))
-                return user;
-
-            try
-            {
-                await UOW.Begin();
-                //Generate Salt Random
-                string salt = Convert.ToBase64String(CryptographyExtentions.GenerateSalt());
-                await UOW.UserRepository.Create(new User()
-                {
-                    FullName = user.FullName,
-                    Id = CreateGuid(user.FullName),
-                    Password = GeneratePassword(),
-                    Salt = salt,
-                    Email = user.Email,
-                    Gender = user.Gender,
-                    Phone = user.Phone,
-                    IsAdmin = false
-                });
-
-                await UOW.Commit();
-                await SendEmail(user);
-                return await UOW.UserRepository.Get(new UserFilter
-                {
-                    Identify = user.Identify,
-                });
-            }
-            catch (Exception ex)
-            {
-                await UOW.Rollback();
-                throw new MessageException(ex);
-            }
-        }
-
-        public async Task<User> EditProfile(User user)
-        {
-            if (!await UserValidator.Update(user))
-                return user;
-
-            try
-            {
-                await UOW.Begin();
-                await UOW.UserRepository.Update(user);
-                await UOW.Commit();
-                return user;
-            }
-            catch (Exception ex)
-            {
-                await UOW.Rollback();
-                throw new MessageException(ex);
-            }
         }
 
         public async Task<User> Login(UserFilter userFilter)
@@ -128,7 +72,7 @@ namespace TwelveFinal.Services.MUser
             if (!userFilter.Email.Equals(user.Email)) throw new BadRequestException("Email không đúng!");
             user.Password = GeneratePassword();
             await UOW.UserRepository.ChangePassword(user);
-            SendEmail(user);
+            await Utils.RecoveryPasswordMail(user);
             return true;
         }
 
@@ -166,7 +110,8 @@ namespace TwelveFinal.Services.MUser
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.FullName),
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(nameof(user.StudentId), user.StudentId.ToString()),
                     new Claim("IsAdmin", user.IsAdmin.ToString())
                 }),
                 Expires = this.DateTimeService.UtcNow.AddSeconds(LifeTime),
@@ -180,60 +125,7 @@ namespace TwelveFinal.Services.MUser
             return user;
         }
 
-        public async Task<List<User>> ImportExcel(byte[] file)
-        {
-            List<User> users = await LoadFromExcel(file);
-            using (UOW.Begin())
-            {
-                try
-                {
-                    foreach (var user in users)
-                    {
-                        string salt = Convert.ToBase64String(CryptographyExtentions.GenerateSalt());
-                        user.Id = Guid.NewGuid();
-                        user.Salt = salt;
-                        user.Password = GeneratePassword();
-                        user.IsAdmin = false;
-                    }
-                    
-                    var result = this.UOW.UserRepository.BulkInsert(users);
-                    await UOW.Commit();
-                    users.ForEach(u => SendEmail(u));
-                    return users;
-                }
-                catch (Exception ex)
-                {
-                    await UOW.Rollback();
-                    throw ex;
-                }
-            }
-        }
-
-        private async Task<List<User>> LoadFromExcel(byte[] file)
-        {
-            List<User> excelTemplates = new List<User>();
-            using (MemoryStream ms = new MemoryStream(file))
-            using (var package = new ExcelPackage(ms))
-            {
-                var worksheet = package.Workbook.Worksheets.FirstOrDefault();
-                for (int i = worksheet.Dimension.Start.Row + 1; i <= worksheet.Dimension.End.Row; i++)
-                {
-                    User excelTemplate = new User()
-                    {
-                        FullName = worksheet.Cells[i, 1].Value?.ToString(),
-                        Dob = DateTime.Parse(worksheet.Cells[i, 2].Value?.ToString()),
-                        Gender = worksheet.Cells[i, 3].Value?.Equals("1") ,
-                        Ethnic = worksheet.Cells[i, 4].Value?.ToString(),
-                        Identify = worksheet.Cells[i, 5].Value?.ToString(),
-                        Phone = worksheet.Cells[i, 6].Value?.ToString(),
-                        Email = worksheet.Cells[i, 7].Value?.ToString(),
-                        Password = GeneratePassword()
-                    };
-                    excelTemplates.Add(excelTemplate);
-                }
-            }
-            return excelTemplates;
-        }
+        
 
         //public async Task<byte[]> Export()
         //{
@@ -281,39 +173,9 @@ namespace TwelveFinal.Services.MUser
         //    }
         //}
 
-        private async Task SendEmail(User user)
-        {
-            if (string.IsNullOrEmpty(user.Email)) return;
-            string SendEmail = "hsntladykillah@gmail.com";
-            string SendEmailPassword = "demo#123";
+        
 
-            var loginInfo = new NetworkCredential(SendEmail, SendEmailPassword);
-            var msg = new MailMessage();
-            var smtpClient = new SmtpClient("smtp.gmail.com", 587);
-
-            string body = "Tài khoản của bạn đã được đăng ký!\n";
-            body += "Id: " + user.Identify + "\n";
-            body += "Password: " + user.Password;
-            try
-            {
-                msg.From = new MailAddress(SendEmail);
-                msg.To.Add(new MailAddress(user.Email));
-                msg.Subject = "Đăng ký tài khoản TwelveFinal!";
-                msg.Body = body;
-                msg.IsBodyHtml = true;
-
-                smtpClient.EnableSsl = true;
-                smtpClient.UseDefaultCredentials = false;
-                smtpClient.Credentials = loginInfo;
-                smtpClient.Send(msg);
-            }
-            catch (Exception ex)
-            {
-                throw new BadRequestException("Error!");
-            }
-        }
-
-        private string GeneratePassword()
+        public static string GeneratePassword()
         {
             const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
             StringBuilder res = new StringBuilder();
@@ -323,14 +185,6 @@ namespace TwelveFinal.Services.MUser
                 res.Append(valid[rnd.Next(valid.Length)]);
             }
             return res.ToString();
-        }
-
-        private static Guid CreateGuid(string name)
-        {
-            MD5 md5 = MD5.Create();
-            Byte[] myStringBytes = ASCIIEncoding.Default.GetBytes(name);
-            Byte[] hash = md5.ComputeHash(myStringBytes);
-            return new Guid(hash);
         }
 
     }

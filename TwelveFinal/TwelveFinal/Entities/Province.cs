@@ -22,8 +22,6 @@ namespace TwelveFinal.Entities
         public StringFilter Code { get; set; }
         public StringFilter Name { get; set; }
         public ProvinceOrder OrderBy { get; set; }
-        public List<Guid> ExceptIds { get; set; }
-        public List<Guid> Ids { get; set; }
         public ProvinceFilter() : base()
         {
 

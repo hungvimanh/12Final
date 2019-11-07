@@ -13,7 +13,6 @@ namespace TwelveFinal.Repositories
         Task<bool> Create(User user);
         Task<bool> BulkInsert(List<User> users);
         Task<User> Get(UserFilter userFilter);
-        Task<bool> Update(User user);
         Task<bool> Delete(Guid Id);
         Task<bool> ChangePassword(User user);
     }
@@ -27,9 +26,9 @@ namespace TwelveFinal.Repositories
 
         private IQueryable<UserDAO> DynamicFilter(IQueryable<UserDAO> query, UserFilter userFilter)
         {
-            if (!string.IsNullOrEmpty(userFilter.Identify))
+            if (!string.IsNullOrEmpty(userFilter.Username))
             {
-                query = query.Where(u => u.Identify.Equals(userFilter.Identify));
+                query = query.Where(u => u.Username.Equals(userFilter.Username));
             }
             if (userFilter.IsAdmin.HasValue)
             {
@@ -44,13 +43,10 @@ namespace TwelveFinal.Repositories
             {
                 Id = user.Id,
                 IsAdmin = user.IsAdmin,
-                FullName = user.FullName,
+                Username = user.Username,
                 Password = user.Password,
                 Salt = user.Salt,
-                Email = user.Email,
-                Phone = user.Phone,
-                Gender = user.Gender,
-                Identify = user.Identify
+                StudentId = user.StudentId
             };
 
             tFContext.User.Add(userDAO);
@@ -66,13 +62,10 @@ namespace TwelveFinal.Repositories
                 {
                     Id = user.Id,
                     IsAdmin = user.IsAdmin,
-                    FullName = user.FullName,
+                    Username = user.Username,
                     Password = user.Password,
                     Salt = user.Salt,
-                    Email = user.Email,
-                    Phone = user.Phone,
-                    Gender = user.Gender,
-                    Identify = user.Identify
+                    StudentId = user.StudentId
                 }).ToList();
 
                 tFContext.User.AddRange(userDAOs);
@@ -95,35 +88,27 @@ namespace TwelveFinal.Repositories
         {
             IQueryable<UserDAO> users = tFContext.User;
             UserDAO userDAO = await DynamicFilter(users, userFilter).FirstOrDefaultAsync();
-            if (userDAO == null) return null;
-            else return new User()
+            User user = null;
+            if (userDAO == null) return user;
+            else
             {
-                Id = userDAO.Id,
-                FullName = userDAO.FullName,
-                Password = userDAO.Password,
-                Salt = userDAO.Salt,
-                IsAdmin = userDAO.IsAdmin,
-                Email = userDAO.Email,
-                Phone = userDAO.Phone,
-                Gender = userDAO.Gender,
-                Identify = userDAO.Identify
-            };
-        }
+                user = new User()
+                {
+                    Id = userDAO.Id,
+                    Username = userDAO.Username,
+                    Password = userDAO.Password,
+                    Salt = userDAO.Salt,
+                    IsAdmin = userDAO.IsAdmin,
+                    StudentId = userDAO.StudentId
+                    
+                };
+                if (user.StudentId.HasValue)
+                {
+                    user.Email = userDAO.Student.Email;
+                }
+            }
 
-        public async Task<bool> Update(User user)
-        {
-            await tFContext.User.Where(u => u.Id.Equals(user.Id)).UpdateFromQueryAsync(u => new UserDAO
-            {
-                Email = user.Email,
-                Phone = user.Phone,
-                Gender = user.Gender,
-                FullName = user.FullName,
-                Dob = user.Dob,
-                Ethnic = user.Ethnic,
-                Identify = user.Identify
-            });
-
-            return true;
+            return user;
         }
 
         public async Task<bool> ChangePassword(User user)

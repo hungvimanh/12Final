@@ -7,10 +7,8 @@ namespace TwelveFinal.Repositories.Models
     {
         public HighSchoolDAO()
         {
-            FormHighSchoolGrade10s = new HashSet<FormDAO>();
-            FormHighSchoolGrade11s = new HashSet<FormDAO>();
-            FormHighSchoolGrade12s = new HashSet<FormDAO>();
-            FormRegisterPlaceOfExams = new HashSet<FormDAO>();
+            Forms = new HashSet<FormDAO>();
+            Students = new HashSet<StudentDAO>();
         }
 
         public Guid Id { get; set; }
@@ -19,13 +17,9 @@ namespace TwelveFinal.Repositories.Models
         public string Name { get; set; }
         public Guid DistrictId { get; set; }
         public string Address { get; set; }
-        public Guid AreaId { get; set; }
 
-        public virtual AreaDAO Area { get; set; }
         public virtual DistrictDAO District { get; set; }
-        public virtual ICollection<FormDAO> FormHighSchoolGrade10s { get; set; }
-        public virtual ICollection<FormDAO> FormHighSchoolGrade11s { get; set; }
-        public virtual ICollection<FormDAO> FormHighSchoolGrade12s { get; set; }
-        public virtual ICollection<FormDAO> FormRegisterPlaceOfExams { get; set; }
+        public virtual ICollection<FormDAO> Forms { get; set; }
+        public virtual ICollection<StudentDAO> Students { get; set; }
     }
 }

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TwelveFinal.Controller.DTO;
 using TwelveFinal.Entities;
-using TwelveFinal.Services.MUser;
+using TwelveFinal.Services.MStudentService;
 
 namespace TwelveFinal.Controller.student
 {
@@ -20,10 +20,10 @@ namespace TwelveFinal.Controller.student
     }
     public class StudentController : ApiController
     {
-        private IUserService UserService;
-        public StudentController(IUserService UserService)
+        private IStudentService StuedntService;
+        public StudentController(IStudentService StuedntService)
         {
-            this.UserService = UserService;
+            this.StuedntService = StuedntService;
         }
 
         #region Create
@@ -32,24 +32,22 @@ namespace TwelveFinal.Controller.student
         {
             if (registerDTO == null) registerDTO = new RegisterDTO();
 
-            User user = new User
+            Student user = new Student
             {
                 Dob = registerDTO.Dob,
                 Email = registerDTO.Email,
-                Ethnic = registerDTO.Ethnic,
-                FullName = registerDTO.FullName,
+                Name = registerDTO.Name,
                 Gender = registerDTO.Gender,
                 Identify = registerDTO.Identify,
                 Phone = registerDTO.Phone
             };
-            user = await UserService.Register(user);
+            user = await StuedntService.Register(user);
 
             registerDTO = new RegisterDTO
             {
                 Dob = registerDTO.Dob,
                 Email = registerDTO.Email,
-                Ethnic = registerDTO.Ethnic,
-                FullName = registerDTO.FullName,
+                Name = registerDTO.Name,
                 Gender = registerDTO.Gender,
                 Identify = registerDTO.Identify,
                 Phone = registerDTO.Phone,
@@ -69,7 +67,7 @@ namespace TwelveFinal.Controller.student
         {
             MemoryStream memoryStream = new MemoryStream();
             Request.Body.CopyTo(memoryStream);
-            await this.UserService.ImportExcel(memoryStream.ToArray());
+            await this.StuedntService.ImportExcel(memoryStream.ToArray());
         }
     }
 }

@@ -26,8 +26,6 @@ namespace TwelveFinal.Entities
         public Guid? ProvinceId { get; set; }
         public StringFilter ProvinceCode { get; set; }
         public StringFilter ProvinceName { get; set; }
-        public List<Guid> ExceptIds { get; set; }
-        public List<Guid> Ids { get; set; }
         public DistrictOrder OrderBy { get; set; }
         public DistrictFilter() : base()
         {

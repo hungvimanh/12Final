@@ -34,18 +34,12 @@ namespace TwelveFinal.Repositories
             if (highSchoolFilter.DistrictId.HasValue)
                 query = query.Where(q => highSchoolFilter.DistrictId.Equals(q.DistrictId));
 
-            if (highSchoolFilter.Ids != null)
-                query = query.Where(q => highSchoolFilter.Ids.Contains(q.Id));
-            if (highSchoolFilter.ExceptIds != null)
-                query = query.Where(q => !highSchoolFilter.ExceptIds.Contains(q.Id));
             if (highSchoolFilter.Id != null)
                 query = query.Where(q => q.Id, highSchoolFilter.Id);
             if (highSchoolFilter.Name != null)
                 query = query.Where(q => q.Name, highSchoolFilter.Name);
             if (highSchoolFilter.Code != null)
                 query = query.Where(q => q.Code, highSchoolFilter.Code);
-            if (highSchoolFilter.AreaId != null)
-                query = query.Where(q => q.AreaId, highSchoolFilter.AreaId);
             return query;
         }
         private IQueryable<HighSchoolDAO> DynamicOrder(IQueryable<HighSchoolDAO> query, HighSchoolFilter highSchoolFilter)
@@ -102,9 +96,6 @@ namespace TwelveFinal.Repositories
                 ProvinceCode = q.District.Province.Code,
                 ProvinceName = q.District.Province.Name,
                 Address = q.Address,
-                AreaId = q.AreaId,
-                AreaCode = q.Area.Code,
-                AreaName = q.Area.Name
             }).ToListAsync();
             return highSchools;
         }
@@ -125,7 +116,6 @@ namespace TwelveFinal.Repositories
                 Name = highSchool.Name,
                 DistrictId = highSchool.DistrictId,
                 Address = highSchool.Address,
-                AreaId = highSchool.AreaId
             };
 
             tFContext.HighSchool.Add(HighSchoolDAO);
@@ -135,9 +125,7 @@ namespace TwelveFinal.Repositories
 
         public async Task<bool> Delete(Guid Id)
         {
-            await tFContext.Form.Where(h => h.HighSchoolGrade10Id.Equals(Id)).DeleteFromQueryAsync();
-            await tFContext.Form.Where(h => h.HighSchoolGrade11Id.Equals(Id)).DeleteFromQueryAsync();
-            await tFContext.Form.Where(h => h.HighSchoolGrade12Id.Equals(Id)).DeleteFromQueryAsync();
+            await tFContext.Student.Where(h => h.HighSchoolId.Equals(Id)).DeleteFromQueryAsync();
             await tFContext.Form.Where(h => h.RegisterPlaceOfExamId.Equals(Id)).DeleteFromQueryAsync();
             await tFContext.HighSchool.Where(h => h.Id.Equals(Id)).DeleteFromQueryAsync();
             return true;
@@ -157,9 +145,6 @@ namespace TwelveFinal.Repositories
                 ProvinceCode = h.District.Province.Code,
                 ProvinceName = h.District.Province.Name,
                 Address = h.Address,
-                AreaId = h.AreaId,
-                AreaCode = h.Area.Code,
-                AreaName = h.Area.Name
             }).FirstOrDefaultAsync();
 
             return HighSchool;
@@ -183,7 +168,6 @@ namespace TwelveFinal.Repositories
                 Name = highSchool.Name,
                 DistrictId = highSchool.DistrictId,
                 Address = highSchool.Address,
-                AreaId = highSchool.AreaId
             });
 
             return true;

@@ -8,7 +8,7 @@ namespace TwelveFinal.Controller.DTO
     public class FormDTO : DataDTO
     {
         public Guid Id { get; set; }
-        public Guid UserId { get; set; }
+        public Guid? StudentId { get; set; }
 
         public string FullName { get; set; }
         public DateTime? Dob { get; set; }

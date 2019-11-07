@@ -30,10 +30,6 @@ namespace TwelveFinal.Repositories
             if (provinceFilter == null)
                 return query.Where(q => 1 == 0);
 
-            if (provinceFilter.Ids != null)
-                query = query.Where(e => provinceFilter.Ids.Contains(e.Id));
-            if (provinceFilter.ExceptIds != null)
-                query = query.Where(q => !provinceFilter.ExceptIds.Contains(q.Id));
             if (provinceFilter.Id != null)
                 query = query.Where(q => q.Id, provinceFilter.Id);
             if (provinceFilter.Name != null)

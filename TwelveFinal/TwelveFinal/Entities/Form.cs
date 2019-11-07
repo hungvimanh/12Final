@@ -10,39 +10,8 @@ namespace TwelveFinal.Entities
     public class Form : DataEntity
     {
         public Guid Id { get; set; }
-        public long CX { get; set; }
-        public Guid UserId { get; set; }
+        public Guid? StudentId { get; set; }
 
-        public string FullName { get; set; }    //họ và tên đầy đủ
-        public DateTime? Dob { get; set; }   //Ngày tháng năm sinh
-        public bool? Gender { get; set; }    //Giới tính
-        public string PlaceOfBirth { get; set; }    //Nơi sinh
-        public string Ethnic { get; set; }      //Dân tộc
-        public string Identify { get; set; }    //số CMT/Căn cước công dân
-        public Guid TownId { get; set; }    //Hộ khẩu thường trú
-        public string TownCode { get; set; }
-        public string TownName { get; set; }
-        public string DistrictCode { get; set; }
-        public string DistrictName { get; set; }
-        public string ProvinceCode { get; set; }
-        public string ProvinceName { get; set; }
-        public bool? IsPermanentResidenceMore18 { get; set; }   //Hộ khẩu thường trú KV1 > 18tháng
-        public bool? IsPermanentResidenceSpecialMore18 { get; set; }    //Hộ khẩu thường trú vùng đặc biệt khó khăn >18 tháng
-        public Guid HighSchoolGrade10Id { get; set; }   //Trường THPT
-        public string HighSchoolGrade10Code { get; set; }
-        public string HighSchoolGrade10Name { get; set; }
-        public Guid HighSchoolGrade11Id { get; set; }
-        public string HighSchoolGrade11Code { get; set; }
-        public string HighSchoolGrade11Name { get; set; }
-        public Guid HighSchoolGrade12Id { get; set; }
-        public string HighSchoolGrade12Code { get; set; }
-        public string HighSchoolGrade12Name { get; set; }
-        public string Phone { get; set; }   //Sđt
-        public string Email { get; set; }   
-        public string Address { get; set; }     //Địa chỉ liên hệ
-
-        public bool? ResultForUniversity { get; set; }      //Thí sinh sử dụng kết quả thi để xét tuyển CĐ-ĐH?
-        public bool StudyAtHighSchool { get; set; }     //Thí sinh học THPT(True) - TTGDTX(False)
         public bool? Graduated { get; set; }        //Đã tốt nghiệp THPT/TTGDTX?
         public Guid ClusterContestId { get; set; }      //Cụm thi(tỉnh/thành phố)
         public string ClusterContestCode { get; set; }

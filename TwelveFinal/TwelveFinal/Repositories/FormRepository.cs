@@ -31,19 +31,6 @@ namespace TwelveFinal.Repositories
             FormDAO formDAO = new FormDAO
             {
                 Id = form.Id,
-                PlaceOfBirth = form.PlaceOfBirth,
-                TownId = form.TownId,
-                IsPermanentResidenceMore18 = form.IsPermanentResidenceMore18,
-                IsPermanentResidenceSpecialMore18 = form.IsPermanentResidenceSpecialMore18,
-                HighSchoolGrade10Id = form.HighSchoolGrade10Id,
-                HighSchoolGrade11Id = form.HighSchoolGrade11Id,
-                HighSchoolGrade12Id = form.HighSchoolGrade12Id,
-                Phone = form.Phone,
-                Email = form.Email,
-                Address = form.Address,
-                
-                ResultForUniversity = form.ResultForUniversity,
-                StudyAtHighSchool = form.StudyAtHighSchool,
                 Graduated = form.Graduated,
                 ClusterContestId = form.ClusterContestId,
                 RegisterPlaceOfExamId = form.RegisterPlaceOfExamId,
@@ -73,7 +60,7 @@ namespace TwelveFinal.Repositories
 
                 PriorityType = form.PriorityType,
                 Area = form.Area,
-                UserId = CurrentContext.UserId
+                StudentId = form.StudentId.Value
             };
 
             tFContext.Form.Add(formDAO);
@@ -115,38 +102,8 @@ namespace TwelveFinal.Repositories
             Form form = await tFContext.Form.Where(f => f.Id.Equals(Id)).Select(f => new Form
             {
                 Id = f.Id,
-                UserId = f.UserId,
+                StudentId = f.StudentId,
 
-                FullName = f.User.FullName,
-                Gender = f.User.Gender,
-                Dob = f.User.Dob,
-                PlaceOfBirth = f.PlaceOfBirth,
-                Ethnic = f.User.Ethnic,
-                Identify = f.User.Identify,
-                Address = f.Address,
-                TownId = f.TownId,
-                TownCode = f.Town.Code,
-                TownName = f.Town.Name,
-                DistrictCode = f.Town.District.Code,
-                DistrictName = f.Town.District.Name,
-                ProvinceCode = f.Town.District.Province.Code,
-                ProvinceName = f.Town.District.Province.Name,
-                IsPermanentResidenceMore18 = f.IsPermanentResidenceMore18,
-                IsPermanentResidenceSpecialMore18 = f.IsPermanentResidenceSpecialMore18,
-                HighSchoolGrade10Id = f.HighSchoolGrade10Id,
-                HighSchoolGrade10Code = f.HighSchoolGrade10.Code,
-                HighSchoolGrade10Name = f.HighSchoolGrade10.Name,
-                HighSchoolGrade11Id = f.HighSchoolGrade11Id,
-                HighSchoolGrade11Code = f.HighSchoolGrade11.Code,
-                HighSchoolGrade11Name = f.HighSchoolGrade11.Name,
-                HighSchoolGrade12Id = f.HighSchoolGrade12Id,
-                HighSchoolGrade12Code = f.HighSchoolGrade12.Code,
-                HighSchoolGrade12Name = f.HighSchoolGrade12.Name,
-                Phone = f.Phone,
-                Email = f.Email,
-
-                ResultForUniversity = f.ResultForUniversity,
-                StudyAtHighSchool = f.StudyAtHighSchool,
                 Graduated = f.Graduated,
                 ClusterContestId = f.ClusterContestId,
                 ClusterContestCode = f.ClusterContest.Code,
@@ -206,22 +163,9 @@ namespace TwelveFinal.Repositories
             await tFContext.Form.Where(f => f.Id.Equals(form.Id)).UpdateFromQueryAsync(f => new FormDAO
             {
                 Id = f.Id,
-                UserId = f.UserId,
-
-                Address = form.Address,
-                PlaceOfBirth = form.PlaceOfBirth,
-                Email = form.Email,
-                HighSchoolGrade10Id = form.HighSchoolGrade10Id,
-                HighSchoolGrade11Id = form.HighSchoolGrade11Id,
-                HighSchoolGrade12Id = form.HighSchoolGrade12Id,
-                IsPermanentResidenceMore18 = form.IsPermanentResidenceMore18,
-                IsPermanentResidenceSpecialMore18 = form.IsPermanentResidenceSpecialMore18,
-                Phone = form.Phone,
-                TownId = form.TownId,
+                StudentId = f.StudentId,
 
                 Graduated = form.Graduated,
-                ResultForUniversity = form.ResultForUniversity,
-                StudyAtHighSchool = form.StudyAtHighSchool,
                 ClusterContestId = form.ClusterContestId,
                 RegisterPlaceOfExamId = form.RegisterPlaceOfExamId,
                 Maths = form.Maths,

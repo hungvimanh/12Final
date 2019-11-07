@@ -20,8 +20,6 @@ namespace TwelveFinal.Entities
         public StringFilter Code { get; set; }
         public StringFilter Name { get; set; }
         public MajorsOrder OrderBy { get; set; }
-        public List<Guid> Ids { get; set; }
-        public List<Guid> ExceptIds { get; set; }
         public MajorsFilter() : base()
         {
 

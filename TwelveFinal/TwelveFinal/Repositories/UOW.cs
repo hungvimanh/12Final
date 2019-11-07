@@ -13,16 +13,15 @@ namespace TwelveFinal.Repositories
         Task Begin();
         Task Commit();
         Task Rollback();
-        IAreaRepository AreaRepository { get; }
         IDistrictRepository DistrictRepository { get; }
         IEthnicRepository EthnicRepository { get; }
         IFormRepository FormRepository { get; }
         IHighSchoolRepository HighSchoolRepository { get; }
         IMajorsRepository MajorsRepository { get; }
-        IPriorityTypeRepository PriorityTypeRepository { get; }
         IProvinceRepository ProvinceRepository { get; }
         ITownRepository TownRepository { get; }
         ISubjectGroupRepository SubjectGroupRepository { get; }
+        IStudentRepository StudentRepository { get; }
         IUniversity_MajorsRepository University_MajorsRepository { get; }
         IUniversityRepository UniversityRepository { get; }
         IUserRepository UserRepository { get; }
@@ -30,16 +29,15 @@ namespace TwelveFinal.Repositories
     public class UOW : IUOW
     { 
         private TFContext tFContext;
-        public IAreaRepository AreaRepository { get; private set; }
         public IDistrictRepository DistrictRepository { get; private set; }
         public IEthnicRepository EthnicRepository { get; private set; }
         public IFormRepository FormRepository { get; private set; }
         public IHighSchoolRepository HighSchoolRepository { get; private set; }
         public IMajorsRepository MajorsRepository { get; private set; }
-        public IPriorityTypeRepository PriorityTypeRepository { get; private set; }
         public IProvinceRepository ProvinceRepository { get; private set; }
         public ITownRepository TownRepository { get; private set; }
         public ISubjectGroupRepository SubjectGroupRepository { get; private set; }
+        public IStudentRepository StudentRepository { get; private set; }
         public IUniversity_MajorsRepository University_MajorsRepository { get; private set; }
         public IUniversityRepository UniversityRepository { get; private set; }
         public IUserRepository UserRepository { get; private set; }
@@ -47,16 +45,15 @@ namespace TwelveFinal.Repositories
         public UOW(TFContext _tFContext, ICurrentContext currentContext)
         {
             tFContext = _tFContext;
-            AreaRepository = new AreaRepository(tFContext);
             DistrictRepository = new DistrictRepository(tFContext);
             EthnicRepository = new EthnicRepository(tFContext);
             FormRepository = new FormRepository(tFContext, currentContext);
             HighSchoolRepository = new HighSchoolRepository(tFContext);
             MajorsRepository = new MajorsRepository(tFContext);
-            PriorityTypeRepository = new PriorityTypeRepository(tFContext);
             ProvinceRepository = new ProvinceRepository(tFContext);
             TownRepository = new TownRepository(tFContext);
             SubjectGroupRepository = new SubjectGroupRepository(tFContext);
+            StudentRepository = new StudentRepository(tFContext);
             University_MajorsRepository = new University_MajorsRepository(tFContext);
             UniversityRepository = new UniversityRepository(tFContext);
             UserRepository = new UserRepository(tFContext);

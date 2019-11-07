@@ -31,7 +31,8 @@ namespace TwelveFinal.Entities
         public Guid? MajorsId { get; set; }
         public StringFilter MajorsCode { get; set; }
         public StringFilter MajorsName { get; set; }
-        public DoubleFilter Benchmark { get; set; }
+        public DoubleFilter BenchmarkHigh { get; set; }
+        public DoubleFilter BenchmarkLow { get; set; }
         public GuidFilter SubjectGroupId { get; set; }
         public StringFilter SubjectGroupCode { get; set; }
         public StringFilter SubjectGroupName { get; set; }
@@ -50,6 +51,7 @@ namespace TwelveFinal.Entities
         UniversityName,
         MajorsCode,
         MajorsName,
-        Benchmark
+        Benchmark,
+        Year
     }
 }

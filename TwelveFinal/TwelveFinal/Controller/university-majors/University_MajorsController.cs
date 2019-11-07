@@ -137,10 +137,13 @@ namespace TwelveFinal.Controller.university_majors
                 SubjectGroupId = university_MajorsFilterDTO.SubjectGroupId,
                 SubjectGroupCode = university_MajorsFilterDTO.SubjectGroupCode,
                 SubjectGroupName = university_MajorsFilterDTO.SubjectGroupName,
-                Benchmark = university_MajorsFilterDTO.Benchmark,
+                BenchmarkHigh = university_MajorsFilterDTO.BenchmarkHigh,
+                BenchmarkLow = university_MajorsFilterDTO.BenchmarkLow,
                 Year = university_MajorsFilterDTO.Year,
                 Skip = university_MajorsFilterDTO.Skip,
-                Take = university_MajorsFilterDTO.Take
+                Take = university_MajorsFilterDTO.Take,
+                OrderBy = university_MajorsFilterDTO.OrderBy,
+                OrderType = OrderType.DESC
             };
 
             List<University_Majors> universities = await university_MajorsService.List(university_MajorsFilter);

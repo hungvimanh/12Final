@@ -7,7 +7,7 @@ namespace TwelveFinal.Controller.DTO
 {
     public class LoginResultDTO
     {
-        public string FullName { get; set; }
+        public string Username { get; set; }
         public string Token { get; set; }
         public DateTime? ExpiredTime { get; set; }
     }

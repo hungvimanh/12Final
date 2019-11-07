@@ -42,7 +42,7 @@ namespace DataSeeding
                     string highSchoolCode = worksheet.Cells[i, 3].Value?.ToString();
                     string highSchoolName = worksheet.Cells[i, 4].Value?.ToString();
                     string address = worksheet.Cells[i, 5].Value?.ToString();
-                    string areaCode = worksheet.Cells[i, 6].Value?.ToString();
+                    //string areaCode = worksheet.Cells[i, 6].Value?.ToString();
 
                     if (provinceCode.Length < 2)
                     {
@@ -63,7 +63,7 @@ namespace DataSeeding
                     {
                         Id = CreateGuid("HighSchool" + provinceCode + districtCode + highSchoolCode),
                         DistrictId = CreateGuid("District" + provinceCode + districtCode),
-                        AreaId = CreateGuid("Area" + areaCode),
+                        //AreaId = CreateGuid("Area" + areaCode),
                         Code = highSchoolCode,
                         Name = highSchoolName,
                         Address = address

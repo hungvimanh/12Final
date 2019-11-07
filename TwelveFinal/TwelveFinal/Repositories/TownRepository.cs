@@ -31,10 +31,6 @@ namespace TwelveFinal.Repositories
                 return query.Where(q => 1 == 0);
             query.Where(q => q.DistrictId.Equals(townFilter.DistrictId));
 
-            if (townFilter.Ids != null)
-                query = query.Where(e => townFilter.Ids.Contains(e.Id));
-            if (townFilter.ExceptIds != null)
-                query = query.Where(q => !townFilter.ExceptIds.Contains(q.Id));
             if (townFilter.Id != null)
                 query = query.Where(q => q.Id, townFilter.Id);
             if (townFilter.Name != null)
@@ -131,7 +127,7 @@ namespace TwelveFinal.Repositories
 
         public async Task<bool> Delete(Guid Id)
         {
-            await tFContext.Form.Where(p => p.TownId.Equals(Id)).DeleteFromQueryAsync();
+            await tFContext.Student.Where(p => p.TownId.Equals(Id)).DeleteFromQueryAsync();
             await tFContext.Town.Where(t => t.Id.Equals(Id)).DeleteFromQueryAsync();
             return true;
         }

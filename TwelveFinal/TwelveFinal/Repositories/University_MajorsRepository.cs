@@ -51,8 +51,10 @@ namespace TwelveFinal.Repositories
                 query = query.Where(q => q.SubjectGroup.Code, university_MajorsFilter.SubjectGroupCode);
             if (university_MajorsFilter.SubjectGroupName != null)
                 query = query.Where(q => q.SubjectGroup.Name, university_MajorsFilter.SubjectGroupName);
-            if (university_MajorsFilter.Benchmark != null)
-                query = query.Where(q => q.Benchmark, university_MajorsFilter.Benchmark);
+            if (university_MajorsFilter.BenchmarkHigh != null)
+                query = query.Where(q => q.Benchmark, university_MajorsFilter.BenchmarkHigh);
+            if (university_MajorsFilter.BenchmarkLow != null)
+                query = query.Where(q => q.Benchmark, university_MajorsFilter.BenchmarkLow);
             if (!string.IsNullOrEmpty(university_MajorsFilter.Year))
                 query = query.Where(q => q.Year.Equals(university_MajorsFilter.Year));
             return query;
@@ -77,7 +79,7 @@ namespace TwelveFinal.Repositories
                             query = query.OrderBy(q => q.University.Name);
                             break;
                         default:
-                            query = query.OrderBy(q => q.CX);
+                            query = query.OrderBy(q => q.Benchmark);
                             break;
                     }
                     break;
@@ -97,12 +99,12 @@ namespace TwelveFinal.Repositories
                             query = query.OrderByDescending(q => q.University.Name);
                             break;
                         default:
-                            query = query.OrderByDescending(q => q.CX);
+                            query = query.OrderByDescending(q => q.Benchmark);
                             break;
                     }
                     break;
                 default:
-                    query = query.OrderBy(q => q.CX);
+                    query = query.OrderBy(q => q.Benchmark);
                     break;
             }
             query = query.Skip(university_MajorsFilter.Skip).Take(university_MajorsFilter.Take);

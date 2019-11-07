@@ -5,12 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using TwelveFinal.Controller.DTO;
 using TwelveFinal.Entities;
-using TwelveFinal.Services.MAreaService;
 using TwelveFinal.Services.MDistrict;
 using TwelveFinal.Services.MEthnic;
 using TwelveFinal.Services.MForm;
 using TwelveFinal.Services.MHighSchool;
-using TwelveFinal.Services.MPriorityType;
 using TwelveFinal.Services.MProvince;
 using TwelveFinal.Services.MTown;
 using TwelveFinal.Services.MUniversity_Majors_Majors;
@@ -27,8 +25,6 @@ namespace TwelveFinal.Controller.form
         public const string DropListTown = Default + "/town";
         public const string DropListHighSchool = Default + "/high-school";
         public const string DropListEthnic = Default + "/drop-list-ethnic";
-        public const string DropListPriorityType = Default + "/drop-list-priority-type";
-        public const string DropListArea = Default + "/drop-list-area";
         public const string DropListUnivesity_Majors = Default + "/drop-list-university-majors";
         public const string Delete = Default + "/delete";
     }
@@ -36,23 +32,19 @@ namespace TwelveFinal.Controller.form
     public class FormController : ApiController
     {
         private IFormService FormService;
-        private IAreaService AreaService;
         private IProvinceService ProvinceService;
         private IDistrictService DistrictService;
         private ITownService TownService;
         private IHighSchoolService HighSchoolService;
         private IEthnicService EthnicService;
-        private IPriorityTypeService PriorityTypeService;
         private IUniversity_MajorsService University_MajorsService;
         public FormController(
             IFormService formService,
-            IAreaService areaService,
             IProvinceService provinceService,
             IDistrictService districtService,
             ITownService townService,
             IHighSchoolService highSchoolService,
             IEthnicService ethnicService,
-            IPriorityTypeService priorityTypeService,
             IUniversity_MajorsService university_MajorsService
             )
         {
@@ -61,9 +53,7 @@ namespace TwelveFinal.Controller.form
             DistrictService = districtService;
             TownService = townService;
             HighSchoolService = highSchoolService;
-            AreaService = areaService;
             EthnicService = ethnicService;
-            PriorityTypeService = priorityTypeService;
             University_MajorsService = university_MajorsService;
         }
 
@@ -79,38 +69,8 @@ namespace TwelveFinal.Controller.form
             formDTO = new FormDTO
             {
                 Id = form.Id,
-                UserId = form.UserId,
+                StudentId = form.StudentId,
                 
-                FullName = form.FullName,
-                Dob = form.Dob,
-                Gender = form.Gender,
-                Identify = form.Identify,
-                PlaceOfBirth = form.PlaceOfBirth,
-                TownId = form.TownId,
-                TownCode = form.TownCode,
-                TownName = form.TownName,
-                DistrictCode = form.DistrictCode,
-                DistrictName  = form.DistrictName,
-                ProvinceCode = form.ProvinceCode,
-                ProvinceName = form.ProvinceName,
-                Address = form.Address,
-                Phone = form.Phone,
-                Email = form.Email,
-                Ethnic = form.Ethnic,
-                HighSchoolGrade10Id = form.HighSchoolGrade10Id,
-                HighSchoolGrade10Code = form.HighSchoolGrade10Code,
-                HighSchoolGrade10Name = form.HighSchoolGrade10Name,
-                HighSchoolGrade11Id = form.HighSchoolGrade11Id,
-                HighSchoolGrade11Code = form.HighSchoolGrade11Code,
-                HighSchoolGrade11Name = form.HighSchoolGrade11Name,
-                HighSchoolGrade12Id = form.HighSchoolGrade12Id,
-                HighSchoolGrade12Code = form.HighSchoolGrade12Code,
-                HighSchoolGrade12Name = form.HighSchoolGrade12Name,
-                IsPermanentResidenceMore18 = form.IsPermanentResidenceMore18,
-                IsPermanentResidenceSpecialMore18 =form.IsPermanentResidenceSpecialMore18,
-                
-                ResultForUniversity = form.ResultForUniversity,
-                StudyAtHighSchool = form.StudyAtHighSchool,
                 ClusterContestId = form.ClusterContestId,
                 ClusterContestCode = form.ClusterContestCode,
                 ClusterContestName = form.ClusterContestName,
@@ -141,9 +101,9 @@ namespace TwelveFinal.Controller.form
                 ReserveLiterature = form.ReserveLiterature,
                 ReserveMaths = form.ReserveMaths,
                 ReservePhysics = form.ReservePhysics,
-                
-                Area = form.Area,
-                PriorityType =form.PriorityType,
+
+                Area = formDTO.Area,
+                PriorityType = formDTO.PriorityType,
                 Aspirations = formDTO.Aspirations.Select(m => new AspirationDTO
                 {
                     Id = m.Id,
@@ -184,38 +144,8 @@ namespace TwelveFinal.Controller.form
             return new FormDTO
             {
                 Id = form.Id,
-                UserId = form.UserId,
+                StudentId = form.StudentId,
 
-                FullName = form.FullName,
-                Dob = form.Dob,
-                Gender = form.Gender,
-                Identify = form.Identify,
-                PlaceOfBirth = form.PlaceOfBirth,
-                TownId = form.TownId,
-                TownCode = form.TownCode,
-                TownName = form.TownName,
-                DistrictCode = form.DistrictCode,
-                DistrictName = form.DistrictName,
-                ProvinceCode = form.ProvinceCode,
-                ProvinceName = form.ProvinceName,
-                Address = form.Address,
-                Phone = form.Phone,
-                Email = form.Email,
-                Ethnic = form.Ethnic,
-                HighSchoolGrade10Id = form.HighSchoolGrade10Id,
-                HighSchoolGrade10Code = form.HighSchoolGrade10Code,
-                HighSchoolGrade10Name = form.HighSchoolGrade10Name,
-                HighSchoolGrade11Id = form.HighSchoolGrade11Id,
-                HighSchoolGrade11Code = form.HighSchoolGrade11Code,
-                HighSchoolGrade11Name = form.HighSchoolGrade11Name,
-                HighSchoolGrade12Id = form.HighSchoolGrade12Id,
-                HighSchoolGrade12Code = form.HighSchoolGrade12Code,
-                HighSchoolGrade12Name = form.HighSchoolGrade12Name,
-                IsPermanentResidenceMore18 = form.IsPermanentResidenceMore18,
-                IsPermanentResidenceSpecialMore18 = form.IsPermanentResidenceSpecialMore18,
-
-                ResultForUniversity = form.ResultForUniversity,
-                StudyAtHighSchool = form.StudyAtHighSchool,
                 ClusterContestId = form.ClusterContestId,
                 ClusterContestCode = form.ClusterContestCode,
                 ClusterContestName = form.ClusterContestName,
@@ -384,48 +314,6 @@ namespace TwelveFinal.Controller.form
         }
         #endregion
 
-        #region DropListPriorityType
-        [Route(FormRoute.DropListPriorityType), HttpPost]
-        public async Task<List<PriorityTypeDTO>> ListPriorityType([FromBody] PriorityTypeFilterDTO priorityTypeFilterDTO)
-        {
-            PriorityTypeFilter filter = new PriorityTypeFilter
-            {
-                Id = priorityTypeFilterDTO.Id,
-                Code = priorityTypeFilterDTO.Code
-            };
-
-            var listPriorityType = await PriorityTypeService.List(filter);
-            if (listPriorityType == null) return null;
-            return listPriorityType.Select(p => new PriorityTypeDTO
-            {
-                Id = p.Id,
-                Code = p.Code
-            }).OrderBy(p => p.Code).ToList();
-        }
-        #endregion
-
-        #region DropListArea
-        [Route(FormRoute.DropListArea), HttpPost]
-        public async Task<List<AreaDTO>> ListArea([FromBody] AreaFilterDTO areaFilterDTO)
-        {
-            AreaFilter filter = new AreaFilter
-            {
-                Id = areaFilterDTO.Id,
-                Code = areaFilterDTO.Code,
-                Name = areaFilterDTO.Name
-            };
-
-            var listArea = await AreaService.List(filter);
-            if (listArea == null) return null;
-            return listArea.Select(a => new AreaDTO
-            {
-                Id = a.Id,
-                Code = a.Code,
-                Name = a.Name
-            }).ToList();
-        }
-        #endregion
-
         #region DropListUnivesity_Majors
         [Route(FormRoute.DropListUnivesity_Majors), HttpPost]
         public async Task<List<University_MajorsDTO>> ListUnivesity_Majors([FromBody] University_MajorsFilterDTO university_majorsFilterDTO)
@@ -464,38 +352,8 @@ namespace TwelveFinal.Controller.form
             Form form = new Form
             {
                 Id = formDTO.Id,
-                UserId = formDTO.UserId,
+                StudentId = formDTO.StudentId,
 
-                FullName = formDTO.FullName,
-                Dob = formDTO.Dob,
-                Gender = formDTO.Gender,
-                PlaceOfBirth = formDTO.PlaceOfBirth,
-                Ethnic = formDTO.Ethnic,
-                Identify = formDTO.Identify,
-                TownId = formDTO.TownId,
-                TownCode = formDTO.TownCode,
-                TownName = formDTO.TownName,
-                DistrictCode = formDTO.DistrictCode,
-                DistrictName = formDTO.DistrictName,
-                ProvinceCode = formDTO.ProvinceCode,
-                ProvinceName = formDTO.ProvinceName,
-                IsPermanentResidenceMore18 = formDTO.IsPermanentResidenceMore18,
-                IsPermanentResidenceSpecialMore18 = formDTO.IsPermanentResidenceSpecialMore18,
-                HighSchoolGrade10Id = formDTO.HighSchoolGrade10Id,
-                HighSchoolGrade10Code = formDTO.HighSchoolGrade10Code,
-                HighSchoolGrade10Name = formDTO.HighSchoolGrade10Name,
-                HighSchoolGrade11Id = formDTO.HighSchoolGrade11Id,
-                HighSchoolGrade11Code = formDTO.HighSchoolGrade11Code,
-                HighSchoolGrade11Name = formDTO.HighSchoolGrade11Name,
-                HighSchoolGrade12Id = formDTO.HighSchoolGrade12Id,
-                HighSchoolGrade12Code = formDTO.HighSchoolGrade12Code,
-                HighSchoolGrade12Name = formDTO.HighSchoolGrade12Name,
-                Phone = formDTO.Phone,
-                Email = formDTO.Email,
-                Address = formDTO.Address,
-
-                ResultForUniversity = formDTO.ResultForUniversity,
-                StudyAtHighSchool = formDTO.StudyAtHighSchool,
                 Graduated = formDTO.Graduated,
                 ClusterContestId = formDTO.ClusterContestId,
                 ClusterContestCode = formDTO.ClusterContestCode,

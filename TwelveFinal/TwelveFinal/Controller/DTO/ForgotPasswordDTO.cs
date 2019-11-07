@@ -7,7 +7,7 @@ namespace TwelveFinal.Controller.DTO
 {
     public class ForgotPasswordDTO : DataDTO
     {
-        public string Identify { get; set; }
+        public string Username { get; set; }
         public string Email { get; set; }
     }
 }

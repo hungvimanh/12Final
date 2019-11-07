@@ -26,8 +26,6 @@ namespace TwelveFinal.Entities
         public StringFilter DistrictCode { get; set; }
         public StringFilter DistrictName { get; set; }
         public TownOrder OrderBy { get; set; }
-        public List<Guid> ExceptIds { get; set; }
-        public List<Guid> Ids { get; set; }
         public TownFilter() : base()
         {
         }

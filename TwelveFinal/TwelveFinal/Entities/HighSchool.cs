@@ -19,9 +19,6 @@ namespace TwelveFinal.Entities
         public Guid ProvinceId { get; set; }
         public string ProvinceCode { get; set; }
         public string ProvinceName { get; set; }
-        public Guid AreaId { get; set; }
-        public string AreaCode { get; set; }
-        public string AreaName { get; set; }
     }
 
     public class HighSchoolFilter : FilterEntity
@@ -31,10 +28,7 @@ namespace TwelveFinal.Entities
         public StringFilter Name { get; set; }
         public Guid? DistrictId { get; set; }
         public Guid? ProvinceId { get; set; }
-        public GuidFilter AreaId { get; set; }
 
-        public List<Guid> ExceptIds { get; set; }
-        public List<Guid> Ids { get; set; }
         public HighSchoolOrder OrderBy { get; set; }
         public HighSchoolFilter() : base()
         {

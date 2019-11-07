@@ -139,16 +139,10 @@ namespace TwelveFinal.Repositories
             return subjectGroup;
         }
 
-        //public Task<List<SubjectGroup>> List(University_Majors university_Majors)
-        //{
-            
-        //}
-
         public async Task<bool> Update(SubjectGroup subjectGroup)
         {
             await tFContext.SubjectGroup.Where(t => t.Id.Equals(subjectGroup.Id)).UpdateFromQueryAsync(t => new SubjectGroupDAO
             {
-                Id = subjectGroup.Id,
                 Code = subjectGroup.Code,
                 Name = subjectGroup.Name
             });

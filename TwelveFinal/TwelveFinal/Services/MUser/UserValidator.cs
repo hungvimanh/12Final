@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using TwelveFinal.Common;
 using TwelveFinal.Entities;
 using TwelveFinal.Repositories;
 
@@ -66,10 +67,10 @@ namespace TwelveFinal.Services.MUser
             //Nếu tồn tại thì trả ra lỗi Username đã được sử dụng
             if(UOW.UserRepository.Get(new UserFilter
             {
-                FullName = user.FullName
+                Username = user.Username
             }) == null)
             {
-                user.AddError(nameof(UserValidator), nameof(user.FullName), ErrorCode.Duplicate);
+                user.AddError(nameof(UserValidator), nameof(user.Username), ErrorCode.Duplicate);
                 return user.IsValidated;
             }
             return true;
@@ -78,14 +79,9 @@ namespace TwelveFinal.Services.MUser
         private async Task<bool> ValidateEmail(User user)
         {
             //Validate Format cuả Email
-            if (string.IsNullOrEmpty(user.Email))
+            if (Utils.IsValidEmail(user.Email))
             {
-                var isValid = new EmailAddressAttribute().IsValid(user.Email);
-                if (!isValid)
-                {
-                    user.AddError(nameof(UserValidator), nameof(user.Email), ErrorCode.Invalid);
-                    return user.IsValidated;
-                }
+                user.AddError(nameof(UserValidator), nameof(user.Email), ErrorCode.Invalid);
             }
 
             return user.IsValidated;

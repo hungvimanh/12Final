@@ -6,15 +6,14 @@ namespace TwelveFinal.Repositories.Models
 {
     public partial class TFContext : DbContext
     {
-        public virtual DbSet<AreaDAO> Area { get; set; }
         public virtual DbSet<AspirationDAO> Aspiration { get; set; }
         public virtual DbSet<DistrictDAO> District { get; set; }
         public virtual DbSet<EthnicDAO> Ethnic { get; set; }
         public virtual DbSet<FormDAO> Form { get; set; }
         public virtual DbSet<HighSchoolDAO> HighSchool { get; set; }
         public virtual DbSet<MajorsDAO> Majors { get; set; }
-        public virtual DbSet<PriorityTypeDAO> PriorityType { get; set; }
         public virtual DbSet<ProvinceDAO> Province { get; set; }
+        public virtual DbSet<StudentDAO> Student { get; set; }
         public virtual DbSet<SubjectGroupDAO> SubjectGroup { get; set; }
         public virtual DbSet<TownDAO> Town { get; set; }
         public virtual DbSet<UniversityDAO> University { get; set; }
@@ -40,26 +39,6 @@ namespace TwelveFinal.Repositories.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
-
-            modelBuilder.Entity<AreaDAO>(entity =>
-            {
-                entity.HasIndex(e => e.CX)
-                    .HasName("CX_Area")
-                    .IsUnique()
-                    .HasAnnotation("SqlServer:Clustered", true);
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.CX).ValueGeneratedOnAdd();
-
-                entity.Property(e => e.Code)
-                    .IsRequired()
-                    .HasMaxLength(10);
-
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(50);
-            });
 
             modelBuilder.Entity<AspirationDAO>(entity =>
             {
@@ -152,31 +131,15 @@ namespace TwelveFinal.Repositories.Models
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.Property(e => e.Address)
-                    .IsRequired()
-                    .HasMaxLength(500);
-
                 entity.Property(e => e.Area)
                     .IsRequired()
                     .HasMaxLength(10);
 
                 entity.Property(e => e.CX).ValueGeneratedOnAdd();
 
-                entity.Property(e => e.Email)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
                 entity.Property(e => e.ExceptLanguages).HasMaxLength(500);
 
-                entity.Property(e => e.Languages).HasMaxLength(2);
-
-                entity.Property(e => e.Phone)
-                    .IsRequired()
-                    .HasMaxLength(15);
-
-                entity.Property(e => e.PlaceOfBirth)
-                    .IsRequired()
-                    .HasMaxLength(50);
+                entity.Property(e => e.Languages).HasMaxLength(50);
 
                 entity.Property(e => e.PriorityType)
                     .IsRequired()
@@ -188,39 +151,15 @@ namespace TwelveFinal.Repositories.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Form_Province");
 
-                entity.HasOne(d => d.HighSchoolGrade10)
-                    .WithMany(p => p.FormHighSchoolGrade10s)
-                    .HasForeignKey(d => d.HighSchoolGrade10Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Form_HighSchool1");
-
-                entity.HasOne(d => d.HighSchoolGrade11)
-                    .WithMany(p => p.FormHighSchoolGrade11s)
-                    .HasForeignKey(d => d.HighSchoolGrade11Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Form_HighSchool2");
-
-                entity.HasOne(d => d.HighSchoolGrade12)
-                    .WithMany(p => p.FormHighSchoolGrade12s)
-                    .HasForeignKey(d => d.HighSchoolGrade12Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Form_HighSchool3");
-
                 entity.HasOne(d => d.RegisterPlaceOfExam)
-                    .WithMany(p => p.FormRegisterPlaceOfExams)
+                    .WithMany(p => p.Forms)
                     .HasForeignKey(d => d.RegisterPlaceOfExamId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Form_HighSchool");
 
-                entity.HasOne(d => d.Town)
+                entity.HasOne(d => d.Student)
                     .WithMany(p => p.Forms)
-                    .HasForeignKey(d => d.TownId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Form_Town");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.Forms)
-                    .HasForeignKey(d => d.UserId)
+                    .HasForeignKey(d => d.StudentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Form_User");
             });
@@ -243,12 +182,6 @@ namespace TwelveFinal.Repositories.Models
                     .HasMaxLength(3);
 
                 entity.Property(e => e.Name).HasMaxLength(500);
-
-                entity.HasOne(d => d.Area)
-                    .WithMany(p => p.HighSchools)
-                    .HasForeignKey(d => d.AreaId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_HighSchool_Area");
 
                 entity.HasOne(d => d.District)
                     .WithMany(p => p.HighSchools)
@@ -277,22 +210,6 @@ namespace TwelveFinal.Repositories.Models
                     .HasMaxLength(200);
             });
 
-            modelBuilder.Entity<PriorityTypeDAO>(entity =>
-            {
-                entity.HasIndex(e => e.CX)
-                    .HasName("CX_PriorityType")
-                    .IsUnique()
-                    .HasAnnotation("SqlServer:Clustered", true);
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.CX).ValueGeneratedOnAdd();
-
-                entity.Property(e => e.Code)
-                    .IsRequired()
-                    .HasMaxLength(2);
-            });
-
             modelBuilder.Entity<ProvinceDAO>(entity =>
             {
                 entity.HasIndex(e => e.CX)
@@ -311,6 +228,53 @@ namespace TwelveFinal.Repositories.Models
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<StudentDAO>(entity =>
+            {
+                entity.HasIndex(e => e.CX)
+                    .HasName("CX_Student")
+                    .IsUnique()
+                    .HasAnnotation("SqlServer:Clustered", true);
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Address).HasMaxLength(500);
+
+                entity.Property(e => e.CX).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Dob).HasColumnType("date");
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Identify)
+                    .IsRequired()
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Phone).HasMaxLength(20);
+
+                entity.Property(e => e.PlaceOfBirth).HasMaxLength(50);
+
+                entity.HasOne(d => d.Ethnic)
+                    .WithMany(p => p.Students)
+                    .HasForeignKey(d => d.EthnicId)
+                    .HasConstraintName("FK_Student_Ethnic");
+
+                entity.HasOne(d => d.HighSchool)
+                    .WithMany(p => p.Students)
+                    .HasForeignKey(d => d.HighSchoolId)
+                    .HasConstraintName("FK_Student_HighSchool");
+
+                entity.HasOne(d => d.Town)
+                    .WithMany(p => p.Students)
+                    .HasForeignKey(d => d.TownId)
+                    .HasConstraintName("FK_Student_Town");
             });
 
             modelBuilder.Entity<SubjectGroupDAO>(entity =>
@@ -428,29 +392,20 @@ namespace TwelveFinal.Repositories.Models
 
                 entity.Property(e => e.CX).ValueGeneratedOnAdd();
 
-                entity.Property(e => e.Dob).HasColumnType("date");
-
-                entity.Property(e => e.Email)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.Ethnic).HasMaxLength(50);
-
-                entity.Property(e => e.FullName)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.Identify).HasMaxLength(20);
-
                 entity.Property(e => e.Password)
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.Property(e => e.Phone)
-                    .IsRequired()
-                    .HasMaxLength(20);
-
                 entity.Property(e => e.Salt).HasMaxLength(50);
+
+                entity.Property(e => e.Username)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.HasOne(d => d.Student)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.StudentId)
+                    .HasConstraintName("FK_User_Student");
             });
 
             modelBuilder.Entity<__MigrationLogDAO>(entity =>
