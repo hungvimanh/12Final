@@ -9,6 +9,7 @@ namespace TwelveFinal.Services.MForm
 {
     public interface IFormValidator : IServiceScoped
     {
+        Task<bool> Approve(Form form);
         Task<bool> Save(Form form);
         Task<bool> IsExisted(Form form);
         Task<bool> Delete(Form form);
@@ -20,12 +21,21 @@ namespace TwelveFinal.Services.MForm
         {
             Duplicate,
             NotExisted,
-            Invalid
+            Invalid,
+            IsApproved
         }
 
         public FormValidator(IUOW _UOW)
         {
             UOW = _UOW;
+        }
+
+        public async Task<bool> Approve(Form form)
+        {
+            bool IsValid = true;
+            IsValid &= await IsExisted(form);
+            IsValid &= await StatusIsFalse(form);
+            return IsValid;
         }
 
         public async Task<bool> Save(Form form)
@@ -55,6 +65,19 @@ namespace TwelveFinal.Services.MForm
                 return false;
             }
             return true;
+        }
+
+        public async Task<bool> StatusIsFalse(Form form)
+        {
+            //Validate Trạng thái 
+            //False: nếu chưa được duyệt => cho phép duyệt
+            //True: đã được duyệt
+            if (form.Status)
+            {
+                form.AddError(nameof(FormValidator), "Form", ErrorCode.IsApproved);
+            }
+
+            return form.IsValidated;
         }
 
         #region Validate thông tin xét tốt nghiệp

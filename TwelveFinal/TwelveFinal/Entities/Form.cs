@@ -49,7 +49,8 @@ namespace TwelveFinal.Entities
 
         public string PriorityType { get; set; }        //Đối tượng ưu tiên
         public string Area { get; set; }        //Khu vực tuyển sinh
-
+        public bool Status { get; set; }
+        
         public List<Aspiration> Aspirations { get; set; }       //Danh sách các nguyện vọng thi sinh đăng kí
     }
 

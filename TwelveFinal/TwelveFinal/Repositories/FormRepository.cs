@@ -11,6 +11,7 @@ namespace TwelveFinal.Repositories
 {
     public interface IFormRepository
     {
+        Task<bool> Approve(Guid Id);
         Task<bool> Create(Form form);
         Task<Form> Get(Guid Id);
         Task<bool> Update(Form form);
@@ -60,6 +61,7 @@ namespace TwelveFinal.Repositories
 
                 PriorityType = form.PriorityType,
                 Area = form.Area,
+                Status = false,
                 StudentId = form.StudentId.Value
             };
 
@@ -137,6 +139,7 @@ namespace TwelveFinal.Repositories
 
                 Area = f.Area,
                 PriorityType = f.PriorityType,
+                Status = f.Status,
                 Aspirations = f.Aspirations.Select(a => new Aspiration
                 {
                     Id = a.Id,
@@ -194,9 +197,19 @@ namespace TwelveFinal.Repositories
 
                 Area = form.Area,
                 PriorityType = form.PriorityType,
+                Status = false
             });
             await BulkCreateAspirations(form);
 
+            return true;
+        }
+
+        public async Task<bool> Approve(Guid Id)
+        {
+            await tFContext.Form.Where(f => f.Id == Id).UpdateFromQueryAsync(f => new FormDAO
+            {
+                Status = true
+            });
             return true;
         }
     }

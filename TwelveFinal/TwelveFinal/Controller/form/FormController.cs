@@ -20,6 +20,7 @@ namespace TwelveFinal.Controller.form
         public const string Default = Base + "/form";
         public const string Save = Default + "/save";
         public const string Get = Default + "/get";
+        public const string Approve = Default + "/approve";
         public const string DropListProvince = Default + "/province";
         public const string DropListDistrict = Default + "/district";
         public const string DropListTown = Default + "/town";
@@ -179,6 +180,7 @@ namespace TwelveFinal.Controller.form
 
                 Area = form.Area,
                 PriorityType = form.PriorityType,
+                Status = form.Status,
                 Aspirations = form.Aspirations.Select(m => new AspirationDTO
                 {
                     Id = m.Id,
@@ -195,6 +197,22 @@ namespace TwelveFinal.Controller.form
                     SubjectGroupName = m.SubjectGroupName
                 }).ToList()
             };
+        }
+        #endregion
+
+        #region Approve
+        [Route(FormRoute.Approve), HttpPost]
+        public async Task<ActionResult<bool>> Approve([FromBody] FormDTO formDTO)
+        {
+            if (formDTO == null) formDTO = new FormDTO();
+            Form form = new Form { Id = formDTO.Id };
+            form = await FormService.Approve(form);
+            if (form.Errors != null && form.Errors.Count > 0)
+            {
+                return BadRequest(form.Errors);
+            }
+
+            return Ok(true);
         }
         #endregion
 

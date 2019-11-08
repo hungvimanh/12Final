@@ -9,6 +9,7 @@ namespace TwelveFinal.Services.MForm
 {
     public interface IFormService : IServiceScoped
     {
+        Task<Form> Approve(Form form);
         Task<Form> Save(Form form);
         Task<Form> Get(Guid Id);
         Task<Form> Delete(Form form);
@@ -22,6 +23,25 @@ namespace TwelveFinal.Services.MForm
         {
             this.UOW = UOW;
             this.FormValidator = FormValidator;
+        }
+
+        public async Task<Form> Approve(Form form)
+        {
+            if(!await FormValidator.Approve(form))
+                return form;
+
+            try
+            {
+                await UOW.Begin();
+                await UOW.FormRepository.Approve(form.Id);
+                await UOW.Commit();
+                return await Get(form.Id);
+            }
+            catch (Exception ex)
+            {
+                await UOW.Rollback();
+                throw new MessageException(ex);
+            }
         }
 
         public async Task<Form> Save(Form form)
