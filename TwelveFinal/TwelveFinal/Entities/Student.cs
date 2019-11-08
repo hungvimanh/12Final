@@ -49,6 +49,7 @@ namespace TwelveFinal.Entities
         public StringFilter Name { get; set; }
         public StringFilter ProvinceName { get; set; }
         public StringFilter Identify { get; set; }
+        public StringFilter Email { get; set; }
         public StringFilter HighSchoolName { get; set; }
         public StudentOrder OrderBy { get; set; }
         public StudentFilter() : base()

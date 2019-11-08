@@ -15,6 +15,7 @@ namespace TwelveFinal.Controller.student
     {
         public const string Default = Base + "/student";
         public const string Create = Default + "/create";
+        public const string Update = Default + "/update";
         public const string Import = Default + "/import";
         public const string List = Default + "/list";
     }
@@ -58,6 +59,88 @@ namespace TwelveFinal.Controller.student
             else
             {
                 return BadRequest(registerDTO);
+            }
+        }
+        #endregion
+
+        #region Update
+        [Route(StudentControllerRoute.Update), HttpPost]
+        public async Task<ActionResult<StudentDTO>> Update([FromBody] StudentDTO studentDTO)
+        {
+            if (studentDTO == null) studentDTO = new StudentDTO();
+
+            Student user = new Student
+            {
+                Id = studentDTO.Id,
+                Dob = studentDTO.Dob,
+                Name = studentDTO.Name,
+                Gender = studentDTO.Gender,
+                Identify = studentDTO.Identify,
+                Phone = studentDTO.Phone,
+                Address = studentDTO.Address,
+                EthnicId = studentDTO.EthnicId,
+                HighSchoolId = studentDTO.HighSchoolId,
+                PlaceOfBirth = studentDTO.PlaceOfBirth,
+                ProvinceId = studentDTO.ProvinceId,
+                DistrictId = studentDTO.DistrictId,
+                TownId = studentDTO.TownId,
+
+                Biology = studentDTO.Biology,
+                Chemistry = studentDTO.Chemistry,
+                CivicEducation = studentDTO.CivicEducation, 
+                Geography = studentDTO.Geography,
+                History = studentDTO.History,
+                Languages = studentDTO.Languages,
+                Literature = studentDTO.Literature,
+                Maths = studentDTO.Maths,
+                Physics = studentDTO.Physics,
+                
+            };
+            user = await StuedntService.EditProfile(user);
+
+            studentDTO = new StudentDTO
+            {
+                Id = studentDTO.Id,
+                Dob = studentDTO.Dob,
+                Name = studentDTO.Name,
+                Gender = studentDTO.Gender,
+                Identify = studentDTO.Identify,
+                Email = studentDTO.Email,
+                Phone = studentDTO.Phone,
+                Address = studentDTO.Address,
+                EthnicId = studentDTO.EthnicId,
+                EthnicCode = studentDTO.EthnicCode,
+                EthnicName = studentDTO.EthnicName,
+                HighSchoolId = studentDTO.HighSchoolId,
+                HighSchoolCode = studentDTO.HighSchoolCode,
+                HighSchoolName = studentDTO.HighSchoolName,
+                PlaceOfBirth = studentDTO.PlaceOfBirth,
+                ProvinceId = studentDTO.ProvinceId,
+                ProvinceCode = studentDTO.ProvinceCode,
+                ProvinceName = studentDTO.ProvinceName,
+                DistrictId = studentDTO.DistrictId,
+                DistrictCode = studentDTO.DistrictCode,
+                DistrictName = studentDTO.DistrictName,
+                TownId = studentDTO.TownId,
+                TownCode = studentDTO.TownCode,
+                TownName = studentDTO.TownName,
+
+                Biology = studentDTO.Biology,
+                Chemistry = studentDTO.Chemistry,
+                CivicEducation = studentDTO.CivicEducation,
+                Geography = studentDTO.Geography,
+                History = studentDTO.History,
+                Languages = studentDTO.Languages,
+                Literature = studentDTO.Literature,
+                Maths = studentDTO.Maths,
+                Physics = studentDTO.Physics,
+                Errors = user.Errors
+            };
+            if (user.IsValidated)
+                return studentDTO;
+            else
+            {
+                return BadRequest(studentDTO);
             }
         }
         #endregion

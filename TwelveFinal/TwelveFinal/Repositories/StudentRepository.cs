@@ -12,6 +12,7 @@ namespace TwelveFinal.Repositories
     {
         Task<bool> Create(Student student);
         Task<List<Student>> List(StudentFilter studentFilter);
+        Task<int> Count(StudentFilter studentFilter);
         Task<bool> BulkInsert(List<Student> students);
         Task<Student> Get(Guid Id);
         Task<bool> Update(Student student);
@@ -36,6 +37,8 @@ namespace TwelveFinal.Repositories
                 query = query.Where(q => q.Name, studentFilter.Name);
             if (studentFilter.Identify != null)
                 query = query.Where(q => q.Identify, studentFilter.Identify);
+            if (studentFilter.Email != null)
+                query = query.Where(q => q.Email, studentFilter.Email);
             if (studentFilter.ProvinceName != null)
                 query = query.Where(q => q.Town.District.Province.Name, studentFilter.ProvinceName);
             if (studentFilter.HighSchoolName != null)
@@ -249,6 +252,12 @@ namespace TwelveFinal.Repositories
             return students;
         }
 
+        public async Task<int> Count(StudentFilter studentFilter)
+        {
+            IQueryable<StudentDAO> studentDAOs = tFContext.Student;
+            studentDAOs = DynamicFilter(studentDAOs, studentFilter);
+            return await studentDAOs.CountAsync();
+        }
         public async Task<bool> Update(Student student)
         {
             await tFContext.Student.Where(s => s.Id.Equals(student.Id)).UpdateFromQueryAsync(s => new StudentDAO

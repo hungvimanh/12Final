@@ -64,17 +64,17 @@ namespace TwelveFinal.Services.MStudentService
             }
         }
 
-        public async Task<Student> EditProfile(Student user)
+        public async Task<Student> EditProfile(Student student)
         {
-            if (!await StudentValidator.Update(user))
-                return user;
+            if (!await StudentValidator.Update(student))
+                return student;
 
             try
             {
                 await UOW.Begin();
-                await UOW.StudentRepository.Update(user);
+                await UOW.StudentRepository.Update(student);
                 await UOW.Commit();
-                return user;
+                return student;
             }
             catch (Exception ex)
             {
@@ -117,6 +117,36 @@ namespace TwelveFinal.Services.MStudentService
                 await UOW.Rollback();
                 throw ex;
             }
+        }
+
+        public async Task<double> Graduation(Student student)
+        {
+            double total = 0;
+            var NaturalSciences = (student.Physics + student.Chemistry + student.Biology) / 3;
+            var SocialSciences = (student.History + student.Geography + student.CivicEducation) / 3;
+            if(NaturalSciences.HasValue && SocialSciences.HasValue)
+            {
+                total = NaturalSciences.Value > SocialSciences.Value ? NaturalSciences.Value : SocialSciences.Value;
+            }
+
+            if(NaturalSciences.HasValue && !SocialSciences.HasValue)
+            {
+                total = NaturalSciences.Value;
+            }
+
+            if (!NaturalSciences.HasValue && SocialSciences.HasValue)
+            {
+                total = SocialSciences.Value;
+            }
+
+            total = (total + student.Maths.Value + student.Literature.Value + student.Languages.Value) / 4;
+            if (!student.EthnicCode.Equals("01")) total += 1;
+            //switch (student.ar)
+            //{
+            //    default:
+            //        break;
+            //}
+            return total;
         }
 
         private async Task<List<Student>> LoadFromExcel(byte[] file)
