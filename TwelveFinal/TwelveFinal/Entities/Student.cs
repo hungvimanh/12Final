@@ -41,16 +41,21 @@ namespace TwelveFinal.Entities
         public double? History { get; set; }
         public double? Geography { get; set; }
         public double? CivicEducation { get; set; }
+
+        public bool Status { get; set; }
     }
 
     public class StudentFilter : FilterEntity
     {
         public GuidFilter Id { get; set; }
         public StringFilter Name { get; set; }
-        public StringFilter ProvinceName { get; set; }
+        public GuidFilter ProvinceId { get; set; }
         public StringFilter Identify { get; set; }
         public StringFilter Email { get; set; }
-        public StringFilter HighSchoolName { get; set; }
+        public GuidFilter HighSchoolId { get; set; }
+        public bool? Gender { get; set; }
+        public DateTimeFilter Dob { get; set; }
+        public bool? Status { get; set; }
         public StudentOrder OrderBy { get; set; }
         public StudentFilter() : base()
         {

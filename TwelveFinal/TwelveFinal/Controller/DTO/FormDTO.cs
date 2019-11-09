@@ -8,7 +8,8 @@ namespace TwelveFinal.Controller.DTO
     public class FormDTO : DataDTO
     {
         public Guid Id { get; set; }
-        public Guid? StudentId { get; set; }
+        public Guid StudentId { get; set; }
+        public StudentDTO StudentDTO { get; set; }
 
         public bool? Graduated { get; set; }
         public Guid ClusterContestId { get; set; }

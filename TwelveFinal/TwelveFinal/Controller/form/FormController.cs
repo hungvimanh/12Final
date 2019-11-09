@@ -10,6 +10,7 @@ using TwelveFinal.Services.MEthnic;
 using TwelveFinal.Services.MForm;
 using TwelveFinal.Services.MHighSchool;
 using TwelveFinal.Services.MProvince;
+using TwelveFinal.Services.MStudentService;
 using TwelveFinal.Services.MTown;
 using TwelveFinal.Services.MUniversity_Majors_Majors;
 
@@ -38,6 +39,7 @@ namespace TwelveFinal.Controller.form
         private ITownService TownService;
         private IHighSchoolService HighSchoolService;
         private IEthnicService EthnicService;
+        private IStudentService StudentService;
         private IUniversity_MajorsService University_MajorsService;
         public FormController(
             IFormService formService,
@@ -46,6 +48,7 @@ namespace TwelveFinal.Controller.form
             ITownService townService,
             IHighSchoolService highSchoolService,
             IEthnicService ethnicService,
+            IStudentService studentService,
             IUniversity_MajorsService university_MajorsService
             )
         {
@@ -55,6 +58,7 @@ namespace TwelveFinal.Controller.form
             TownService = townService;
             HighSchoolService = highSchoolService;
             EthnicService = ethnicService;
+            StudentService = studentService;
             University_MajorsService = university_MajorsService;
         }
 
@@ -64,7 +68,23 @@ namespace TwelveFinal.Controller.form
         {
             if (formDTO == null) formDTO = new FormDTO();
             Form form = await ConvertDTOtoBO(formDTO);
-
+            Student student = new Student
+            {
+                Id = formDTO.StudentDTO.Id,
+                Dob = formDTO.StudentDTO.Dob,
+                Name = formDTO.StudentDTO.Name,
+                Gender = formDTO.StudentDTO.Gender,
+                Identify = formDTO.StudentDTO.Identify,
+                Phone = formDTO.StudentDTO.Phone,
+                Address = formDTO.StudentDTO.Address,
+                EthnicId = formDTO.StudentDTO.EthnicId,
+                HighSchoolId = formDTO.StudentDTO.HighSchoolId,
+                PlaceOfBirth = formDTO.StudentDTO.PlaceOfBirth,
+                ProvinceId = formDTO.StudentDTO.ProvinceId,
+                DistrictId = formDTO.StudentDTO.DistrictId,
+                TownId = formDTO.StudentDTO.TownId,
+            };
+            student = await StudentService.Update(student);
             form = await FormService.Save(form);
 
             formDTO = new FormDTO
@@ -103,9 +123,10 @@ namespace TwelveFinal.Controller.form
                 ReserveMaths = form.ReserveMaths,
                 ReservePhysics = form.ReservePhysics,
 
-                Area = formDTO.Area,
-                PriorityType = formDTO.PriorityType,
-                Aspirations = formDTO.Aspirations.Select(m => new AspirationDTO
+                Area = form.Area,
+                PriorityType = form.PriorityType,
+                Status = form.Status,
+                Aspirations = form.Aspirations.Select(m => new AspirationDTO
                 {
                     Id = m.Id,
                     FormId = m.FormId,
@@ -136,17 +157,46 @@ namespace TwelveFinal.Controller.form
 
         #region Get
         [Route(FormRoute.Get), HttpPost]
-        public async Task<FormDTO> Get([FromBody] FormDTO formDTO)
+        public async Task<FormDTO> Get([FromBody] StudentDTO studentDTO)
         {
-            if (formDTO == null) formDTO = new FormDTO();
-            Form form = new Form { Id = formDTO.Id };
+            if (studentDTO == null) studentDTO = new StudentDTO();
+            Student student = new Student { Id = studentDTO.Id };
+            student = await StudentService.Get(student.Id);
 
-            form = await FormService.Get(form.Id);
+            Form form = new Form { StudentId = student.Id };
+
+            form = await FormService.Get(form.StudentId);
             return new FormDTO
             {
                 Id = form.Id,
                 StudentId = form.StudentId,
-
+                StudentDTO = new StudentDTO
+                {
+                    Id = student.Id,
+                    Address = student.Address,
+                    Dob = student.Dob,
+                    Gender = student.Gender,
+                    Email = student.Email,
+                    Identify = student.Identify,
+                    PlaceOfBirth = student.PlaceOfBirth,
+                    Name = student.Name,
+                    Phone = student.Phone,
+                    EthnicId = student.EthnicId,
+                    EthnicName = student.EthnicName,
+                    EthnicCode = student.EthnicCode,
+                    HighSchoolId = student.HighSchoolId,
+                    HighSchoolName = student.HighSchoolName,
+                    HighSchoolCode = student.HighSchoolCode,
+                    TownId = student.TownId,
+                    TownCode = student.TownCode,
+                    TownName = student.TownName,
+                    DistrictId = student.DistrictId,
+                    DistrictCode = student.DistrictCode,
+                    DistrictName = student.DistrictName,
+                    ProvinceId = student.ProvinceId,
+                    ProvinceCode = student.ProvinceCode,
+                    ProvinceName = student.ProvinceName
+                },
                 ClusterContestId = form.ClusterContestId,
                 ClusterContestCode = form.ClusterContestCode,
                 ClusterContestName = form.ClusterContestName,

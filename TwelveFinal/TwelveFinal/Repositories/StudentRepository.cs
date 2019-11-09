@@ -39,10 +39,16 @@ namespace TwelveFinal.Repositories
                 query = query.Where(q => q.Identify, studentFilter.Identify);
             if (studentFilter.Email != null)
                 query = query.Where(q => q.Email, studentFilter.Email);
-            if (studentFilter.ProvinceName != null)
-                query = query.Where(q => q.Town.District.Province.Name, studentFilter.ProvinceName);
-            if (studentFilter.HighSchoolName != null)
-                query = query.Where(q => q.HighSchool.Name, studentFilter.HighSchoolName);
+            if (studentFilter.ProvinceId != null)
+                query = query.Where(q => q.Town.District.ProvinceId, studentFilter.ProvinceId);
+            if (studentFilter.HighSchoolId != null)
+                query = query.Where(q => q.HighSchoolId, studentFilter.HighSchoolId);
+            if (studentFilter.Dob != null)
+                query = query.Where(q => q.Dob, studentFilter.Dob);
+            if (studentFilter.Gender.HasValue)
+                query = query.Where(q => q.Gender.Equals(studentFilter.Gender.Value));
+            if (studentFilter.Status.HasValue)
+                query = query.Where(q => q.Status.Equals(studentFilter.Status.Value));
             return query;
         }
         private IQueryable<StudentDAO> DynamicOrder(IQueryable<StudentDAO> query, StudentFilter studentFilter)
@@ -122,7 +128,8 @@ namespace TwelveFinal.Repositories
                 Languages = q.Languages,
                 Literature = q.Literature,
                 Maths = q.Maths,
-                Physics = q.Physics
+                Physics = q.Physics,
+                Status = q.Status
             }).ToListAsync();
             return highSchools;
         }
@@ -152,7 +159,8 @@ namespace TwelveFinal.Repositories
                 Languages = student.Languages,
                 Literature = student.Literature,
                 Maths = student.Maths,
-                Physics = student.Physics
+                Physics = student.Physics,
+                Status = false,
             };
 
             tFContext.Student.Add(studentDAO);
@@ -185,7 +193,8 @@ namespace TwelveFinal.Repositories
                 Languages = s.Languages,
                 Literature = s.Literature,
                 Maths = s.Maths,
-                Physics = s.Physics
+                Physics = s.Physics,
+                Status = false
             }).ToList();
 
             tFContext.Student.AddRange(studentDAOs);
@@ -237,7 +246,8 @@ namespace TwelveFinal.Repositories
                 Languages = s.Languages,
                 Literature = s.Literature,
                 Maths = s.Maths,
-                Physics = s.Physics
+                Physics = s.Physics,
+                Status = s.Status
             }).FirstOrDefaultAsync();
             return student;
         }

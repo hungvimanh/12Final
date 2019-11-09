@@ -10,6 +10,7 @@ namespace TwelveFinal.Controller.DTO
         public string Name { get; set; }
         public bool Gender { get; set; }
         public DateTime Dob { get; set; }
+        public Guid EthnicId { get; set; }
         public string Identify { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }

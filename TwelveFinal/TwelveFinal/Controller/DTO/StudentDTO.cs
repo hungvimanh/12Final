@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TwelveFinal.Entities;
 
 namespace TwelveFinal.Controller.DTO
 {
@@ -41,5 +42,22 @@ namespace TwelveFinal.Controller.DTO
         public double? History { get; set; }
         public double? Geography { get; set; }
         public double? CivicEducation { get; set; }
+    }
+
+    public class StudentFilterDTO : FilterDTO
+    {
+        public GuidFilter Id { get; set; }
+        public StringFilter Identify { get; set; }
+        public StringFilter Name { get; set; }
+        public bool? Gender { get; set; }
+        public DateTimeFilter Dob { get; set; }
+        public GuidFilter ProvinceId { get; set; } 
+        public GuidFilter HighSchoolId { get; set; }
+        public bool? Status { get; set; }
+        public StudentOrder OrderBy;
+        public StudentFilterDTO() : base()
+        {
+
+        }
     }
 }

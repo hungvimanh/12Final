@@ -95,7 +95,7 @@ namespace TwelveFinal.Services.MStudentService
 
         private async Task<bool> GraduationValidate(Student student)
         {
-            //Kiểm tra số điểm các môn bảo lưu nếu có 
+            //Kiểm tra số điểm các môn nếu có 
             if (student.Maths != null && !(student.Maths >= 0 && student.Maths <= 10))
             {
                 student.AddError(nameof(StudentValidator), nameof(student.Maths), ErrorCode.Invalid);

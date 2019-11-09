@@ -10,7 +10,7 @@ namespace TwelveFinal.Entities
     public class Form : DataEntity
     {
         public Guid Id { get; set; }
-        public Guid? StudentId { get; set; }
+        public Guid StudentId { get; set; }
 
         public bool? Graduated { get; set; }        //Đã tốt nghiệp THPT/TTGDTX?
         public Guid ClusterContestId { get; set; }      //Cụm thi(tỉnh/thành phố)

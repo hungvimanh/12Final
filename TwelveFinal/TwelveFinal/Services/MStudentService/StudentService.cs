@@ -16,9 +16,11 @@ namespace TwelveFinal.Services.MStudentService
 {
     public interface IStudentService : IServiceScoped
     {
-        Task<Student> Register(Student user);
-        Task<Student> EditProfile(Student user);
-        Task<List<Student>> ImportExcel(byte[] file);
+        Task<Student> Register(Student student);
+        Task<Student> Update(Student student);
+        Task<bool> ImportExcel(byte[] file);
+        Task<Student> Get(Guid Id);
+        Task<List<Student>> List(StudentFilter studentFilter);
     }
     public class StudentService : IStudentService
     {
@@ -64,7 +66,7 @@ namespace TwelveFinal.Services.MStudentService
             }
         }
 
-        public async Task<Student> EditProfile(Student student)
+        public async Task<Student> Update(Student student)
         {
             if (!await StudentValidator.Update(student))
                 return student;
@@ -74,7 +76,7 @@ namespace TwelveFinal.Services.MStudentService
                 await UOW.Begin();
                 await UOW.StudentRepository.Update(student);
                 await UOW.Commit();
-                return student;
+                return await UOW.StudentRepository.Get(student.Id);
             }
             catch (Exception ex)
             {
@@ -83,7 +85,7 @@ namespace TwelveFinal.Services.MStudentService
             }
         }
 
-        public async Task<List<Student>> ImportExcel(byte[] file)
+        public async Task<bool> ImportExcel(byte[] file)
         {
             List<Student> students = await LoadFromExcel(file);
             try
@@ -110,13 +112,24 @@ namespace TwelveFinal.Services.MStudentService
                 await UOW.UserRepository.BulkInsert(users);
                 await UOW.Commit();
                 users.ForEach(u => Utils.RegisterMail(u));
-                return students;
+                return true;
             }
             catch (Exception ex)
             {
                 await UOW.Rollback();
                 throw ex;
             }
+        }
+
+        public async Task<Student> Get(Guid Id)
+        {
+            if (Id == Guid.Empty) return null;
+            return await UOW.StudentRepository.Get(Id);
+        }
+
+        public async Task<List<Student>> List(StudentFilter studentFilter)
+        {
+            return await UOW.StudentRepository.List(studentFilter);
         }
 
         public async Task<double> Graduation(Student student)

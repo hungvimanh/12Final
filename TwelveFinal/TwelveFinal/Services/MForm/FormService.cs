@@ -11,7 +11,7 @@ namespace TwelveFinal.Services.MForm
     {
         Task<Form> Approve(Form form);
         Task<Form> Save(Form form);
-        Task<Form> Get(Guid Id);
+        Task<Form> Get(Guid StudentId);
         Task<Form> Delete(Form form);
     }
     public class FormService : IFormService
@@ -33,9 +33,9 @@ namespace TwelveFinal.Services.MForm
             try
             {
                 await UOW.Begin();
-                await UOW.FormRepository.Approve(form.Id);
+                await UOW.FormRepository.Approve(form);
                 await UOW.Commit();
-                return await Get(form.Id);
+                return await Get(form.StudentId);
             }
             catch (Exception ex)
             {
@@ -65,7 +65,7 @@ namespace TwelveFinal.Services.MForm
                 await UOW.Begin();
                 await UOW.FormRepository.Create(form);
                 await UOW.Commit();
-                return await Get(form.Id);
+                return await Get(form.StudentId);
             }
             catch (Exception ex)
             {
@@ -74,10 +74,10 @@ namespace TwelveFinal.Services.MForm
             }
         }
 
-        public async Task<Form> Get(Guid Id)
+        public async Task<Form> Get(Guid StudentId)
         {
-            if (Id == Guid.Empty) return null;
-            Form form = await UOW.FormRepository.Get(Id);
+            if (StudentId == Guid.Empty) return null;
+            Form form = await UOW.FormRepository.Get(StudentId);
             return form;
         }
 
@@ -91,7 +91,7 @@ namespace TwelveFinal.Services.MForm
                 await UOW.Begin();
                 await UOW.FormRepository.Update(form);
                 await UOW.Commit();
-                return await Get(form.Id);
+                return await Get(form.StudentId);
             }
             catch (Exception ex)
             {
@@ -110,7 +110,7 @@ namespace TwelveFinal.Services.MForm
                 await UOW.Begin();
                 await UOW.FormRepository.Delete(form.Id);
                 await UOW.Commit();
-                return await Get(form.Id);
+                return await Get(form.StudentId);
             }
             catch (Exception ex)
             {

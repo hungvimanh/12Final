@@ -11,9 +11,9 @@ namespace TwelveFinal.Repositories
 {
     public interface IFormRepository
     {
-        Task<bool> Approve(Guid Id);
+        Task<bool> Approve(Form form);
         Task<bool> Create(Form form);
-        Task<Form> Get(Guid Id);
+        Task<Form> Get(Guid StudentId);
         Task<bool> Update(Form form);
         Task<bool> Delete(Guid Id);
     }
@@ -62,7 +62,7 @@ namespace TwelveFinal.Repositories
                 PriorityType = form.PriorityType,
                 Area = form.Area,
                 Status = false,
-                StudentId = form.StudentId.Value
+                StudentId = form.StudentId
             };
 
             tFContext.Form.Add(formDAO);
@@ -99,9 +99,9 @@ namespace TwelveFinal.Repositories
             return true;
         }
 
-        public async Task<Form> Get(Guid Id)
+        public async Task<Form> Get(Guid StudentId)
         {
-            Form form = await tFContext.Form.Where(f => f.Id.Equals(Id)).Select(f => new Form
+            Form form = await tFContext.Form.Where(f => f.StudentId.Equals(StudentId)).Select(f => new Form
             {
                 Id = f.Id,
                 StudentId = f.StudentId,
@@ -199,14 +199,22 @@ namespace TwelveFinal.Repositories
                 PriorityType = form.PriorityType,
                 Status = false
             });
+            await tFContext.Student.Where(s => s.Id == form.StudentId).UpdateFromQueryAsync(s => new StudentDAO
+            {
+                Status = false
+            });
             await BulkCreateAspirations(form);
 
             return true;
         }
 
-        public async Task<bool> Approve(Guid Id)
+        public async Task<bool> Approve(Form form)
         {
-            await tFContext.Form.Where(f => f.Id == Id).UpdateFromQueryAsync(f => new FormDAO
+            await tFContext.Form.Where(f => f.Id == form.Id).UpdateFromQueryAsync(f => new FormDAO
+            {
+                Status = true
+            });
+            await tFContext.Student.Where(s => s.Id == form.StudentId).UpdateFromQueryAsync(s => new StudentDAO
             {
                 Status = true
             });
