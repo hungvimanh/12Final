@@ -53,10 +53,11 @@ namespace TwelveFinal.Services.MUser
         {
             
             User user = await this.Verify(userFilter);
-            user.Password = newPassword.HashHMACSHA256(user.Salt);
-
-            if (!await UserValidator.Update(user))
+            if (!await UserValidator.ChangePassword(user))
                 return user;
+            //Generate Salt Random
+            user.Salt = Convert.ToBase64String(CryptographyExtentions.GenerateSalt());
+            user.Password = newPassword.HashHMACSHA256(user.Salt);
             bool IsValid = await this.UOW.UserRepository.ChangePassword(user);
             if (!IsValid)
             {
@@ -71,6 +72,7 @@ namespace TwelveFinal.Services.MUser
             if (user == null) throw new BadRequestException("Id không tồn tại");
             if (!userFilter.Email.Equals(user.Email)) throw new BadRequestException("Email không đúng!");
             user.Password = GeneratePassword();
+            user.Salt = null;
             await UOW.UserRepository.ChangePassword(user);
             await Utils.RecoveryPasswordMail(user);
             return true;
@@ -91,6 +93,10 @@ namespace TwelveFinal.Services.MUser
 
         private bool CompareSaltHashedPassword(string source, string password, string salt)
         {
+            if (string.IsNullOrEmpty(salt))
+            {
+                return password.Equals(source);
+            }
             var hashedPassword = password.HashHMACSHA256(salt);
             if (!hashedPassword.Equals(source))
             {

@@ -29,7 +29,7 @@ namespace TwelveFinal.Common
         {
             if (string.IsNullOrEmpty(user.Email)) return;
             string SendEmail = "hsntladykillah@gmail.com";
-            string SendEmailPassword = "demo#123";
+            string SendEmailPassword = "hoilamgi1234";
 
             var loginInfo = new NetworkCredential(SendEmail, SendEmailPassword);
             var msg = new MailMessage();
@@ -61,7 +61,7 @@ namespace TwelveFinal.Common
         {
             if (string.IsNullOrEmpty(user.Email)) return;
             string SendEmail = "hsntladykillah@gmail.com";
-            string SendEmailPassword = "demo#123";
+            string SendEmailPassword = "hoilamgi1234";
 
             var loginInfo = new NetworkCredential(SendEmail, SendEmailPassword);
             var msg = new MailMessage();

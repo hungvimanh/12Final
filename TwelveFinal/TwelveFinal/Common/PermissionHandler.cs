@@ -41,6 +41,7 @@ namespace TwelveFinal.Common
                 return;
             }
             Guid UserId = Guid.TryParse(context.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value, out Guid u) ? u : Guid.Empty;
+            Guid StudentId = Guid.TryParse(context.User.FindFirst(c => c.Type == "StudentId")?.Value, out Guid e) ? e : Guid.Empty;
             bool IsAdmin = bool.TryParse(context.User.FindFirst(c => c.Type == "IsAdmin").Value, out bool b) ? b : false;
             // lấy ra mvcContext, phục vụ cho việc lấy ra url path
             var mvcContext = context.Resource as AuthorizationFilterContext;
@@ -49,6 +50,7 @@ namespace TwelveFinal.Common
             string url = HttpContext.Request.Path.Value;
 
             CurrentContext.UserId = UserId;
+            CurrentContext.StudentId = StudentId;
             CurrentContext.IsAdmin = IsAdmin;
 
             //Kiểm tra phân quyền

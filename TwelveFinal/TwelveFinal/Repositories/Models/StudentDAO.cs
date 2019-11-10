@@ -7,6 +7,7 @@ namespace TwelveFinal.Repositories.Models
     {
         public StudentDAO()
         {
+            Forms = new HashSet<FormDAO>();
             Users = new HashSet<UserDAO>();
         }
 
@@ -37,6 +38,7 @@ namespace TwelveFinal.Repositories.Models
         public virtual EthnicDAO Ethnic { get; set; }
         public virtual HighSchoolDAO HighSchool { get; set; }
         public virtual TownDAO Town { get; set; }
+        public virtual ICollection<FormDAO> Forms { get; set; }
         public virtual ICollection<UserDAO> Users { get; set; }
     }
 }

@@ -44,7 +44,7 @@ namespace TwelveFinal.Repositories.Models
 
         public virtual ProvinceDAO ClusterContest { get; set; }
         public virtual HighSchoolDAO RegisterPlaceOfExam { get; set; }
-        public virtual UserDAO Student { get; set; }
+        public virtual StudentDAO Student { get; set; }
         public virtual ICollection<AspirationDAO> Aspirations { get; set; }
     }
 }

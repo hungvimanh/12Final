@@ -53,7 +53,7 @@ namespace TwelveFinal.Controller.student
                 Dob = student.Dob,
                 Email = student.Email,
                 Name = student.Name,
-                EthnicId = student.EthnicId.Value,
+                EthnicId = student.EthnicId.HasValue ? student.EthnicId.Value : Guid.Empty,
                 Gender = student.Gender,
                 Identify = student.Identify,
                 Phone = student.Phone,
@@ -228,27 +228,27 @@ namespace TwelveFinal.Controller.student
 
         #region Mark Input
         [Route(StudentRoute.MarkInput), HttpPost]
-        public async Task<ActionResult<MarkDTO>> MarkInput([FromBody] MarkDTO markInputDTO)
+        public async Task<ActionResult<MarkDTO>> MarkInput([FromBody] MarkDTO markDTO)
         {
-            if (markInputDTO == null) markInputDTO = new MarkDTO();
+            if (markDTO == null) markDTO = new MarkDTO();
 
             Student student = new Student
             {
-                Id = markInputDTO.StudentId,
-                Biology = markInputDTO.Biology,
-                Chemistry = markInputDTO.Chemistry,
-                CivicEducation = markInputDTO.CivicEducation,
-                Geography = markInputDTO.Geography,
-                History = markInputDTO.History,
-                Languages = markInputDTO.Languages,
-                Literature = markInputDTO.Literature,
-                Maths = markInputDTO.Maths,
-                Physics = markInputDTO.Physics,
+                Id = markDTO.StudentId,
+                Biology = markDTO.Biology,
+                Chemistry = markDTO.Chemistry,
+                CivicEducation = markDTO.CivicEducation,
+                Geography = markDTO.Geography,
+                History = markDTO.History,
+                Languages = markDTO.Languages,
+                Literature = markDTO.Literature,
+                Maths = markDTO.Maths,
+                Physics = markDTO.Physics,
             };
 
             student = await StudentService.Update(student);
 
-            markInputDTO = new MarkDTO
+            markDTO = new MarkDTO
             {
                 StudentId = student.Id,
                 Identify = student.Identify,
@@ -267,22 +267,40 @@ namespace TwelveFinal.Controller.student
 
             if (student.IsValidated)
             {
-                return Ok(markInputDTO);
+                return Ok(markDTO);
             }
             else
             {
-                return BadRequest(markInputDTO);
+                return BadRequest(markDTO);
             }
         }
         #endregion
 
-        //#region View Mark
-        //[Route(StudentRoute.ViewMark), HttpPost]
-        //public async Task<MarkDTO> ViewMark([FromBody] StudentDTO studentDTO)
-        //{
-        //    if (studentDTO == null) studentDTO = new StudentDTO();
+        #region View Mark
+        [Route(StudentRoute.ViewMark), HttpPost]
+        public async Task<MarkDTO> ViewMark([FromBody] StudentDTO studentDTO)
+        {
+            if (studentDTO == null) studentDTO = new StudentDTO();
+            Student student = new Student { Id = studentDTO.Id };
+            student = await StudentService.ViewMark(student.Id);
 
-        //}
-        //#endregion
+            return student == null ? null : new MarkDTO
+            {
+                StudentId = student.Id,
+                Email = student.Email,
+                Identify = student.Identify,
+                Biology = student.Biology,
+                Chemistry = student.Chemistry,
+                CivicEducation = student.CivicEducation,
+                Geography = student.Geography,
+                History = student.History,
+                Languages = student.Languages,
+                Literature = student.Literature,
+                Maths = student.Maths,
+                Physics = student.Physics,
+                GraduationMark = student.GraduationMark
+            };
+        }
+        #endregion
     }
 }

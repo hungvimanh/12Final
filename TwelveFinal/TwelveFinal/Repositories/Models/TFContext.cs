@@ -161,7 +161,7 @@ namespace TwelveFinal.Repositories.Models
                     .WithMany(p => p.Forms)
                     .HasForeignKey(d => d.StudentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Form_User");
+                    .HasConstraintName("FK_Form_Student");
             });
 
             modelBuilder.Entity<HighSchoolDAO>(entity =>
@@ -391,6 +391,8 @@ namespace TwelveFinal.Repositories.Models
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.CX).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Email).HasMaxLength(50);
 
                 entity.Property(e => e.Password)
                     .IsRequired()

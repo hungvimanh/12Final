@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -43,6 +45,12 @@ namespace TwelveFinal.Entities
         public double? CivicEducation { get; set; }
 
         public bool Status { get; set; }
+        public bool? Graduated { get; set; }
+        public double? GraduationMark { get; set; }
+        //public Student() : base()
+        //{
+        //    GraduationMark = 0;
+        //}
     }
 
     public class StudentFilter : FilterEntity
@@ -62,7 +70,7 @@ namespace TwelveFinal.Entities
 
         }
     }
-
+    //[JsonConverter(typeof(StringEnumConverter))]
     public enum StudentOrder
     {
         CX,

@@ -45,8 +45,8 @@ namespace TwelveFinal.Repositories
                 IsAdmin = user.IsAdmin,
                 Username = user.Username,
                 Password = user.Password,
-                Salt = user.Salt,
-                StudentId = user.StudentId
+                StudentId = user.StudentId,
+                Email = user.Email
             };
 
             tFContext.User.Add(userDAO);
@@ -64,8 +64,8 @@ namespace TwelveFinal.Repositories
                     IsAdmin = user.IsAdmin,
                     Username = user.Username,
                     Password = user.Password,
-                    Salt = user.Salt,
-                    StudentId = user.StudentId
+                    StudentId = user.StudentId,
+                    Email = user.Email
                 }).ToList();
 
                 tFContext.User.AddRange(userDAOs);
@@ -99,13 +99,9 @@ namespace TwelveFinal.Repositories
                     Password = userDAO.Password,
                     Salt = userDAO.Salt,
                     IsAdmin = userDAO.IsAdmin,
-                    StudentId = userDAO.StudentId
-                    
+                    StudentId = userDAO.StudentId,
+                    Email = userDAO.Email
                 };
-                if (user.StudentId.HasValue)
-                {
-                    user.Email = userDAO.Student.Email;
-                }
             }
 
             return user;
@@ -116,6 +112,7 @@ namespace TwelveFinal.Repositories
             await tFContext.User.Where(u => u.Id.Equals(user.Id)).UpdateFromQueryAsync(u => new UserDAO
             {
                 Password = user.Password,
+                Salt = user.Salt
             });
 
             return true;

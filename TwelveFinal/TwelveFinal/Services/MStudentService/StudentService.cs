@@ -18,6 +18,7 @@ namespace TwelveFinal.Services.MStudentService
     {
         Task<Student> Register(Student student);
         Task<Student> Update(Student student);
+        Task<Student> ViewMark(Guid Id);
         Task<bool> ImportExcel(byte[] file);
         Task<Student> Get(Guid Id);
         Task<List<Student>> List(StudentFilter studentFilter);
@@ -31,6 +32,7 @@ namespace TwelveFinal.Services.MStudentService
             this.UOW = UOW;
             this.StudentValidator = StudentValidator;
         }
+        #region Register
         public async Task<Student> Register(Student student)
         {
             if (!await StudentValidator.Create(student))
@@ -42,16 +44,14 @@ namespace TwelveFinal.Services.MStudentService
                 student.Id = Guid.NewGuid();
                 await UOW.StudentRepository.Create(student);
 
-                //Generate Salt Random
-                string salt = Convert.ToBase64String(CryptographyExtentions.GenerateSalt());
                 User user = new User()
                 {
                     Username = student.Identify,
                     Id = Guid.NewGuid(),
                     Password = CryptographyExtentions.GeneratePassword(),
-                    Salt = salt,
                     IsAdmin = false,
-                    StudentId = student.Id
+                    StudentId = student.Id,
+                    Email = student.Email
                 };
                 await UOW.UserRepository.Create(user);
 
@@ -65,7 +65,9 @@ namespace TwelveFinal.Services.MStudentService
                 throw new MessageException(ex);
             }
         }
+        #endregion
 
+        #region Update Profile/Mark
         public async Task<Student> Update(Student student)
         {
             if (!await StudentValidator.Update(student))
@@ -84,7 +86,9 @@ namespace TwelveFinal.Services.MStudentService
                 throw new MessageException(ex);
             }
         }
+        #endregion
 
+        #region Import From Excel
         public async Task<bool> ImportExcel(byte[] file)
         {
             List<Student> students = await LoadFromExcel(file);
@@ -95,15 +99,14 @@ namespace TwelveFinal.Services.MStudentService
                 students.ForEach(s => s.Id = Guid.NewGuid());
                 foreach (var student in students)
                 {
-                    string salt = Convert.ToBase64String(CryptographyExtentions.GenerateSalt());
                     User user = new User()
                     {
                         Username = student.Identify,
                         Id = Guid.NewGuid(),
                         Password = CryptographyExtentions.GeneratePassword(),
-                        Salt = salt,
                         IsAdmin = false,
-                        StudentId = student.Id
+                        StudentId = student.Id,
+                        Email = student.Email
                     };
                     users.Add(user);
                 }
@@ -119,47 +122,6 @@ namespace TwelveFinal.Services.MStudentService
                 await UOW.Rollback();
                 throw ex;
             }
-        }
-
-        public async Task<Student> Get(Guid Id)
-        {
-            if (Id == Guid.Empty) return null;
-            return await UOW.StudentRepository.Get(Id);
-        }
-
-        public async Task<List<Student>> List(StudentFilter studentFilter)
-        {
-            return await UOW.StudentRepository.List(studentFilter);
-        }
-
-        public async Task<double> Graduation(Student student)
-        {
-            double total = 0;
-            var NaturalSciences = (student.Physics + student.Chemistry + student.Biology) / 3;
-            var SocialSciences = (student.History + student.Geography + student.CivicEducation) / 3;
-            if(NaturalSciences.HasValue && SocialSciences.HasValue)
-            {
-                total = NaturalSciences.Value > SocialSciences.Value ? NaturalSciences.Value : SocialSciences.Value;
-            }
-
-            if(NaturalSciences.HasValue && !SocialSciences.HasValue)
-            {
-                total = NaturalSciences.Value;
-            }
-
-            if (!NaturalSciences.HasValue && SocialSciences.HasValue)
-            {
-                total = SocialSciences.Value;
-            }
-
-            total = (total + student.Maths.Value + student.Literature.Value + student.Languages.Value) / 4;
-            if (!student.EthnicCode.Equals("01")) total += 1;
-            //switch (student.ar)
-            //{
-            //    default:
-            //        break;
-            //}
-            return total;
         }
 
         private async Task<List<Student>> LoadFromExcel(byte[] file)
@@ -179,13 +141,65 @@ namespace TwelveFinal.Services.MStudentService
                         Identify = worksheet.Cells[i, 4].Value?.ToString(),
                         Phone = worksheet.Cells[i, 5].Value?.ToString(),
                         Email = worksheet.Cells[i, 6].Value?.ToString(),
-                        
+
                     };
                     excelTemplates.Add(excelTemplate);
                 }
             }
             return excelTemplates;
         }
+        #endregion
+
+        #region Read
+        public async Task<Student> Get(Guid Id)
+        {
+            if (Id == Guid.Empty) return null;
+            return await UOW.StudentRepository.Get(Id);
+        }
+
+        public async Task<List<Student>> List(StudentFilter studentFilter)
+        {
+            return await UOW.StudentRepository.List(studentFilter);
+        }
+
+        public async Task<Student> ViewMark(Guid Id)
+        {
+            if (Id == Guid.Empty) return null;
+            var student = await UOW.StudentRepository.Get(Id);
+            if(student.Graduated.HasValue && !student.Graduated.Value)
+            {
+                student.GraduationMark = await GraduationMarkCalculate(student);
+            }
+            return student;
+        }
+        #endregion
+
+        public async Task<double> GraduationMarkCalculate(Student student)
+        {
+            double mark = 0;
+            var NaturalSciences = (student.Physics + student.Chemistry + student.Biology) / 3;
+            var SocialSciences = (student.History + student.Geography + student.CivicEducation) / 3;
+            if(NaturalSciences.HasValue && SocialSciences.HasValue)
+            {
+                mark = NaturalSciences.Value > SocialSciences.Value ? NaturalSciences.Value : SocialSciences.Value;
+            }
+
+            if(NaturalSciences.HasValue && !SocialSciences.HasValue)
+            {
+                mark = NaturalSciences.Value;
+            }
+
+            if (!NaturalSciences.HasValue && SocialSciences.HasValue)
+            {
+                mark = SocialSciences.Value;
+            }
+
+            mark = (mark + student.Maths.Value + student.Literature.Value + student.Languages.Value) / 4;
+            if (!student.EthnicCode.Equals("01")) mark += 1;
+            return mark;
+        }
+
+        
 
         
 

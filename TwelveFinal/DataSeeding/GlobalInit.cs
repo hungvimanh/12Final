@@ -11,12 +11,10 @@ namespace DataSeeding
     {
         public TFContext tFContext;
 
-        //public AreaInit AreaInit;
         public DistrictInit DistrictInit;
         public EthnicInit EthnicInit;
         public HighSchoolInit HighSchoolInit;
         public MajorsInit MajorsInit;
-        //public PriorityTypeInit PriorityTypeInit;
         public ProvinceInit ProvinceInit;
         public SubjectGroupInit SubjectGroupInit;
         public TownInit TownInit;
@@ -25,12 +23,10 @@ namespace DataSeeding
         public GlobalInit(TFContext tFContext)
         {
             this.tFContext = tFContext;
-            //AreaInit = new AreaInit(tFContext);
             DistrictInit = new DistrictInit(tFContext);
             EthnicInit = new EthnicInit(tFContext);
             HighSchoolInit = new HighSchoolInit(tFContext);
             MajorsInit = new MajorsInit(tFContext);
-            //PriorityTypeInit = new PriorityTypeInit(tFContext);
             ProvinceInit = new ProvinceInit(tFContext);
             SubjectGroupInit = new SubjectGroupInit(tFContext);
             TownInit = new TownInit(tFContext);
@@ -41,12 +37,10 @@ namespace DataSeeding
         public void Init()
         {
             Clean();
-            //AreaInit.Init();
             DistrictInit.Init();
             EthnicInit.Init();
             
             MajorsInit.Init();
-            //PriorityTypeInit.Init();
             ProvinceInit.Init();
             SubjectGroupInit.Init();
             TownInit.Init();

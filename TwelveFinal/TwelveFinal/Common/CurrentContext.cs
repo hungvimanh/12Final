@@ -8,6 +8,7 @@ namespace TwelveFinal.Common
     public interface ICurrentContext : IServiceScoped
     {
         Guid UserId { get; set; }
+        Guid StudentId { get; set; }
         string Name { get; set; }
         string Email { get; set; }
         string Phone { get; set; }
@@ -17,6 +18,7 @@ namespace TwelveFinal.Common
     public class CurrentContext : ICurrentContext
     {
         public Guid UserId { get; set; }
+        public Guid StudentId { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }

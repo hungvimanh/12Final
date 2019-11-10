@@ -160,7 +160,7 @@ namespace TwelveFinal.Repositories
                 Literature = student.Literature,
                 Maths = student.Maths,
                 Physics = student.Physics,
-                Status = false,
+                Status = false
             };
 
             tFContext.Student.Add(studentDAO);
@@ -249,6 +249,13 @@ namespace TwelveFinal.Repositories
                 Physics = s.Physics,
                 Status = s.Status
             }).FirstOrDefaultAsync();
+
+            FormDAO formDAO = tFContext.Form.Where(f => f.StudentId == Id).FirstOrDefault();
+            if(formDAO != null && formDAO.Graduated.HasValue)
+            {
+                student.Graduated = formDAO.Graduated.Value;
+            }
+            
             return student;
         }
 
