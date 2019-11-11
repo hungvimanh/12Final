@@ -10,7 +10,7 @@ using TwelveFinal.Services.MUser;
 
 namespace TwelveFinal.Controller
 {
-    [Route("api/Authentication")]
+    [Route("api/TF/authentication")]
     public class AuthenticationController : ControllerBase
     {
         private IUserService userService;
@@ -18,7 +18,7 @@ namespace TwelveFinal.Controller
         {
             this.userService = _userService;
         }
-        [Route("Login"), HttpPost]
+        [Route("login"), HttpPost]
         public async Task<LoginResultDTO> Login([FromBody] LoginDTO loginDTO)
         {
             UserFilter userFilter = new UserFilter()
@@ -36,7 +36,7 @@ namespace TwelveFinal.Controller
             };
         }
 
-        [Route("ChangePassword"), HttpPost]
+        [Route("change-password"), HttpPost]
         public async Task<bool> ChangePassword([FromBody] ChangePasswordDTO changePasswordDTO)
         {
             UserFilter userFilter = new UserFilter()
@@ -48,7 +48,7 @@ namespace TwelveFinal.Controller
             return user != null;
         }
 
-        [Route("ForgotPassword"), HttpPost]
+        [Route("forgot-password"), HttpPost]
         public async Task<bool> ForgotPassword([FromBody] ForgotPasswordDTO forgotPasswordDTO)
         {
             UserFilter userFilter = new UserFilter()

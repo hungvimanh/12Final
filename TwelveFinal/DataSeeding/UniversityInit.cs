@@ -24,7 +24,7 @@ namespace DataSeeding
             List<UniversityDAO> excelTemplates = new List<UniversityDAO>();
             using (var package = new ExcelPackage(new FileInfo(path)))
             {
-                var worksheet = package.Workbook.Worksheets[4];
+                var worksheet = package.Workbook.Worksheets[2];
                 for (int i = worksheet.Dimension.Start.Row + 1; i <= worksheet.Dimension.End.Row; i++)
                 {
                     UniversityDAO excelTemplate = new UniversityDAO()

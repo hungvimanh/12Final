@@ -25,7 +25,7 @@ namespace DataSeeding
             List<University_MajorsDAO> excelTemplates = new List<University_MajorsDAO>();
             using (var package = new ExcelPackage(new FileInfo(path)))
             {
-                var worksheet = package.Workbook.Worksheets[6];
+                var worksheet = package.Workbook.Worksheets[4];
                 for (int i = worksheet.Dimension.Start.Row + 1; i <= worksheet.Dimension.End.Row; i++)
                 {
                     string universityCode = worksheet.Cells[i, 1].Value?.ToString();

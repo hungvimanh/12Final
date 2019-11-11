@@ -24,7 +24,7 @@ namespace DataSeeding
             List<SubjectGroupDAO> excelTemplates = new List<SubjectGroupDAO>();
             using (var package = new ExcelPackage(new FileInfo(path)))
             {
-                var worksheet = package.Workbook.Worksheets[3];
+                var worksheet = package.Workbook.Worksheets[1];
                 for (int i = worksheet.Dimension.Start.Row + 1; i <= worksheet.Dimension.End.Row; i++)
                 {
                     SubjectGroupDAO excelTemplate = new SubjectGroupDAO()

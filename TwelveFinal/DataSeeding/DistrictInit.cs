@@ -24,7 +24,7 @@ namespace DataSeeding
             List<DistrictDAO> excelTemplates = new List<DistrictDAO>();
             using (var package = new ExcelPackage(new FileInfo(path)))
             {
-                var worksheet = package.Workbook.Worksheets[8];
+                var worksheet = package.Workbook.Worksheets[6];
                 for (int i = worksheet.Dimension.Start.Row + 1; i <= worksheet.Dimension.End.Row; i++)
                 {
                     DistrictDAO excelTemplate = new DistrictDAO()

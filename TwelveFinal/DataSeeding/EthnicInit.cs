@@ -27,7 +27,7 @@ namespace DataSeeding
             List<EthnicDAO> excelTemplates = new List<EthnicDAO>();
             using (var package = new ExcelPackage(new FileInfo(path)))
             {
-                var worksheet = package.Workbook.Worksheets[2];
+                var worksheet = package.Workbook.Worksheets[0];
                 for (int i = worksheet.Dimension.Start.Row + 1; i <= worksheet.Dimension.End.Row; i++)
                 {
                     EthnicDAO excelTemplate = new EthnicDAO()

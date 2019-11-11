@@ -24,7 +24,7 @@ namespace DataSeeding
             List<ProvinceDAO> excelTemplates = new List<ProvinceDAO>();
             using (var package = new ExcelPackage(new FileInfo(path)))
             {
-                var worksheet = package.Workbook.Worksheets[7];
+                var worksheet = package.Workbook.Worksheets[5];
                 for (int i = worksheet.Dimension.Start.Row + 1; i <= worksheet.Dimension.End.Row; i++)
                 {
                     ProvinceDAO excelTemplate = new ProvinceDAO()
