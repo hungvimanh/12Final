@@ -38,7 +38,7 @@ namespace DataSeeding
                         MajorsId = CreateGuid("Majors" + majorsCode),
                         SubjectGroupId = CreateGuid("SubjectGroup" + subjectGroupCode),
                         Year = worksheet.Cells[i, 4].Value?.ToString(),
-                        Benchmark = Convert.ToInt64(worksheet.Cells[i, 5].Value?.ToString()),
+                        Benchmark = Convert.ToDouble(worksheet.Cells[i, 5].Value?.ToString()),
                         Descreption = worksheet.Cells[i, 6].Value?.ToString(),
                     };
                     excelTemplates.Add(excelTemplate);

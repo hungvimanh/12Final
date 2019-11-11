@@ -37,14 +37,14 @@ namespace DataSeeding
         public void Init()
         {
             Clean();
-            DistrictInit.Init();
-            EthnicInit.Init();
             
+            EthnicInit.Init();
+            SubjectGroupInit.Init();
+            UniversityInit.Init();
             MajorsInit.Init();
             ProvinceInit.Init();
-            SubjectGroupInit.Init();
+            DistrictInit.Init();
             TownInit.Init();
-            UniversityInit.Init();
             HighSchoolInit.Init();
             University_MajorsInit.Init();
             tFContext.SaveChanges();
