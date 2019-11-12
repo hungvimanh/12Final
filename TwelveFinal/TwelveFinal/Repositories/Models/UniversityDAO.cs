@@ -16,6 +16,7 @@ namespace TwelveFinal.Repositories.Models
         public string Code { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
+        public string Website { get; set; }
 
         public virtual ICollection<AspirationDAO> Aspirations { get; set; }
         public virtual ICollection<University_MajorsDAO> University_Majors { get; set; }

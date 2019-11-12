@@ -87,7 +87,8 @@ namespace TwelveFinal.Repositories
                 Id = q.Id,
                 Name = q.Name,
                 Code = q.Code,
-                Address = q.Address
+                Address = q.Address,
+                Website = q.Website
             }).ToListAsync();
             return Universitys;
         }
@@ -116,7 +117,8 @@ namespace TwelveFinal.Repositories
                 Id = university.Id,
                 Code = university.Code,
                 Name = university.Name,
-                Address = university.Address
+                Address = university.Address,
+                Website = university.Website
             };
 
             tFContext.University.Add(universityDAO);
@@ -137,7 +139,8 @@ namespace TwelveFinal.Repositories
                 Id = u.Id,
                 Code = u.Code,
                 Name = u.Name,
-                Address = u.Address
+                Address = u.Address,
+                Website = u.Website
             }).FirstOrDefaultAsync();
 
             return university;
@@ -149,7 +152,8 @@ namespace TwelveFinal.Repositories
             {
                 Code = university.Code,
                 Name = university.Name,
-                Address = university.Address
+                Address = university.Address,
+                Website = university.Website
             });
 
             return true;

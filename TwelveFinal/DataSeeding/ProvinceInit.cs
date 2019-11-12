@@ -16,8 +16,8 @@ namespace DataSeeding
 
         public void Init()
         {
-            List<ProvinceDAO> ethnics = LoadFromExcel("../../../DataSeeding.xlsx");
-            DbContext.AddRange(ethnics);
+            List<ProvinceDAO> provinceDAOs = LoadFromExcel("../../../DataSeeding.xlsx");
+            DbContext.AddRange(provinceDAOs);
         }
         private List<ProvinceDAO> LoadFromExcel(string path)
         {
@@ -27,11 +27,13 @@ namespace DataSeeding
                 var worksheet = package.Workbook.Worksheets[5];
                 for (int i = worksheet.Dimension.Start.Row + 1; i <= worksheet.Dimension.End.Row; i++)
                 {
+                    string provinceCode = worksheet.Cells[i, 1].Value?.ToString();
+                    string provinceName = worksheet.Cells[i, 2].Value?.ToString();
                     ProvinceDAO excelTemplate = new ProvinceDAO()
                     {
-                        Id = CreateGuid("Province" + worksheet.Cells[i, 1].Value?.ToString()),
-                        Code = worksheet.Cells[i, 1].Value?.ToString(),
-                        Name = worksheet.Cells[i, 2].Value?.ToString(),
+                        Id = CreateGuid("Province" + provinceCode),
+                        Code = provinceCode,
+                        Name = provinceName
                     };
                     excelTemplates.Add(excelTemplate);
                 }

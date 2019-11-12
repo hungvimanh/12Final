@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using TwelveFinal.Repositories.Models;
+using System.Linq;
 
 namespace DataSeeding
 {
@@ -16,8 +17,8 @@ namespace DataSeeding
 
         public void Init()
         {
-            List<HighSchoolDAO> ethnics = LoadFromExcel("../../../DataSeeding.xlsx");
-            DbContext.AddRange(ethnics);
+            List<HighSchoolDAO> highSchoolDAOs = LoadFromExcel("../../../DataSeeding.xlsx");
+            DbContext.AddRange(highSchoolDAOs);
         }
 
         private List<HighSchoolDAO> LoadFromExcel(string path)
@@ -34,23 +35,13 @@ namespace DataSeeding
                     {
                         continue;
                     }
-                    string districtCode = worksheet.Cells[i, 2].Value?.ToString();
-                    if (districtCode.Equals("00"))
-                    {
-                        continue;
-                    }
-                    string highSchoolCode = worksheet.Cells[i, 3].Value?.ToString();
-                    string highSchoolName = worksheet.Cells[i, 4].Value?.ToString();
-                    string address = worksheet.Cells[i, 5].Value?.ToString();
-                    //string areaCode = worksheet.Cells[i, 6].Value?.ToString();
+                    string highSchoolCode = worksheet.Cells[i, 2].Value?.ToString();
+                    string highSchoolName = worksheet.Cells[i, 3].Value?.ToString();
+                    string address = worksheet.Cells[i, 4].Value?.ToString();
 
                     if (provinceCode.Length < 2)
                     {
                         provinceCode = "0" + provinceCode;
-                    }
-                    if (districtCode.Length < 2)
-                    {
-                        districtCode = "0" + districtCode;
                     }
                     if (highSchoolCode.Length < 3)
                     {
@@ -61,9 +52,8 @@ namespace DataSeeding
 
                     HighSchoolDAO excelTemplate = new HighSchoolDAO()
                     {
-                        Id = CreateGuid("HighSchool" + provinceCode + districtCode + highSchoolCode),
-                        DistrictId = CreateGuid("District" + provinceCode + districtCode),
-                        //AreaId = CreateGuid("Area" + areaCode),
+                        Id = CreateGuid("HighSchool" + provinceCode + highSchoolCode + highSchoolName),
+                        ProvinceId = CreateGuid("Province" + provinceCode),
                         Code = highSchoolCode,
                         Name = highSchoolName,
                         Address = address

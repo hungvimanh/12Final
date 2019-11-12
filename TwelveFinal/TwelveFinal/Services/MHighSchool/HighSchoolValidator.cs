@@ -65,7 +65,7 @@ namespace TwelveFinal.Services.MHighSchool
             HighSchoolFilter filter = new HighSchoolFilter
             {
                 Id = new GuidFilter { NotEqual = highSchool.Id },
-                DistrictId = highSchool.DistrictId,
+                ProvinceId = highSchool.ProvinceId,
                 Code = new StringFilter { Equal = highSchool.Code }
             };
 

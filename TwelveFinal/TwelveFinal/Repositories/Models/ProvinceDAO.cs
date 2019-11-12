@@ -9,6 +9,7 @@ namespace TwelveFinal.Repositories.Models
         {
             Districts = new HashSet<DistrictDAO>();
             Forms = new HashSet<FormDAO>();
+            HighSchools = new HashSet<HighSchoolDAO>();
         }
 
         public Guid Id { get; set; }
@@ -18,5 +19,6 @@ namespace TwelveFinal.Repositories.Models
 
         public virtual ICollection<DistrictDAO> Districts { get; set; }
         public virtual ICollection<FormDAO> Forms { get; set; }
+        public virtual ICollection<HighSchoolDAO> HighSchools { get; set; }
     }
 }

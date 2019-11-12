@@ -10,7 +10,7 @@ namespace TwelveFinal.Controller.DTO
         public Guid Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
-        public Guid DistrictId { get; set; }
+        public Guid ProvinceId { get; set; }
     }
 
     public class HighSchoolFilterDTO : FilterDTO
@@ -18,7 +18,7 @@ namespace TwelveFinal.Controller.DTO
         public GuidFilter Id { get; set; }
         public StringFilter Code { get; set; }
         public StringFilter Name { get; set; }
-        public Guid DistrictId { get; set; }
+        public Guid? ProvinceId { get; set; }
         public HighSchoolFilterDTO() : base()
         {
 

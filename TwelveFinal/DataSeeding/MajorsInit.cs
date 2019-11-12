@@ -17,8 +17,8 @@ namespace DataSeeding
 
         public void Init()
         {
-            List<MajorsDAO> ethnics = LoadFromExcel("../../../DataSeeding.xlsx");
-            DbContext.AddRange(ethnics);
+            List<MajorsDAO> majorsDAOs = LoadFromExcel("../../../DataSeeding.xlsx");
+            DbContext.AddRange(majorsDAOs);
         }
         private List<MajorsDAO> LoadFromExcel(string path)
         {

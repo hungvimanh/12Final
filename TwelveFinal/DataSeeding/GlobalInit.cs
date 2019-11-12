@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TwelveFinal.Repositories.Models;
@@ -37,7 +38,7 @@ namespace DataSeeding
         public void Init()
         {
             Clean();
-            
+
             EthnicInit.Init();
             SubjectGroupInit.Init();
             UniversityInit.Init();

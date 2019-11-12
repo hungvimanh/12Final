@@ -30,9 +30,7 @@ namespace TwelveFinal.Repositories
             if (highSchoolFilter == null)
                 return query.Where(q => 1 == 0);
             if (highSchoolFilter.ProvinceId.HasValue)
-                query = query.Where(q => highSchoolFilter.ProvinceId.Equals(q.District.ProvinceId));
-            if (highSchoolFilter.DistrictId.HasValue)
-                query = query.Where(q => highSchoolFilter.DistrictId.Equals(q.DistrictId));
+                query = query.Where(q => highSchoolFilter.ProvinceId.Equals(q.ProvinceId));
 
             if (highSchoolFilter.Id != null)
                 query = query.Where(q => q.Id, highSchoolFilter.Id);
@@ -89,12 +87,9 @@ namespace TwelveFinal.Repositories
                 Id = q.Id,
                 Name = q.Name,
                 Code = q.Code,
-                DistrictId = q.DistrictId,
-                DistrictCode = q.District.Code,
-                DistrictName = q.District.Name,
-                ProvinceId = q.District.ProvinceId,
-                ProvinceCode = q.District.Province.Code,
-                ProvinceName = q.District.Province.Name,
+                ProvinceId = q.ProvinceId,
+                ProvinceCode = q.Province.Code,
+                ProvinceName = q.Province.Name,
                 Address = q.Address,
             }).ToListAsync();
             return highSchools;
@@ -114,7 +109,7 @@ namespace TwelveFinal.Repositories
                 Id = highSchool.Id,
                 Code = highSchool.Code,
                 Name = highSchool.Name,
-                DistrictId = highSchool.DistrictId,
+                ProvinceId = highSchool.ProvinceId,
                 Address = highSchool.Address,
             };
 
@@ -138,12 +133,9 @@ namespace TwelveFinal.Repositories
                 Id = h.Id,
                 Code = h.Code,
                 Name = h.Name,
-                DistrictId = h.DistrictId,
-                DistrictCode = h.District.Code,
-                DistrictName = h.District.Name,
-                ProvinceId = h.District.ProvinceId,
-                ProvinceCode = h.District.Province.Code,
-                ProvinceName = h.District.Province.Name,
+                ProvinceId = h.ProvinceId,
+                ProvinceCode = h.Province.Code,
+                ProvinceName = h.Province.Name,
                 Address = h.Address,
             }).FirstOrDefaultAsync();
 
@@ -166,7 +158,7 @@ namespace TwelveFinal.Repositories
             {
                 Code = highSchool.Code,
                 Name = highSchool.Name,
-                DistrictId = highSchool.DistrictId,
+                ProvinceId = highSchool.ProvinceId,
                 Address = highSchool.Address,
             });
 

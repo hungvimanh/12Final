@@ -169,7 +169,7 @@ namespace TwelveFinal.Controller.university_majors
             return university_MajorsDTOs;
         }
 
-        [Route(University_MajorsRoute.List), HttpPost]
+        [Route(University_MajorsRoute.Delete), HttpPost]
         public async Task<ActionResult<University_MajorsDTO>> Delete([FromBody] University_MajorsDTO university_MajorsDTO)
         {
             if (university_MajorsDTO == null) university_MajorsDTO = new University_MajorsDTO();

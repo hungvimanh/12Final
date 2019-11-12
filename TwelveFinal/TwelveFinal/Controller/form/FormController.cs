@@ -345,7 +345,7 @@ namespace TwelveFinal.Controller.form
                 Id = highSchoolFilterDTO.Id,
                 Code = highSchoolFilterDTO.Code,
                 Name = highSchoolFilterDTO.Name,
-                DistrictId = highSchoolFilterDTO.DistrictId
+                ProvinceId = highSchoolFilterDTO.ProvinceId
             };
 
             var listHighSchool = await HighSchoolService.List(highSchoolFilter);
@@ -355,7 +355,7 @@ namespace TwelveFinal.Controller.form
                 Id = t.Id,
                 Code = t.Code,
                 Name = t.Name,
-                DistrictId = t.DistrictId
+                ProvinceId = t.ProvinceId
             }).ToList();
         }
         #endregion

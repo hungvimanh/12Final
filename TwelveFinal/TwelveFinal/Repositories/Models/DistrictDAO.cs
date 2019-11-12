@@ -7,7 +7,6 @@ namespace TwelveFinal.Repositories.Models
     {
         public DistrictDAO()
         {
-            HighSchools = new HashSet<HighSchoolDAO>();
             Towns = new HashSet<TownDAO>();
         }
 
@@ -18,7 +17,6 @@ namespace TwelveFinal.Repositories.Models
         public Guid ProvinceId { get; set; }
 
         public virtual ProvinceDAO Province { get; set; }
-        public virtual ICollection<HighSchoolDAO> HighSchools { get; set; }
         public virtual ICollection<TownDAO> Towns { get; set; }
     }
 }

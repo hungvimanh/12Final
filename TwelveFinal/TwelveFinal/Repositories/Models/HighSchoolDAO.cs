@@ -15,10 +15,10 @@ namespace TwelveFinal.Repositories.Models
         public long CX { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
-        public Guid DistrictId { get; set; }
+        public Guid ProvinceId { get; set; }
         public string Address { get; set; }
 
-        public virtual DistrictDAO District { get; set; }
+        public virtual ProvinceDAO Province { get; set; }
         public virtual ICollection<FormDAO> Forms { get; set; }
         public virtual ICollection<StudentDAO> Students { get; set; }
     }

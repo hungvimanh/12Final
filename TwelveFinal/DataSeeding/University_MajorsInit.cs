@@ -16,8 +16,8 @@ namespace DataSeeding
 
         public void Init()
         {
-            List<University_MajorsDAO> ethnics = LoadFromExcel("../../../DataSeeding.xlsx");
-            DbContext.AddRange(ethnics);
+            List<University_MajorsDAO> university_MajorsDAOs = LoadFromExcel("../../../DataSeeding.xlsx");
+            DbContext.AddRange(university_MajorsDAOs);
         }
 
         private List<University_MajorsDAO> LoadFromExcel(string path)
@@ -40,6 +40,7 @@ namespace DataSeeding
                         Year = worksheet.Cells[i, 4].Value?.ToString(),
                         Benchmark = Convert.ToDouble(worksheet.Cells[i, 5].Value?.ToString()),
                         Descreption = worksheet.Cells[i, 6].Value?.ToString(),
+                        Quantity = Convert.ToInt32(worksheet.Cells[i, 7].Value?.ToString())
                     };
                     excelTemplates.Add(excelTemplate);
                 }

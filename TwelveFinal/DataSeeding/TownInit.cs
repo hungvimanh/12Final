@@ -16,8 +16,8 @@ namespace DataSeeding
 
         public void Init()
         {
-            List<TownDAO> ethnics = LoadFromExcel("../../../DataSeeding.xlsx");
-            DbContext.AddRange(ethnics);
+            List<TownDAO> townDAOs = LoadFromExcel("../../../DataSeeding.xlsx");
+            DbContext.AddRange(townDAOs);
         }
         private List<TownDAO> LoadFromExcel(string path)
         {
@@ -27,27 +27,10 @@ namespace DataSeeding
                 var worksheet = package.Workbook.Worksheets[7];
                 for (int i = worksheet.Dimension.Start.Row + 1; i <= worksheet.Dimension.End.Row; i++)
                 {
-                    string provinceCode = worksheet.Cells[i, 1].Value?.ToString();
-                    string districtCode = worksheet.Cells[i, 2].Value?.ToString();
-                    string townCode = worksheet.Cells[i, 3].Value?.ToString();
-                    string townName = worksheet.Cells[i, 4].Value?.ToString();
-
-                    if (provinceCode.Length < 2)
-                    {
-                        provinceCode = "0" + provinceCode;
-                    }
-                    if (districtCode.Length < 2)
-                    {
-                        districtCode = "0" + districtCode;
-                    }
-                    if (townCode.Length < 2)
-                    {
-                        townCode = "0" + townCode;
-                    }
-                    if (townName.Contains("("))
-                    {
-                        townName = townName.Split(" (")[0];
-                    }
+                    string provinceCode = worksheet.Cells[i, 4].Value?.ToString();
+                    string districtCode = worksheet.Cells[i, 3].Value?.ToString();
+                    string townCode = worksheet.Cells[i, 1].Value?.ToString();
+                    string townName = worksheet.Cells[i, 2].Value?.ToString();
 
                     TownDAO excelTemplate = new TownDAO()
                     {

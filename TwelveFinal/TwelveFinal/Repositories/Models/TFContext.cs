@@ -89,7 +89,7 @@ namespace TwelveFinal.Repositories.Models
 
                 entity.Property(e => e.Code)
                     .IsRequired()
-                    .HasMaxLength(2);
+                    .HasMaxLength(3);
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -183,11 +183,11 @@ namespace TwelveFinal.Repositories.Models
 
                 entity.Property(e => e.Name).HasMaxLength(500);
 
-                entity.HasOne(d => d.District)
+                entity.HasOne(d => d.Province)
                     .WithMany(p => p.HighSchools)
-                    .HasForeignKey(d => d.DistrictId)
+                    .HasForeignKey(d => d.ProvinceId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_HighSchool_District");
+                    .HasConstraintName("FK_HighSchool_Province");
             });
 
             modelBuilder.Entity<MajorsDAO>(entity =>
@@ -310,7 +310,7 @@ namespace TwelveFinal.Repositories.Models
 
                 entity.Property(e => e.Code)
                     .IsRequired()
-                    .HasMaxLength(2);
+                    .HasMaxLength(5);
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -343,6 +343,8 @@ namespace TwelveFinal.Repositories.Models
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(200);
+
+                entity.Property(e => e.Website).HasMaxLength(50);
             });
 
             modelBuilder.Entity<University_MajorsDAO>(entity =>
@@ -356,7 +358,7 @@ namespace TwelveFinal.Repositories.Models
                     .IsUnique()
                     .HasAnnotation("SqlServer:Clustered", true);
 
-                entity.Property(e => e.Year).HasMaxLength(10);
+                entity.Property(e => e.Year).HasMaxLength(50);
 
                 entity.Property(e => e.CX).ValueGeneratedOnAdd();
 

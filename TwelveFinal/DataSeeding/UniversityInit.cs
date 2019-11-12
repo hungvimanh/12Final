@@ -32,6 +32,7 @@ namespace DataSeeding
                         Id = CreateGuid("University" + worksheet.Cells[i, 1].Value?.ToString()),
                         Code = worksheet.Cells[i, 1].Value?.ToString(),
                         Name = worksheet.Cells[i, 2].Value?.ToString(),
+                        Website = worksheet.Cells[i, 3].Value?.ToString()
                     };
                     excelTemplates.Add(excelTemplate);
                 }

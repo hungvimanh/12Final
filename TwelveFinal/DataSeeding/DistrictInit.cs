@@ -27,12 +27,15 @@ namespace DataSeeding
                 var worksheet = package.Workbook.Worksheets[6];
                 for (int i = worksheet.Dimension.Start.Row + 1; i <= worksheet.Dimension.End.Row; i++)
                 {
+                    string provinceCode = worksheet.Cells[i, 3].Value?.ToString();
+                    string districtCode = worksheet.Cells[i, 1].Value?.ToString();
+                    string districtName = worksheet.Cells[i, 2].Value?.ToString();
                     DistrictDAO excelTemplate = new DistrictDAO()
                     {
-                        Id = CreateGuid("District" + worksheet.Cells[i, 1].Value?.ToString() + worksheet.Cells[i, 2].Value?.ToString()),
-                        ProvinceId = CreateGuid("Province" + worksheet.Cells[i, 1].Value?.ToString()),
-                        Code = worksheet.Cells[i, 2].Value?.ToString(),
-                        Name = worksheet.Cells[i, 3].Value?.ToString(),
+                        Id = CreateGuid("District" + provinceCode + districtCode),
+                        ProvinceId = CreateGuid("Province" + worksheet.Cells[i, 3].Value?.ToString()),
+                        Code = districtCode,
+                        Name = districtName
                     };
                     excelTemplates.Add(excelTemplate);
                 }

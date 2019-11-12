@@ -16,8 +16,8 @@ namespace DataSeeding
 
         public void Init()
         {
-            List<SubjectGroupDAO> ethnics = LoadFromExcel("../../../DataSeeding.xlsx");
-            DbContext.AddRange(ethnics);
+            List<SubjectGroupDAO> subjectGroupDAOs = LoadFromExcel("../../../DataSeeding.xlsx");
+            DbContext.AddRange(subjectGroupDAOs);
         }
         private List<SubjectGroupDAO> LoadFromExcel(string path)
         {
