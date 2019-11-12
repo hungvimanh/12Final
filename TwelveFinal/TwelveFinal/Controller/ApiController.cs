@@ -20,7 +20,7 @@ namespace TwelveFinal.Controller
     public class AdminRoute : Root
     {
         public const string GetForm = FormRoute.Get;
-        public const string ApproveForm = FormRoute.Approve;
+        public const string ApproveForm = FormRoute.ApproveAccept;
         public const string DeleteForm = FormRoute.Delete;
 
         public const string CreateMajors = MajorsRoute.Create;

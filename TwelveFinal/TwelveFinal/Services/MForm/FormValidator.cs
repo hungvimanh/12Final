@@ -70,9 +70,15 @@ namespace TwelveFinal.Services.MForm
         public async Task<bool> StatusIsFalse(Form form)
         {
             //Validate Trạng thái 
-            //False: nếu chưa được duyệt => cho phép duyệt
-            //True: đã được duyệt
-            if (form.Status)
+            //0: Nếu Phiếu ĐKDT chưa được tạo
+            //1: Phiếu đang ở trạng thái chờ duyệt => cho phép duyệt
+            //2 || 3: Phiếu đã được duyệt, 2 là duyệt nhận, 3 là duyệt từ chối
+            if (form.Status == 0)
+            {
+                form.AddError(nameof(FormValidator), "Form", ErrorCode.NotExisted);
+            }
+
+            if (form.Status == 2 || form.Status == 3)
             {
                 form.AddError(nameof(FormValidator), "Form", ErrorCode.IsApproved);
             }

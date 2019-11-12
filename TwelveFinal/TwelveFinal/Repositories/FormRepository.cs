@@ -61,7 +61,7 @@ namespace TwelveFinal.Repositories
 
                 PriorityType = form.PriorityType,
                 Area = form.Area,
-                Status = false,
+                Status = form.Status,
                 StudentId = form.StudentId
             };
 
@@ -197,11 +197,7 @@ namespace TwelveFinal.Repositories
 
                 Area = form.Area,
                 PriorityType = form.PriorityType,
-                Status = false
-            });
-            await tFContext.Student.Where(s => s.Id == form.StudentId).UpdateFromQueryAsync(s => new StudentDAO
-            {
-                Status = false
+                Status = form.Status
             });
             await BulkCreateAspirations(form);
 
@@ -212,11 +208,7 @@ namespace TwelveFinal.Repositories
         {
             await tFContext.Form.Where(f => f.Id == form.Id).UpdateFromQueryAsync(f => new FormDAO
             {
-                Status = true
-            });
-            await tFContext.Student.Where(s => s.Id == form.StudentId).UpdateFromQueryAsync(s => new StudentDAO
-            {
-                Status = true
+                Status = form.Status
             });
             return true;
         }

@@ -53,7 +53,7 @@ namespace TwelveFinal.Controller.DTO
         public DateTimeFilter Dob { get; set; }
         public GuidFilter ProvinceId { get; set; } 
         public GuidFilter HighSchoolId { get; set; }
-        public bool? Status { get; set; }
+        public int? Status { get; set; }
         public StudentOrder OrderBy;
         public StudentFilterDTO() : base()
         {

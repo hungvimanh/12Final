@@ -44,7 +44,7 @@ namespace TwelveFinal.Controller.DTO
 
         public string PriorityType { get; set; }
         public string Area { get; set; }
-        public bool Status { get; set; }
+        public int Status { get; set; }
 
         public List<AspirationDTO> Aspirations { get; set; }
     }

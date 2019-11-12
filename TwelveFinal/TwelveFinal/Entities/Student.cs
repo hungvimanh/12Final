@@ -44,7 +44,7 @@ namespace TwelveFinal.Entities
         public double? Geography { get; set; }
         public double? CivicEducation { get; set; }
 
-        public bool Status { get; set; }
+        public int Status { get; set; }
         public bool? Graduated { get; set; }
         public double? GraduationMark { get; set; }
         //public Student() : base()
@@ -63,7 +63,7 @@ namespace TwelveFinal.Entities
         public GuidFilter HighSchoolId { get; set; }
         public bool? Gender { get; set; }
         public DateTimeFilter Dob { get; set; }
-        public bool? Status { get; set; }
+        public int? Status { get; set; }
         public StudentOrder OrderBy { get; set; }
         public StudentFilter() : base()
         {

@@ -11,8 +11,8 @@ namespace TwelveFinal.Repositories.Models
         public double? Benchmark { get; set; }
         public Guid SubjectGroupId { get; set; }
         public string Year { get; set; }
-        public int? Quantity { get; set; }
         public string Descreption { get; set; }
+        public int? Quantity { get; set; }
 
         public virtual MajorsDAO Majors { get; set; }
         public virtual SubjectGroupDAO SubjectGroup { get; set; }

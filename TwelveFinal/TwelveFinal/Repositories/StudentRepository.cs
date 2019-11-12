@@ -160,7 +160,7 @@ namespace TwelveFinal.Repositories
                 Literature = student.Literature,
                 Maths = student.Maths,
                 Physics = student.Physics,
-                Status = false
+                Status = 0
             };
 
             tFContext.Student.Add(studentDAO);
@@ -194,7 +194,7 @@ namespace TwelveFinal.Repositories
                 Literature = s.Literature,
                 Maths = s.Maths,
                 Physics = s.Physics,
-                Status = false
+                Status = 0
             }).ToList();
 
             tFContext.Student.AddRange(studentDAOs);

@@ -21,7 +21,8 @@ namespace TwelveFinal.Controller.form
         public const string Default = Base + "/form";
         public const string Save = Default + "/save";
         public const string Get = Default + "/get";
-        public const string Approve = Default + "/approve";
+        public const string ApproveAccept = Default + "/accept";
+        public const string ApproveDeny = Default + "/deny";
         public const string DropListProvince = Default + "/province";
         public const string DropListDistrict = Default + "/district";
         public const string DropListTown = Default + "/town";
@@ -250,13 +251,29 @@ namespace TwelveFinal.Controller.form
         }
         #endregion
 
-        #region Approve
-        [Route(FormRoute.Approve), HttpPost]
-        public async Task<ActionResult<bool>> Approve([FromBody] FormDTO formDTO)
+        #region Accept
+        [Route(FormRoute.ApproveAccept), HttpPost]
+        public async Task<ActionResult<bool>> ApproveAccept([FromBody] FormDTO formDTO)
         {
             if (formDTO == null) formDTO = new FormDTO();
             Form form = new Form { Id = formDTO.Id };
-            form = await FormService.Approve(form);
+            form = await FormService.ApproveAccept(form);
+            if (form.Errors != null && form.Errors.Count > 0)
+            {
+                return BadRequest(form.Errors);
+            }
+
+            return Ok(true);
+        }
+        #endregion
+
+        #region Deny
+        [Route(FormRoute.ApproveDeny), HttpPost]
+        public async Task<ActionResult<bool>> ApproveDeny([FromBody] FormDTO formDTO)
+        {
+            if (formDTO == null) formDTO = new FormDTO();
+            Form form = new Form { Id = formDTO.Id };
+            form = await FormService.ApproveDeny(form);
             if (form.Errors != null && form.Errors.Count > 0)
             {
                 return BadRequest(form.Errors);

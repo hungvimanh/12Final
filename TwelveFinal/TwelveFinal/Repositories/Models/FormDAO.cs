@@ -13,6 +13,7 @@ namespace TwelveFinal.Repositories.Models
         public Guid Id { get; set; }
         public long CX { get; set; }
         public Guid StudentId { get; set; }
+        public int Status { get; set; }
         public bool? Graduated { get; set; }
         public Guid ClusterContestId { get; set; }
         public Guid RegisterPlaceOfExamId { get; set; }
@@ -40,7 +41,6 @@ namespace TwelveFinal.Repositories.Models
         public int? ReserveLanguages { get; set; }
         public string PriorityType { get; set; }
         public string Area { get; set; }
-        public bool Status { get; set; }
 
         public virtual ProvinceDAO ClusterContest { get; set; }
         public virtual HighSchoolDAO RegisterPlaceOfExam { get; set; }
