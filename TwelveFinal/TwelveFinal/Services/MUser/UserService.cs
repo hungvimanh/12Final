@@ -46,7 +46,16 @@ namespace TwelveFinal.Services.MUser
         public async Task<User> Login(UserFilter userFilter)
         {
             User user = await this.Verify(userFilter);
+            if(userFilter.Password == user.Password)
+            {
+                user.FirstLogin = true;
+            }
+            else
+            {
+                user.FirstLogin = false;
+            }
             user = await this.GenerateJWT(user, appSettings.JWTSecret, appSettings.JWTLifeTime);
+
             return user;
         }
         public async Task<User> ChangePassword(UserFilter userFilter, string newPassword)

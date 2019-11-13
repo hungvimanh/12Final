@@ -10,5 +10,6 @@ namespace TwelveFinal.Controller.DTO
         public string Username { get; set; }
         public string Token { get; set; }
         public DateTime? ExpiredTime { get; set; }
+        public bool FirstLogin { get; set; }
     }
 }

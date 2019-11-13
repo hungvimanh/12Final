@@ -32,7 +32,8 @@ namespace TwelveFinal.Controller
             {
                 Username = user.Username,
                 Token = user.Jwt,
-                ExpiredTime = user.ExpiredTime
+                ExpiredTime = user.ExpiredTime,
+                FirstLogin = user.FirstLogin
             };
         }
 

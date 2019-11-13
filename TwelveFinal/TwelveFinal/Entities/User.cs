@@ -16,6 +16,7 @@ namespace TwelveFinal.Entities
         public string Salt { get; set; }
         public string Jwt { get; set; }
         public DateTime? ExpiredTime { get; set; }
+        public bool FirstLogin { get; set; }
     }
 
     public class UserFilter
