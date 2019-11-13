@@ -45,8 +45,8 @@ namespace TwelveFinal.Repositories
             if (university_MajorsFilter.UniversityName != null)
                 query = query.Where(q => q.University.Name, university_MajorsFilter.UniversityName);
 
-            if (university_MajorsFilter.SubjectGroupId != null)
-                query = query.Where(q => q.SubjectGroupId, university_MajorsFilter.SubjectGroupId);
+            if (university_MajorsFilter.SubjectGroupId.HasValue)
+                query = query.Where(q => q.SubjectGroupId.Equals(university_MajorsFilter.SubjectGroupId));
             if (university_MajorsFilter.SubjectGroupCode != null)
                 query = query.Where(q => q.SubjectGroup.Code, university_MajorsFilter.SubjectGroupCode);
             if (university_MajorsFilter.SubjectGroupName != null)

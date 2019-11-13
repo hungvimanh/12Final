@@ -15,9 +15,9 @@ namespace TwelveFinal.Controller.DTO
 
     public class DistrictFilterDTO : FilterDTO
     {
-        public GuidFilter Id { get; set; }
-        public StringFilter Code { get; set; }
-        public StringFilter Name { get; set; }
+        public Guid Id { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
         public Guid ProvinceId { get; set; }
         public DistrictFilterDTO() : base()
         {

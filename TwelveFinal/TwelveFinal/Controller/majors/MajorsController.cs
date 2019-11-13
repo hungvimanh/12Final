@@ -90,9 +90,9 @@ namespace TwelveFinal.Controller.majors
         {
             MajorsFilter majorsFilter = new MajorsFilter
             {
-                Id = majorsFilterDTO.Id,
-                Code = majorsFilterDTO.Code,
-                Name = majorsFilterDTO.Name,
+                Id = new GuidFilter { Equal = majorsFilterDTO.Id },
+                Code = new StringFilter { StartsWith = majorsFilterDTO.Code },
+                Name = new StringFilter { Contains = majorsFilterDTO.Name },
                 Skip = majorsFilterDTO.Skip,
                 Take = majorsFilterDTO.Take
             };

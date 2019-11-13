@@ -14,9 +14,9 @@ namespace TwelveFinal.Controller.DTO
 
     public class EthnicFilterDTO : FilterDTO
     {
-        public GuidFilter Id { get; set; }
-        public StringFilter Code { get; set; }
-        public StringFilter Name { get; set; }
+        public Guid Id { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
         public EthnicFilterDTO() : base()
         {
 

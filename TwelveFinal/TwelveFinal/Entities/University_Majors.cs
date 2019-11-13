@@ -33,7 +33,7 @@ namespace TwelveFinal.Entities
         public StringFilter MajorsName { get; set; }
         public DoubleFilter BenchmarkHigh { get; set; }
         public DoubleFilter BenchmarkLow { get; set; }
-        public GuidFilter SubjectGroupId { get; set; }
+        public Guid? SubjectGroupId { get; set; }
         public StringFilter SubjectGroupCode { get; set; }
         public StringFilter SubjectGroupName { get; set; }
         public string Year { get; set; }

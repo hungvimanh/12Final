@@ -46,13 +46,13 @@ namespace TwelveFinal.Controller.DTO
 
     public class StudentFilterDTO : FilterDTO
     {
-        public GuidFilter Id { get; set; }
-        public StringFilter Identify { get; set; }
-        public StringFilter Name { get; set; }
+        public Guid Id { get; set; }
+        public string Identify { get; set; }
+        public string Name { get; set; }
         public bool? Gender { get; set; }
-        public DateTimeFilter Dob { get; set; }
-        public GuidFilter ProvinceId { get; set; } 
-        public GuidFilter HighSchoolId { get; set; }
+        public DateTime? Dob { get; set; }
+        public Guid? ProvinceId { get; set; } 
+        public Guid? HighSchoolId { get; set; }
         public int? Status { get; set; }
         public StudentOrder OrderBy;
         public StudentFilterDTO() : base()

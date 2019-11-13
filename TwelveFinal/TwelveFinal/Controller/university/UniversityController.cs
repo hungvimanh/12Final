@@ -93,10 +93,9 @@ namespace TwelveFinal.Controller.university
         {
             UniversityFilter universityFilter = new UniversityFilter
             {
-                Id = universityFilterDTO.Id,
-                Address = universityFilterDTO.Address,
-                Code = universityFilterDTO.Code,
-                Name = universityFilterDTO.Name,
+                Id = new GuidFilter { Equal = universityFilterDTO.Id },
+                Code = new StringFilter { StartsWith = universityFilterDTO.Code },
+                Name = new StringFilter { Contains = universityFilterDTO.Name },
                 Skip = universityFilterDTO.Skip,
                 Take = universityFilterDTO.Take
             };

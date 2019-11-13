@@ -286,9 +286,9 @@ namespace TwelveFinal.Controller.form
         {
             ProvinceFilter provinceFilter = new ProvinceFilter
             {
-                Id = provinceFilterDTO.Id,
-                Code = provinceFilterDTO.Code,
-                Name = provinceFilterDTO.Name
+                Id = new GuidFilter { Equal = provinceFilterDTO.Id },
+                Code = new StringFilter { StartsWith = provinceFilterDTO.Code },
+                Name = new StringFilter { StartsWith = provinceFilterDTO.Name }
             };
 
             var listProvince = await ProvinceService.List(provinceFilter);
@@ -308,9 +308,9 @@ namespace TwelveFinal.Controller.form
         {
             DistrictFilter districtFilter = new DistrictFilter
             {
-                Id = districtFilterDTO.Id,
-                Code = districtFilterDTO.Code,
-                Name = districtFilterDTO.Name,
+                Id = new GuidFilter { Equal = districtFilterDTO.Id },
+                Code = new StringFilter { StartsWith = districtFilterDTO.Code },
+                Name = new StringFilter { StartsWith = districtFilterDTO.Name },
                 ProvinceId = districtFilterDTO.ProvinceId
             };
 
@@ -332,9 +332,9 @@ namespace TwelveFinal.Controller.form
         {
             TownFilter townFilter = new TownFilter
             {
-                Id = townFilterDTO.Id,
-                Code = townFilterDTO.Code,
-                Name = townFilterDTO.Name,
+                Id = new GuidFilter { Equal = townFilterDTO.Id },
+                Code = new StringFilter { StartsWith = townFilterDTO.Code },
+                Name = new StringFilter { StartsWith = townFilterDTO.Name },
                 DistrictId = townFilterDTO.DistrictId
             };
 
@@ -356,9 +356,9 @@ namespace TwelveFinal.Controller.form
         {
             HighSchoolFilter highSchoolFilter = new HighSchoolFilter
             {
-                Id = highSchoolFilterDTO.Id,
-                Code = highSchoolFilterDTO.Code,
-                Name = highSchoolFilterDTO.Name,
+                Id = new GuidFilter { Equal = highSchoolFilterDTO.Id },
+                Code =new StringFilter { StartsWith = highSchoolFilterDTO.Code },
+                Name =new StringFilter { Contains = highSchoolFilterDTO.Name },
                 ProvinceId = highSchoolFilterDTO.ProvinceId
             };
 
@@ -380,9 +380,9 @@ namespace TwelveFinal.Controller.form
         {
             EthnicFilter ethnicFilter = new EthnicFilter
             {
-                Id = ethnicFilterDTO.Id,
-                Code = ethnicFilterDTO.Code,
-                Name = ethnicFilterDTO.Name
+                Id = new GuidFilter { Equal = ethnicFilterDTO.Id },
+                Code =new StringFilter { StartsWith = ethnicFilterDTO.Code },
+                Name =new StringFilter { StartsWith = ethnicFilterDTO.Name }
             };
 
             var listEthnic = await EthnicService.List(ethnicFilter);
@@ -403,11 +403,13 @@ namespace TwelveFinal.Controller.form
             University_MajorsFilter filter = new University_MajorsFilter
             {
                 UniversityId = university_majorsFilterDTO.UniversityId,
-                UniversityCode = university_majorsFilterDTO.UniversityCode,
-                MajorsId = university_majorsFilterDTO.MajorsId,
-                MajorsCode = university_majorsFilterDTO.MajorsCode,
+                UniversityCode = new StringFilter { StartsWith = university_majorsFilterDTO.UniversityCode },
+                UniversityName = new StringFilter { Contains = university_majorsFilterDTO.UniversityName },
+                MajorsId = university_majorsFilterDTO.MajorsId ,
+                MajorsCode = new StringFilter { StartsWith = university_majorsFilterDTO.MajorsCode },
+                MajorsName = new StringFilter { Contains = university_majorsFilterDTO.MajorsName },
                 SubjectGroupId = university_majorsFilterDTO.SubjectGroupId,
-                SubjectGroupCode = university_majorsFilterDTO.SubjectGroupCode,
+                SubjectGroupCode = new StringFilter { StartsWith = university_majorsFilterDTO.SubjectGroupCode },
                 Year = university_majorsFilterDTO.Year
             };
 

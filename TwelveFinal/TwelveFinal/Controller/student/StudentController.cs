@@ -176,13 +176,13 @@ namespace TwelveFinal.Controller.student
         {
             StudentFilter studentFilter = new StudentFilter
             {
-                Id = studentFilterDTO.Id,
-                Identify = studentFilterDTO.Identify,
-                Name = studentFilterDTO.Name,
-                ProvinceId = studentFilterDTO.ProvinceId,
-                HighSchoolId = studentFilterDTO.HighSchoolId,
+                Id = new GuidFilter { Equal = studentFilterDTO.Id },
+                Identify = new StringFilter { StartsWith = studentFilterDTO.Identify },
+                Name = new StringFilter { Contains = studentFilterDTO.Name },
+                ProvinceId = new GuidFilter { Equal = studentFilterDTO.ProvinceId },
+                HighSchoolId = new GuidFilter { Equal = studentFilterDTO.HighSchoolId },
                 Gender = studentFilterDTO.Gender,
-                Dob = studentFilterDTO.Dob,
+                Dob = new DateTimeFilter { Equal = studentFilterDTO.Dob },
                 Status = studentFilterDTO.Status,
                 Skip = studentFilterDTO.Skip,
                 Take = studentFilterDTO.Take
