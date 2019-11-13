@@ -43,12 +43,9 @@ namespace TwelveFinal.Controller.subject_group
                 Errors = subjectGroup.Errors
             };
 
-            if (subjectGroup.IsValidated)
-                return Ok(subjectGroupDTO);
-            else
-            {
+            if (subjectGroup.HasError)
                 return BadRequest(subjectGroupDTO);
-            }
+            return Ok(subjectGroupDTO);
         }
 
         [Route(SubjectGroupRoute.Get), HttpPost]
@@ -109,12 +106,9 @@ namespace TwelveFinal.Controller.subject_group
                 Errors = subjectGroup.Errors
             };
 
-            if (subjectGroup.IsValidated)
-                return Ok(subjectGroupDTO);
-            else
-            {
+            if (subjectGroup.HasError)
                 return BadRequest(subjectGroupDTO);
-            }
+            return Ok(subjectGroupDTO);
         }
 
         [Route(SubjectGroupRoute.Delete), HttpPost]
@@ -133,12 +127,9 @@ namespace TwelveFinal.Controller.subject_group
                 Errors = subjectGroup.Errors
             };
 
-            if (subjectGroup.IsValidated)
-                return Ok(subjectGroupDTO);
-            else
-            {
+            if (subjectGroup.HasError)
                 return BadRequest(subjectGroupDTO);
-            }
+            return Ok(subjectGroupDTO);
         }
 
         private SubjectGroup ConvertDTOtoBO(SubjectGroupDTO subjectGroupDTO)

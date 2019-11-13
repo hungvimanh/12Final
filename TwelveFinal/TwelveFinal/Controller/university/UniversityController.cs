@@ -44,12 +44,9 @@ namespace TwelveFinal.Controller.university
                 Address = university.Address,
                 Errors = university.Errors
             };
-            if (university.IsValidated)
-                return Ok(universityDTO);
-            else
-            {
+            if (university.HasError)
                 return BadRequest(universityDTO);
-            }
+            return Ok(universityDTO);
         }
 
         [Route(UniversityRoute.Update), HttpPost]
@@ -68,12 +65,9 @@ namespace TwelveFinal.Controller.university
                 Address = university.Address,
                 Errors = university.Errors
             };
-            if (university.IsValidated)
-                return Ok(universityDTO);
-            else
-            {
+            if (university.HasError)
                 return BadRequest(universityDTO);
-            }
+            return Ok(universityDTO);
         }
 
         [Route(UniversityRoute.Get), HttpPost]
@@ -136,12 +130,9 @@ namespace TwelveFinal.Controller.university
                 Address = university.Address,
                 Errors = university.Errors
             };
-            if (university.IsValidated)
-                return Ok(universityDTO);
-            else
-            {
+            if (university.HasError)
                 return BadRequest(universityDTO);
-            }
+            return Ok(universityDTO);
         }
 
         private University ConvertDTOtoBO(UniversityDTO universityDTO)

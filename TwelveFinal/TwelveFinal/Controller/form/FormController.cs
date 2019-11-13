@@ -145,14 +145,11 @@ namespace TwelveFinal.Controller.form
                 Errors = form.Errors
             };
 
-            if (form.IsValidated)
-            {
-                return Ok(formDTO);
-            }
-            else
+            if (form.HasError)
             {
                 return BadRequest(formDTO);
             }
+            return Ok(formDTO);
         }
         #endregion
 

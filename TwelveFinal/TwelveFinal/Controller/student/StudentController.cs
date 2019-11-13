@@ -59,12 +59,9 @@ namespace TwelveFinal.Controller.student
                 Phone = student.Phone,
                 Errors = student.Errors
             };
-            if (student.IsValidated)
-                return registerDTO;
-            else
-            {
+            if (student.HasError)
                 return BadRequest(registerDTO);
-            }
+            return Ok(registerDTO);
         }
         #endregion
 
@@ -129,12 +126,9 @@ namespace TwelveFinal.Controller.student
                 TownCode = student.TownCode,
                 TownName = student.TownName,
             };
-            if (student.IsValidated)
-                return studentDTO;
-            else
-            {
+            if (student.HasError)
                 return BadRequest(studentDTO);
-            }
+            return Ok(studentDTO);
         }
         #endregion
 
@@ -265,14 +259,11 @@ namespace TwelveFinal.Controller.student
                 Errors = student.Errors
             };
 
-            if (student.IsValidated)
-            {
-                return Ok(markDTO);
-            }
-            else
+            if (student.HasError)
             {
                 return BadRequest(markDTO);
             }
+            return Ok(markDTO);
         }
         #endregion
 

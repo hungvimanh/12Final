@@ -43,12 +43,9 @@ namespace TwelveFinal.Controller.majors
                 Name = majors.Name,
                 Errors = majors.Errors
             };
-            if (majors.IsValidated)
-                return Ok(majorsDTO);
-            else
-            {
+            if (majors.HasError)
                 return BadRequest(majorsDTO);
-            }
+            return Ok(majorsDTO);
         }
 
         [Route(MajorsRoute.Update), HttpPost]
@@ -66,12 +63,9 @@ namespace TwelveFinal.Controller.majors
                 Name = majors.Name,
                 Errors = majors.Errors
             };
-            if (majors.IsValidated)
-                return Ok(majorsDTO);
-            else
-            {
+            if (majors.HasError)
                 return BadRequest(majorsDTO);
-            }
+            return Ok(majorsDTO);
         }
 
         [Route(MajorsRoute.Get), HttpPost]
@@ -130,12 +124,9 @@ namespace TwelveFinal.Controller.majors
                 Name = majors.Name,
                 Errors = majors.Errors
             };
-            if (majors.IsValidated)
-                return Ok(majorsDTO);
-            else
-            {
+            if (majors.HasError)
                 return BadRequest(majorsDTO);
-            }
+            return Ok(majorsDTO);
         }
 
         private Majors ConvertDTOtoBO(MajorsDTO majorsDTO)

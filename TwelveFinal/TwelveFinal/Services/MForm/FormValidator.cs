@@ -22,7 +22,7 @@ namespace TwelveFinal.Services.MForm
             Duplicate,
             NotExisted,
             Invalid,
-            IsApproved
+            IsApproved,
         }
 
         public FormValidator(IUOW _UOW)
@@ -34,13 +34,14 @@ namespace TwelveFinal.Services.MForm
         {
             bool IsValid = true;
             IsValid &= await IsExisted(form);
-            IsValid &= await StatusIsFalse(form);
+            IsValid &= await StatusValidation(form);
             return IsValid;
         }
 
         public async Task<bool> Save(Form form)
         {
             bool IsValid = true;
+            IsValid &= await FormApproved(form);
             IsValid &= await GraduationValidate(form);
             IsValid &= await SequenceValidate(form.Aspirations);
             return IsValid;
@@ -67,7 +68,16 @@ namespace TwelveFinal.Services.MForm
             return true;
         }
 
-        public async Task<bool> StatusIsFalse(Form form)
+        private async Task<bool> FormApproved(Form form)
+        {
+            if(form.Status == 2)
+            {
+                form.AddError(nameof(FormValidator), "Form", ErrorCode.IsApproved);
+            }
+            return form.IsValidated;
+        }
+
+        private async Task<bool> StatusValidation(Form form)
         {
             //Validate Trạng thái 
             //0: Nếu Phiếu ĐKDT chưa được tạo

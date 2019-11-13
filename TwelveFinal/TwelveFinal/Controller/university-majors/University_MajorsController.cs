@@ -52,12 +52,9 @@ namespace TwelveFinal.Controller.university_majors
                 Descreption = university_Majors.Descreption,
                 Errors = university_Majors.Errors
             };
-            if (university_Majors.IsValidated)
-                return Ok(university_MajorsDTO);
-            else
-            {
+            if (university_Majors.HasError)
                 return BadRequest(university_MajorsDTO);
-            }
+            return Ok(university_MajorsDTO);
         }
 
         [Route(University_MajorsRoute.Update), HttpPost]
@@ -86,12 +83,9 @@ namespace TwelveFinal.Controller.university_majors
                 Descreption = university_Majors.Descreption,
                 Errors = university_Majors.Errors
             };
-            if (university_Majors.IsValidated)
-                return Ok(university_MajorsDTO);
-            else
-            {
+            if (university_Majors.HasError)
                 return BadRequest(university_MajorsDTO);
-            }
+            return Ok(university_MajorsDTO);
         }
 
         [Route(University_MajorsRoute.Get), HttpPost]
@@ -195,12 +189,9 @@ namespace TwelveFinal.Controller.university_majors
                 Descreption = university_Majors.Descreption,
                 Errors = university_Majors.Errors
             };
-            if (university_Majors.IsValidated)
-                return Ok(university_MajorsDTO);
-            else
-            {
+            if (university_Majors.HasError)
                 return BadRequest(university_MajorsDTO);
-            }
+            return Ok(university_MajorsDTO);
         }
 
         private University_Majors ConvertDTOtoBO(University_MajorsDTO university_MajorsDTO)

@@ -8,19 +8,6 @@ namespace TwelveFinal.Common
     public static class CryptographyExtentions
     {
         /// <summary>
-        /// Băm password với salt tự generate ngẫu nhiên. Salt được trả về.
-        /// </summary>
-        /// <param name="password">Password plain text</param>
-        /// <param name="salt">Salt tự generate ngẫu nhiên, trả về</param>
-        /// <returns>Password sau khi băm</returns>
-        //public static string HashHMACSHA256(this string password, out string salt)
-        //{
-        //    var randomSaltBytes = GenerateSalt();
-        //    salt = Convert.ToBase64String(randomSaltBytes);
-        //    return Hash(password, randomSaltBytes);
-        //}
-
-        /// <summary>
         /// Băm password với salt có sẵn.
         /// </summary>
         /// <param name="password">Password hashed</param>
@@ -42,6 +29,7 @@ namespace TwelveFinal.Common
             return salt;
         }
 
+        //Generate Password ngẫu nhiên 10 kí tự
         public static string GeneratePassword()
         {
             const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -54,6 +42,7 @@ namespace TwelveFinal.Common
             return res.ToString();
         }
 
+        //mã hoá password
         private static string Hash(string password, byte[] salt)
         {
             return Convert.ToBase64String(KeyDerivation.Pbkdf2(
