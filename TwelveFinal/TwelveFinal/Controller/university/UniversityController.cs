@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TwelveFinal.Controller.DTO;
 using TwelveFinal.Entities;
 using TwelveFinal.Services.MUniversity;
+using TwelveFinal.Services.MUniversity_Majors_Majors;
 
 namespace TwelveFinal.Controller.university
 {
@@ -21,11 +22,13 @@ namespace TwelveFinal.Controller.university
 
     public class UniversityController : ApiController
     {
-        private IUniversityService universityService;
+        private IUniversityService UniversityService;
+        private IUniversity_MajorsService University_MajorsService;
 
-        public UniversityController(IUniversityService universityService)
+        public UniversityController(IUniversityService UniversityService, IUniversity_MajorsService University_MajorsService)
         {
-            this.universityService = universityService;
+            this.UniversityService = UniversityService;
+            this.University_MajorsService = University_MajorsService;
         }
 
         [Route(UniversityRoute.Create), HttpPost]
@@ -34,8 +37,8 @@ namespace TwelveFinal.Controller.university
             if (universityDTO == null) universityDTO = new UniversityDTO();
 
             University university = ConvertDTOtoBO(universityDTO);
-            university = await universityService.Create(university);
-
+            university = await UniversityService.Create(university);
+            
             universityDTO = new UniversityDTO
             {
                 Id = university.Id,
@@ -55,7 +58,7 @@ namespace TwelveFinal.Controller.university
             if (universityDTO == null) universityDTO = new UniversityDTO();
 
             University university = ConvertDTOtoBO(universityDTO);
-            university = await universityService.Update(university);
+            university = await UniversityService.Update(university);
 
             universityDTO = new UniversityDTO
             {
@@ -71,12 +74,18 @@ namespace TwelveFinal.Controller.university
         }
 
         [Route(UniversityRoute.Get), HttpPost]
-        public async Task<UniversityDTO> Get([FromBody] UniversityDTO universityDTO)
+        public async Task<UniversityDTO> Get([FromBody] UniversityFilterDTO universityFilterDTO)
         {
-            if (universityDTO == null) universityDTO = new UniversityDTO();
+            if (universityFilterDTO == null) universityFilterDTO = new UniversityFilterDTO();
 
-            University university = new University { Id = universityDTO.Id ?? default };
-            university = await universityService.Get(university.Id);
+            University university = new University { Id = universityFilterDTO.Id ?? Guid.Empty };
+            university = await UniversityService.Get(university.Id);
+
+            List<University_Majors> university_Majors = await University_MajorsService.List(new University_MajorsFilter
+            {
+                UniversityId = universityFilterDTO.Id,
+                Year = universityFilterDTO.Year
+            });
 
             return university == null ? null : new UniversityDTO()
             {
@@ -84,6 +93,23 @@ namespace TwelveFinal.Controller.university
                 Code = university.Code,
                 Name = university.Name,
                 Address = university.Address,
+                University_Majors = university_Majors.Select( u => new University_MajorsDTO
+                {
+                    MajorsId = u.MajorsId,
+                    MajorsCode = u.MajorsCode,
+                    MajorsName = u.MajorsName,
+                    UniversityId = u.UniversityId,
+                    UniversityCode = u.UniversityCode,
+                    UniversityName = u.UniversityName,
+                    UniversityAddress = u.UniversityAddress,
+                    SubjectGroupId = u.SubjectGroupId,
+                    SubjectGroupCode = u.SubjectGroupCode,
+                    SubjectGroupName = u.SubjectGroupName,
+                    Benchmark = u.Benchmark,
+                    Year = u.Year,
+                    Quantity = u.Quantity,
+                    Descreption = u.Descreption
+                }).ToList(),
                 Errors = university.Errors
             };
         }
@@ -99,7 +125,7 @@ namespace TwelveFinal.Controller.university
                 Take = universityFilterDTO.Take
             };
 
-            List<University> universities = await universityService.List(universityFilter);
+            List<University> universities = await UniversityService.List(universityFilter);
 
             List<UniversityDTO> universityDTOs = universities.Select(u => new UniversityDTO
             {
@@ -118,7 +144,7 @@ namespace TwelveFinal.Controller.university
             if (universityDTO == null) universityDTO = new UniversityDTO();
 
             University university = new University { Id = universityDTO.Id ?? default};
-            university = await universityService.Delete(university);
+            university = await UniversityService.Delete(university);
 
             universityDTO = new UniversityDTO
             {

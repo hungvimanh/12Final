@@ -11,14 +11,15 @@ namespace TwelveFinal.Controller.DTO
         public string Code { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
+        public List<University_MajorsDTO> University_Majors { get; set; } 
     }
 
     public class UniversityFilterDTO : FilterDTO
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
-        public string Address { get; set; }
+        public string Year { get; set; }
 
         public UniversityFilterDTO() : base()
         {
