@@ -71,7 +71,6 @@ namespace TwelveFinal.Controller.subject_group
         {
             SubjectGroupFilter filter = new SubjectGroupFilter
             {
-                Id = new GuidFilter { Equal = subjectGroupFilterDTO.Id },
                 Code = new StringFilter { StartsWith = subjectGroupFilterDTO.Code },
                 Skip = subjectGroupFilterDTO.Skip,
                 Take = subjectGroupFilterDTO.Take
