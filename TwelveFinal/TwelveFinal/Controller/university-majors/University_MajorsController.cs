@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TwelveFinal.Entities;
 using TwelveFinal.Controller.DTO;
 using TwelveFinal.Services.MUniversity_Majors_Majors;
+using TwelveFinal.Services.MSubjectGroup;
 
 namespace TwelveFinal.Controller.university_majors
 {
@@ -17,13 +18,16 @@ namespace TwelveFinal.Controller.university_majors
         public const string List = Default + "/list";
         public const string Update = Default + "/update";
         public const string Delete = Default + "/delete";
+        public const string DropListSubjectGroup = Default + "/drop-list-subject-group";
     }   
     public class University_MajorsController : ApiController
     {
         private IUniversity_MajorsService university_MajorsService;
-        public University_MajorsController(IUniversity_MajorsService university_MajorsService)
+        private ISubjectGroupService SubjectGrupService;
+        public University_MajorsController(IUniversity_MajorsService university_MajorsService, ISubjectGroupService SubjectGrupService)
         {
             this.university_MajorsService = university_MajorsService;
+            this.SubjectGrupService = SubjectGrupService;
         }
 
         [Route(University_MajorsRoute.Create), HttpPost]
@@ -191,6 +195,28 @@ namespace TwelveFinal.Controller.university_majors
             if (university_Majors.HasError)
                 return BadRequest(university_MajorsDTO);
             return Ok(university_MajorsDTO);
+        }
+
+        [Route(University_MajorsRoute.DropListSubjectGroup), HttpPost]
+        public async Task<List<SubjectGroupDTO>> DropListSubjectGroup([FromBody] SubjectGroupFilterDTO subjectGroupFilterDTO)
+        {
+            SubjectGroupFilter filter = new SubjectGroupFilter
+            {
+                Code = new StringFilter { StartsWith = subjectGroupFilterDTO.Code },
+                Skip = subjectGroupFilterDTO.Skip,
+                Take = subjectGroupFilterDTO.Take
+            };
+
+            List<SubjectGroup> subjectGroups = await SubjectGrupService.List(filter);
+
+            List<SubjectGroupDTO> subjectGroupDTOs = subjectGroups.Select(s => new SubjectGroupDTO
+            {
+                Id = s.Id,
+                Code = s.Code,
+                Name = s.Name
+            }).ToList();
+
+            return subjectGroupDTOs;
         }
 
         private University_Majors ConvertDTOtoBO(University_MajorsDTO university_MajorsDTO)
