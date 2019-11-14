@@ -30,6 +30,7 @@ namespace TwelveFinal
             Configuration = configuration;
         }
         private IConfiguration Configuration { get; }
+        readonly string AllowSpecificOrigins = "_AllowSpecificOrigins";
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
@@ -44,6 +45,18 @@ namespace TwelveFinal
                     options.SerializerSettings.DefaultValueHandling = DefaultValueHandling.Include;
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 });
+            string[] corsList = Configuration.GetSection("CORSes").Value.Split(";").Where(c => !string.IsNullOrEmpty(c)).ToArray();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(AllowSpecificOrigins,
+                builder =>
+                {
+                    if (corsList.Count() == 1 && corsList[0] == "*")
+                        builder.AllowAnyOrigin().WithMethods("POST").AllowAnyHeader().AllowCredentials();
+                    else
+                        builder.WithOrigins(corsList.ToArray()).WithMethods("POST").AllowAnyHeader().AllowCredentials();
+                });
+            });
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
