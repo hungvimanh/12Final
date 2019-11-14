@@ -33,7 +33,8 @@ namespace TwelveFinal.Controller
                 Username = user.Username,
                 Token = user.Jwt,
                 ExpiredTime = user.ExpiredTime,
-                FirstLogin = user.FirstLogin
+                FirstLogin = user.FirstLogin,
+                IsAdmin = user.IsAdmin
             };
         }
 
