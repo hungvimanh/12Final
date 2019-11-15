@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TwelveFinal.Controller.DTO
+namespace TwelveFinal.Controller.student
 {
     public class MarkDTO : DataDTO
     {

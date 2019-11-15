@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TwelveFinal.Controller.DTO;
 using TwelveFinal.Entities;
+using TwelveFinal.Services.MForm;
 using TwelveFinal.Services.MStudentService;
 
 namespace TwelveFinal.Controller.student
@@ -19,15 +20,22 @@ namespace TwelveFinal.Controller.student
         public const string Import = Default + "/import";
         public const string Get = Default + "/get";
         public const string List = Default + "/list";
+        public const string GetByIdentify = Default + "/get-by-identify";
         public const string MarkInput = Default + "/mark-input";
         public const string ViewMark = Default + "/view-mark";
+        public const string ViewForm = Default + "/view";
+        public const string ApproveAccept = Default + "/accept";
+        public const string ApproveDeny = Default + "/deny";
+
     }
     public class StudentController : ApiController
     {
         private IStudentService StudentService;
-        public StudentController(IStudentService StudentService)
+        private IFormService FormService;
+        public StudentController(IStudentService StudentService, IFormService FormService)
         {
             this.StudentService = StudentService;
+            this.FormService = FormService;
         }
 
         #region Create
@@ -134,11 +142,9 @@ namespace TwelveFinal.Controller.student
 
         #region Get
         [Route(StudentRoute.Get), HttpPost]
-        public async Task<StudentDTO> Get([FromBody] StudentDTO studentDTO)
+        public async Task<StudentDTO> Get()
         {
-            if (studentDTO == null) studentDTO = new StudentDTO();
-            Student student = new Student { Id = studentDTO.Id };
-            student = await StudentService.Get(student.Id);
+            Student student = await StudentService.Get();
 
             return student == null ? null : new StudentDTO()
             {
@@ -220,6 +226,32 @@ namespace TwelveFinal.Controller.student
         }
         #endregion
 
+        #region Get By Identify
+        [Route(StudentRoute.GetByIdentify), HttpPost]
+        public async Task<ActionResult<Student_IdentifyDTO>> GetByIdentify(Student_IdentifyDTO student_IdentifyDTO)
+        {
+            if (student_IdentifyDTO == null) student_IdentifyDTO = new Student_IdentifyDTO();
+            StudentFilter studentFilter = new StudentFilter
+            {
+                Identify = new StringFilter { Equal = student_IdentifyDTO.Identify }
+            };
+
+            var student = await StudentService.List(studentFilter);
+            if (!student.Any())
+            {
+                return null;
+            }
+            student_IdentifyDTO = new Student_IdentifyDTO
+            {
+                Identify = student.FirstOrDefault().Identify,
+                Dob = student.FirstOrDefault().Dob,
+                Name = student.FirstOrDefault().Name,
+                Email = student.FirstOrDefault().Email
+            };
+            return Ok(student_IdentifyDTO);
+        }
+        #endregion
+
         #region Mark Input
         [Route(StudentRoute.MarkInput), HttpPost]
         public async Task<ActionResult<MarkDTO>> MarkInput([FromBody] MarkDTO markDTO)
@@ -240,13 +272,11 @@ namespace TwelveFinal.Controller.student
                 Physics = markDTO.Physics,
             };
 
-            student = await StudentService.Update(student);
+            student = await StudentService.MarkInput(student);
 
             markDTO = new MarkDTO
             {
                 StudentId = student.Id,
-                Identify = student.Identify,
-                Email = student.Email,
                 Biology = student.Biology,
                 Chemistry = student.Chemistry,
                 CivicEducation = student.CivicEducation,
@@ -269,11 +299,9 @@ namespace TwelveFinal.Controller.student
 
         #region View Mark
         [Route(StudentRoute.ViewMark), HttpPost]
-        public async Task<MarkDTO> ViewMark([FromBody] StudentDTO studentDTO)
+        public async Task<MarkDTO> ViewMark()
         {
-            if (studentDTO == null) studentDTO = new StudentDTO();
-            Student student = new Student { Id = studentDTO.Id };
-            student = await StudentService.ViewMark(student.Id);
+            var student = await StudentService.ViewMark();
 
             return student == null ? null : new MarkDTO
             {
@@ -293,5 +321,139 @@ namespace TwelveFinal.Controller.student
             };
         }
         #endregion
+
+        #region View Form Register
+        [Route(StudentRoute.ViewForm), HttpPost]
+        public async Task<FormDTO> ViewForm([FromBody] ViewRegisterFormDTO viewRegisterFormDTO)
+        {
+            if (viewRegisterFormDTO == null) viewRegisterFormDTO = new ViewRegisterFormDTO();
+            Student student = new Student { Id = viewRegisterFormDTO.StudentId };
+            student = await StudentService.GetById(student.Id);
+
+            Form form = new Form { StudentId = viewRegisterFormDTO.StudentId };
+
+            form = await FormService.Get(form.StudentId);
+            return new FormDTO
+            {
+                Id = form.Id,
+                StudentId = form.StudentId,
+                Address = student.Address,
+                Dob = student.Dob,
+                Gender = student.Gender,
+                Email = student.Email,
+                Identify = student.Identify,
+                PlaceOfBirth = student.PlaceOfBirth,
+                Name = student.Name,
+                Phone = student.Phone,
+                EthnicId = student.EthnicId,
+                EthnicName = student.EthnicName,
+                EthnicCode = student.EthnicCode,
+                HighSchoolId = student.HighSchoolId,
+                HighSchoolName = student.HighSchoolName,
+                HighSchoolCode = student.HighSchoolCode,
+                TownId = student.TownId,
+                TownCode = student.TownCode,
+                TownName = student.TownName,
+                DistrictId = student.DistrictId,
+                DistrictCode = student.DistrictCode,
+                DistrictName = student.DistrictName,
+                ProvinceId = student.ProvinceId,
+                ProvinceCode = student.ProvinceCode,
+                ProvinceName = student.ProvinceName,
+                ClusterContestId = form.ClusterContestId,
+                ClusterContestCode = form.ClusterContestCode,
+                ClusterContestName = form.ClusterContestName,
+                RegisterPlaceOfExamId = form.RegisterPlaceOfExamId,
+                RegisterPlaceOfExamCode = form.RegisterPlaceOfExamCode,
+                RegisterPlaceOfExamName = form.RegisterPlaceOfExamName,
+                Biology = form.Biology,
+                Chemistry = form.Chemistry,
+                CivicEducation = form.CivicEducation,
+                Geography = form.Geography,
+                History = form.History,
+                Languages = form.Languages,
+                Literature = form.Literature,
+                Maths = form.Maths,
+                NaturalSciences = form.NaturalSciences,
+                Physics = form.Physics,
+                SocialSciences = form.SocialSciences,
+                Graduated = form.Graduated,
+
+                ExceptLanguages = form.ExceptLanguages,
+                Mark = form.Mark,
+                ReserveBiology = form.ReserveBiology,
+                ReserveChemistry = form.ReserveChemistry,
+                ReserveCivicEducation = form.ReserveCivicEducation,
+                ReserveGeography = form.ReserveGeography,
+                ReserveHistory = form.ReserveHistory,
+                ReserveLanguages = form.ReserveLanguages,
+                ReserveLiterature = form.ReserveLiterature,
+                ReserveMaths = form.ReserveMaths,
+                ReservePhysics = form.ReservePhysics,
+
+                Area = form.Area,
+                PriorityType = form.PriorityType,
+                Status = form.Status,
+                Aspirations = form.Aspirations.Select(m => new AspirationDTO
+                {
+                    Id = m.Id,
+                    FormId = m.FormId,
+                    MajorsCode = m.MajorsCode,
+                    MajorsId = m.MajorsId,
+                    MajorsName = m.MajorsName,
+                    UniversityId = m.UniversityId,
+                    UniversityCode = m.UniversityCode,
+                    UniversityName = m.UniversityName,
+                    UniversityAddress = m.UniversityAddress,
+                    SubjectGroupId = m.SubjectGroupId,
+                    SubjectGroupCode = m.SubjectGroupCode,
+                    SubjectGroupName = m.SubjectGroupName
+                }).ToList()
+            };
+        }
+        #endregion
+
+        #region Accept
+        [Route(StudentRoute.ApproveAccept), HttpPost]
+        public async Task<ActionResult<bool>> ApproveAccept([FromBody] ApproveDTO approveDTO)
+        {
+            if (approveDTO == null) approveDTO = new ApproveDTO();
+            Form form = new Form
+            {
+                Id = approveDTO.FormId,
+                StudentId = approveDTO.StudentId,
+                Status = approveDTO.Status
+            };
+            form = await FormService.ApproveAccept(form);
+            if (form.Errors != null && form.Errors.Count > 0)
+            {
+                return BadRequest(form.Errors);
+            }
+
+            return Ok(true);
+        }
+        #endregion
+
+        #region Deny
+        [Route(StudentRoute.ApproveDeny), HttpPost]
+        public async Task<ActionResult<bool>> ApproveDeny([FromBody] ApproveDTO approveDTO)
+        {
+            if (approveDTO == null) approveDTO = new ApproveDTO();
+            Form form = new Form
+            {
+                Id = approveDTO.FormId,
+                StudentId = approveDTO.StudentId,
+                Status = approveDTO.Status
+            };
+            form = await FormService.ApproveDeny(form);
+            if (form.Errors != null && form.Errors.Count > 0)
+            {
+                return BadRequest(form.Errors);
+            }
+
+            return Ok(true);
+        }
+        #endregion
+
     }
 }

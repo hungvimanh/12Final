@@ -53,8 +53,6 @@ namespace TwelveFinal.Services.MStudentService
         {
             bool IsValid = true;
             IsValid &= await IsExisted(student);
-            IsValid &= await ValidateIdentify(student);
-            IsValid &= await ValidateEmail(student);
             IsValid &= await GraduationValidate(student);
             return IsValid;
         }

@@ -18,19 +18,23 @@ namespace TwelveFinal.Services.MStudentService
     {
         Task<Student> Register(Student student);
         Task<Student> Update(Student student);
-        Task<Student> ViewMark(Guid Id);
+        Task<Student> MarkInput(Student student);
+        Task<Student> ViewMark();
         Task<bool> ImportExcel(byte[] file);
-        Task<Student> Get(Guid Id);
+        Task<Student> Get();
+        Task<Student> GetById(Guid Id);
         Task<List<Student>> List(StudentFilter studentFilter);
     }
     public class StudentService : IStudentService
     {
         private readonly IUOW UOW;
         private IStudentValidator StudentValidator;
-        public StudentService(IUOW UOW, IStudentValidator StudentValidator)
+        private ICurrentContext CurrentContext;
+        public StudentService(IUOW UOW, IStudentValidator StudentValidator, ICurrentContext CurrentContext)
         {
             this.UOW = UOW;
             this.StudentValidator = StudentValidator;
+            this.CurrentContext = CurrentContext;
         }
         #region Register
         public async Task<Student> Register(Student student)
@@ -73,6 +77,22 @@ namespace TwelveFinal.Services.MStudentService
             if (!await StudentValidator.Update(student))
                 return student;
 
+            try
+            {
+                await UOW.Begin();
+                await UOW.StudentRepository.Update(student);
+                await UOW.Commit();
+                return await UOW.StudentRepository.Get(student.Id);
+            }
+            catch (Exception ex)
+            {
+                await UOW.Rollback();
+                throw new MessageException(ex);
+            }
+        }
+
+        public async Task<Student> MarkInput(Student student)
+        {
             try
             {
                 await UOW.Begin();
@@ -151,7 +171,13 @@ namespace TwelveFinal.Services.MStudentService
         #endregion
 
         #region Read
-        public async Task<Student> Get(Guid Id)
+        public async Task<Student> Get()
+        {
+            if (CurrentContext.StudentId == Guid.Empty) return null;
+            return await UOW.StudentRepository.Get(CurrentContext.StudentId);
+        }
+
+        public async Task<Student> GetById(Guid Id)
         {
             if (Id == Guid.Empty) return null;
             return await UOW.StudentRepository.Get(Id);
@@ -162,10 +188,10 @@ namespace TwelveFinal.Services.MStudentService
             return await UOW.StudentRepository.List(studentFilter);
         }
 
-        public async Task<Student> ViewMark(Guid Id)
+        public async Task<Student> ViewMark()
         {
-            if (Id == Guid.Empty) return null;
-            var student = await UOW.StudentRepository.Get(Id);
+            if (CurrentContext.StudentId == Guid.Empty) return null;
+            var student = await UOW.StudentRepository.Get(CurrentContext.StudentId);
             if(student.Graduated.HasValue && !student.Graduated.Value)
             {
                 student.GraduationMark = await GraduationMarkCalculate(student);

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TwelveFinal.Common;
 using TwelveFinal.Entities;
 using TwelveFinal.Repositories.Models;
 
@@ -21,9 +22,11 @@ namespace TwelveFinal.Repositories
     public class StudentRepository : IStudentRepository
     {
         private readonly TFContext tFContext;
-        public StudentRepository(TFContext _tFContext)
+        private ICurrentContext CurrentContext;
+        public StudentRepository(TFContext tFContext, ICurrentContext CurrentContext)
         {
-            tFContext = _tFContext;
+            this.tFContext = tFContext;
+            this.CurrentContext = CurrentContext;
         }
 
         private IQueryable<StudentDAO> DynamicFilter(IQueryable<StudentDAO> query, StudentFilter studentFilter)
@@ -277,7 +280,7 @@ namespace TwelveFinal.Repositories
         }
         public async Task<bool> Update(Student student)
         {
-            await tFContext.Student.Where(s => s.Id.Equals(student.Id)).UpdateFromQueryAsync(s => new StudentDAO
+            await tFContext.Student.Where(s => s.Id.Equals(CurrentContext.StudentId)).UpdateFromQueryAsync(s => new StudentDAO
             {
                 Address = s.Address,
                 Dob = s.Dob,
@@ -299,7 +302,9 @@ namespace TwelveFinal.Repositories
                 Languages = s.Languages,
                 Literature = s.Literature,
                 Maths = s.Maths,
-                Physics = s.Physics
+                Physics = s.Physics,
+
+                Status = student.Status
             });
             return true;
         }

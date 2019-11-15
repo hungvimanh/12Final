@@ -53,7 +53,7 @@ namespace TwelveFinal.Repositories
             ProvinceRepository = new ProvinceRepository(tFContext);
             TownRepository = new TownRepository(tFContext);
             SubjectGroupRepository = new SubjectGroupRepository(tFContext);
-            StudentRepository = new StudentRepository(tFContext);
+            StudentRepository = new StudentRepository(tFContext, currentContext);
             University_MajorsRepository = new University_MajorsRepository(tFContext);
             UniversityRepository = new UniversityRepository(tFContext);
             UserRepository = new UserRepository(tFContext);
