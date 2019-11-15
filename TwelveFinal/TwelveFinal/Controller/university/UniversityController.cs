@@ -123,7 +123,8 @@ namespace TwelveFinal.Controller.university
                 Name = new StringFilter { Contains = universityFilterDTO.Name },
                 Skip = universityFilterDTO.Skip,
                 Take = int.MaxValue,
-                OrderType = universityFilterDTO.OrderType
+                OrderType = universityFilterDTO.OrderType,
+                OrderBy = UniversityOrder.Name
             };
 
             List<University> universities = await UniversityService.List(universityFilter);

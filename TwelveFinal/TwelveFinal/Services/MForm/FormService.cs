@@ -97,7 +97,7 @@ namespace TwelveFinal.Services.MForm
                 await UOW.FormRepository.Create(form);
                 await UOW.StudentRepository.Update(new Student { Id = CurrentContext.StudentId, Status = form.Status });
                 await UOW.Commit();
-                return await Get(form.StudentId);
+                return await Get(CurrentContext.StudentId);
             }
             catch (Exception ex)
             {
@@ -128,7 +128,7 @@ namespace TwelveFinal.Services.MForm
                 await UOW.FormRepository.Update(form);
                 await UOW.StudentRepository.Update(new Student { Id = CurrentContext.StudentId, Status = 1 });
                 await UOW.Commit();
-                return await Get(form.StudentId);
+                return await Get(CurrentContext.StudentId);
             }
             catch (Exception ex)
             {
@@ -149,7 +149,7 @@ namespace TwelveFinal.Services.MForm
                 //Chuyển trạng thái về chưa đăng ký
                 await UOW.StudentRepository.Update(new Student { Id = CurrentContext.StudentId, Status = 0 });
                 await UOW.Commit();
-                return await Get(form.StudentId);
+                return await Get(CurrentContext.StudentId);
             }
             catch (Exception ex)
             {

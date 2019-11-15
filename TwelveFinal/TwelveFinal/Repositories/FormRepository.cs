@@ -62,15 +62,18 @@ namespace TwelveFinal.Repositories
                 PriorityType = form.PriorityType,
                 Area = form.Area,
                 Status = form.Status,
-                StudentId = CurrentContext.StudentId
+                StudentId = CurrentContext.StudentId,
             };
 
             tFContext.Form.Add(formDAO);
             if (form.Aspirations.Any())
             {
             await BulkCreateAspirations(form);
-
             }
+            //else
+            //{
+            //    form.Aspirations = new List<Aspiration>()
+            //}
             await tFContext.SaveChangesAsync();
             return true;
         }

@@ -41,8 +41,8 @@ namespace TwelveFinal.Common
                 return;
             }
             Guid UserId = Guid.TryParse(context.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value, out Guid u) ? u : Guid.Empty;
-            Guid StudentId = Guid.TryParse(context.User.FindFirst(c => c.Type == "StudentId")?.Value, out Guid e) ? e : Guid.Empty;
-            bool IsAdmin = bool.TryParse(context.User.FindFirst(c => c.Type == "IsAdmin").Value, out bool b) ? b : false;
+            Guid StudentId = Guid.TryParse(context.User.FindFirst(c => c.Type == "studentId")?.Value, out Guid e) ? e : Guid.Empty;
+            bool IsAdmin = bool.TryParse(context.User.FindFirst(c => c.Type == "isAdmin").Value, out bool b) ? b : false;
             // lấy ra mvcContext, phục vụ cho việc lấy ra url path
             var mvcContext = context.Resource as AuthorizationFilterContext;
 
@@ -56,7 +56,7 @@ namespace TwelveFinal.Common
             //Kiểm tra phân quyền
             if (!IsAdmin)
             {
-                if (!url.StartsWith(FormRoute.Default))
+                if (!url.StartsWith("/" + FormRoute.Default))
                 {
                     context.Fail();
                     return;

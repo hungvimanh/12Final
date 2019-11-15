@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TwelveFinal.Entities;
 
 namespace TwelveFinal.Controller.DTO
 {
@@ -20,7 +21,6 @@ namespace TwelveFinal.Controller.DTO
         public string Code { get; set; }
         public string Name { get; set; }
         public string Year { get; set; }
-
         public UniversityFilterDTO() : base()
         {
 
