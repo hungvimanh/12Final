@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,8 +22,6 @@ namespace TwelveFinal.Controller.form
         public const string Default = Base + "/form";
         public const string Save = Default + "/save";
         public const string Get = Default + "/get";
-        public const string ApproveAccept = Default + "/accept";
-        public const string ApproveDeny = Default + "/deny";
         public const string DropListProvince = Default + "/province";
         public const string DropListDistrict = Default + "/district";
         public const string DropListTown = Default + "/town";
@@ -71,23 +70,24 @@ namespace TwelveFinal.Controller.form
             Form form = await ConvertDTOtoBO(formDTO);
             Student student = new Student
             {
-                Id = formDTO.StudentDTO.Id,
-                Dob = formDTO.StudentDTO.Dob,
-                Name = formDTO.StudentDTO.Name,
-                Gender = formDTO.StudentDTO.Gender,
-                Identify = formDTO.StudentDTO.Identify,
-                Phone = formDTO.StudentDTO.Phone,
-                Address = formDTO.StudentDTO.Address,
-                EthnicId = formDTO.StudentDTO.EthnicId,
-                HighSchoolId = formDTO.StudentDTO.HighSchoolId,
-                PlaceOfBirth = formDTO.StudentDTO.PlaceOfBirth,
-                ProvinceId = formDTO.StudentDTO.ProvinceId,
-                DistrictId = formDTO.StudentDTO.DistrictId,
-                TownId = formDTO.StudentDTO.TownId,
+                Id = formDTO.StudentId,
+                Dob = formDTO.Dob,
+                Name = formDTO.Name,
+                Gender = formDTO.Gender,
+                Identify = formDTO.Identify,
+                Phone = formDTO.Phone,
+                Address = formDTO.Address,
+                EthnicId = formDTO.EthnicId,
+                HighSchoolId = formDTO.HighSchoolId,
+                PlaceOfBirth = formDTO.PlaceOfBirth,
+                ProvinceId = formDTO.ProvinceId,
+                DistrictId = formDTO.DistrictId,
+                TownId = formDTO.TownId
             };
-            student = await StudentService.Update(student);
+            
             form = await FormService.Save(form);
-
+            student.Id = form.StudentId;
+            student = await StudentService.Update(student);
             formDTO = new FormDTO
             {
                 Id = form.Id,
@@ -155,46 +155,40 @@ namespace TwelveFinal.Controller.form
 
         #region Get
         [Route(FormRoute.Get), HttpPost]
-        public async Task<FormDTO> Get([FromBody] StudentDTO studentDTO)
+        public async Task<FormDTO> Get()
         {
-            if (studentDTO == null) studentDTO = new StudentDTO();
-            Student student = new Student { Id = studentDTO.Id };
-            student = await StudentService.Get(student.Id);
+            Student student = await StudentService.Get();
 
             Form form = new Form { StudentId = student.Id };
 
             form = await FormService.Get(form.StudentId);
-            return new FormDTO
+            return form == null ? null : new FormDTO
             {
                 Id = form.Id,
                 StudentId = form.StudentId,
-                StudentDTO = new StudentDTO
-                {
-                    Id = student.Id,
-                    Address = student.Address,
-                    Dob = student.Dob,
-                    Gender = student.Gender,
-                    Email = student.Email,
-                    Identify = student.Identify,
-                    PlaceOfBirth = student.PlaceOfBirth,
-                    Name = student.Name,
-                    Phone = student.Phone,
-                    EthnicId = student.EthnicId,
-                    EthnicName = student.EthnicName,
-                    EthnicCode = student.EthnicCode,
-                    HighSchoolId = student.HighSchoolId,
-                    HighSchoolName = student.HighSchoolName,
-                    HighSchoolCode = student.HighSchoolCode,
-                    TownId = student.TownId,
-                    TownCode = student.TownCode,
-                    TownName = student.TownName,
-                    DistrictId = student.DistrictId,
-                    DistrictCode = student.DistrictCode,
-                    DistrictName = student.DistrictName,
-                    ProvinceId = student.ProvinceId,
-                    ProvinceCode = student.ProvinceCode,
-                    ProvinceName = student.ProvinceName
-                },
+                Address = student.Address,
+                Dob = student.Dob,
+                Gender = student.Gender,
+                Email = student.Email,
+                Identify = student.Identify,
+                PlaceOfBirth = student.PlaceOfBirth,
+                Name = student.Name,
+                Phone = student.Phone,
+                EthnicId = student.EthnicId,
+                EthnicName = student.EthnicName,
+                EthnicCode = student.EthnicCode,
+                HighSchoolId = student.HighSchoolId,
+                HighSchoolName = student.HighSchoolName,
+                HighSchoolCode = student.HighSchoolCode,
+                TownId = student.TownId,
+                TownCode = student.TownCode,
+                TownName = student.TownName,
+                DistrictId = student.DistrictId,
+                DistrictCode = student.DistrictCode,
+                DistrictName = student.DistrictName,
+                ProvinceId = student.ProvinceId,
+                ProvinceCode = student.ProvinceCode,
+                ProvinceName = student.ProvinceName,
                 ClusterContestId = form.ClusterContestId,
                 ClusterContestCode = form.ClusterContestCode,
                 ClusterContestName = form.ClusterContestName,
@@ -245,38 +239,6 @@ namespace TwelveFinal.Controller.form
                     SubjectGroupName = m.SubjectGroupName
                 }).ToList()
             };
-        }
-        #endregion
-
-        #region Accept
-        [Route(FormRoute.ApproveAccept), HttpPost]
-        public async Task<ActionResult<bool>> ApproveAccept([FromBody] FormDTO formDTO)
-        {
-            if (formDTO == null) formDTO = new FormDTO();
-            Form form = new Form { Id = formDTO.Id };
-            form = await FormService.ApproveAccept(form);
-            if (form.Errors != null && form.Errors.Count > 0)
-            {
-                return BadRequest(form.Errors);
-            }
-
-            return Ok(true);
-        }
-        #endregion
-
-        #region Deny
-        [Route(FormRoute.ApproveDeny), HttpPost]
-        public async Task<ActionResult<bool>> ApproveDeny([FromBody] FormDTO formDTO)
-        {
-            if (formDTO == null) formDTO = new FormDTO();
-            Form form = new Form { Id = formDTO.Id };
-            form = await FormService.ApproveDeny(form);
-            if (form.Errors != null && form.Errors.Count > 0)
-            {
-                return BadRequest(form.Errors);
-            }
-
-            return Ok(true);
         }
         #endregion
 
@@ -436,7 +398,6 @@ namespace TwelveFinal.Controller.form
             Form form = new Form
             {
                 Id = formDTO.Id,
-                StudentId = formDTO.StudentId,
 
                 Graduated = formDTO.Graduated,
                 ClusterContestId = formDTO.ClusterContestId,
@@ -471,7 +432,7 @@ namespace TwelveFinal.Controller.form
 
                 Area = formDTO.Area,
                 PriorityType = formDTO.PriorityType,
-                Aspirations = formDTO.Aspirations.Select(m => new Aspiration
+                Aspirations = formDTO.Aspirations == null ? null : formDTO.Aspirations.Select(m => new Aspiration
                 {
                     Id = m.Id ?? Guid.Empty,
                     FormId = m.FormId,

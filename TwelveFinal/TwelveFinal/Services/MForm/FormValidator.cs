@@ -34,6 +34,10 @@ namespace TwelveFinal.Services.MForm
         {
             bool IsValid = true;
             IsValid &= await IsExisted(form);
+            if (!IsValid)
+            {
+                form.AddError(nameof(FormValidator), "Form", ErrorCode.NotExisted);
+            }
             IsValid &= await StatusValidation(form);
             return IsValid;
         }
@@ -43,7 +47,10 @@ namespace TwelveFinal.Services.MForm
             bool IsValid = true;
             IsValid &= await FormApproved(form);
             IsValid &= await GraduationValidate(form);
-            IsValid &= await SequenceValidate(form.Aspirations);
+            if (form.Aspirations.Any())
+            {
+                IsValid &= await SequenceValidate(form.Aspirations);
+            }
             return IsValid;
         }
 
@@ -53,7 +60,7 @@ namespace TwelveFinal.Services.MForm
             IsValid &= await IsExisted(form);
             if (!IsValid)
             {
-                form.AddError(nameof(FormValidator), nameof(form.Id), ErrorCode.NotExisted);
+                form.AddError(nameof(FormValidator), "Form", ErrorCode.NotExisted);
             }
             return IsValid;
         }
@@ -83,7 +90,7 @@ namespace TwelveFinal.Services.MForm
             //0: Nếu Phiếu ĐKDT chưa được tạo
             //1: Phiếu đang ở trạng thái chờ duyệt => cho phép duyệt
             //2 || 3: Phiếu đã được duyệt, 2 là duyệt nhận, 3 là duyệt từ chối
-            if (form.Status == 0)
+            if (form.Status == 0 || form.Status == null)
             {
                 form.AddError(nameof(FormValidator), "Form", ErrorCode.NotExisted);
             }

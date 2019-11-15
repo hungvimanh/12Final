@@ -138,7 +138,7 @@ namespace TwelveFinal.Controller.university_majors
                 BenchmarkLow = new DoubleFilter { GreaterEqual = university_MajorsFilterDTO.BenchmarkLow },
                 Year = university_MajorsFilterDTO.Year,
                 Skip = university_MajorsFilterDTO.Skip,
-                Take = university_MajorsFilterDTO.Take,
+                Take = int.MaxValue,
                 OrderBy = university_MajorsFilterDTO.OrderBy,
                 OrderType = OrderType.DESC
             };

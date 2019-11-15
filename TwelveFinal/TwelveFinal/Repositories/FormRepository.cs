@@ -21,9 +21,9 @@ namespace TwelveFinal.Repositories
     {
         private readonly TFContext tFContext;
         private ICurrentContext CurrentContext;
-        public FormRepository(TFContext _tFContext, ICurrentContext CurrentContext)
+        public FormRepository(TFContext tFContext, ICurrentContext CurrentContext)
         {
-            tFContext = _tFContext;
+            this.tFContext = tFContext;
             this.CurrentContext = CurrentContext;
         }
 
@@ -62,11 +62,15 @@ namespace TwelveFinal.Repositories
                 PriorityType = form.PriorityType,
                 Area = form.Area,
                 Status = form.Status,
-                StudentId = form.StudentId
+                StudentId = CurrentContext.StudentId
             };
 
             tFContext.Form.Add(formDAO);
+            if (form.Aspirations.Any())
+            {
             await BulkCreateAspirations(form);
+
+            }
             await tFContext.SaveChangesAsync();
             return true;
         }
@@ -166,7 +170,6 @@ namespace TwelveFinal.Repositories
             await tFContext.Form.Where(f => f.Id.Equals(form.Id)).UpdateFromQueryAsync(f => new FormDAO
             {
                 Id = f.Id,
-                StudentId = f.StudentId,
 
                 Graduated = form.Graduated,
                 ClusterContestId = form.ClusterContestId,
