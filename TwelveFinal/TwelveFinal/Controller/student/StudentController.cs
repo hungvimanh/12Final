@@ -12,22 +12,6 @@ using TwelveFinal.Services.MStudentService;
 
 namespace TwelveFinal.Controller.student
 {
-    public class StudentRoute : Root
-    {
-        public const string Default = Base + "/student";
-        public const string Create = Default + "/create";
-        public const string Update = Default + "/update";
-        public const string Import = Default + "/import";
-        public const string Get = Default + "/get";
-        public const string List = Default + "/list";
-        public const string GetByIdentify = Default + "/get-by-identify";
-        public const string MarkInput = Default + "/mark-input";
-        public const string ViewMark = Default + "/view-mark";
-        public const string ViewForm = Default + "/view";
-        public const string ApproveAccept = Default + "/accept";
-        public const string ApproveDeny = Default + "/deny";
-
-    }
     public class StudentController : ApiController
     {
         private IStudentService StudentService;
@@ -39,7 +23,7 @@ namespace TwelveFinal.Controller.student
         }
 
         #region Create
-        [Route(StudentRoute.Create), HttpPost]
+        [Route(AdminRoute.CreateStudent), HttpPost]
         public async Task<ActionResult<RegisterDTO>> Create([FromBody] RegisterDTO registerDTO)
         {
             if (registerDTO == null) registerDTO = new RegisterDTO();
@@ -74,7 +58,7 @@ namespace TwelveFinal.Controller.student
         #endregion
 
         #region BulkInsert
-        [Route(StudentRoute.Import), HttpPost]
+        [Route(AdminRoute.ImportStudent), HttpPost]
         public async Task ImportExcel([FromForm]IFormFile file)
         {
             MemoryStream memoryStream = new MemoryStream();
@@ -84,7 +68,7 @@ namespace TwelveFinal.Controller.student
         #endregion
 
         #region Update
-        [Route(StudentRoute.Update), HttpPost]
+        [Route(StudentRoute.UpdateProfile), HttpPost]
         public async Task<ActionResult<StudentDTO>> Update([FromBody] StudentDTO studentDTO)
         {
             if (studentDTO == null) studentDTO = new StudentDTO();
@@ -141,7 +125,7 @@ namespace TwelveFinal.Controller.student
         #endregion
 
         #region Get
-        [Route(StudentRoute.Get), HttpPost]
+        [Route(StudentRoute.GetProfile), HttpPost]
         public async Task<StudentDTO> Get()
         {
             Student student = await StudentService.Get();
@@ -177,7 +161,7 @@ namespace TwelveFinal.Controller.student
         #endregion
 
         #region List
-        [Route(StudentRoute.List), HttpPost]
+        [Route(AdminRoute.ListStudent), HttpPost]
         public async Task<List<StudentDTO>> List([FromForm] StudentFilterDTO studentFilterDTO)
         {
             StudentFilter studentFilter = new StudentFilter
@@ -227,7 +211,7 @@ namespace TwelveFinal.Controller.student
         #endregion
 
         #region Get By Identify
-        [Route(StudentRoute.GetByIdentify), HttpPost]
+        [Route(AdminRoute.GetByIdentify), HttpPost]
         public async Task<ActionResult<Student_IdentifyDTO>> GetByIdentify(Student_IdentifyDTO student_IdentifyDTO)
         {
             if (student_IdentifyDTO == null) student_IdentifyDTO = new Student_IdentifyDTO();
@@ -253,7 +237,7 @@ namespace TwelveFinal.Controller.student
         #endregion
 
         #region Mark Input
-        [Route(StudentRoute.MarkInput), HttpPost]
+        [Route(AdminRoute.MarkInputStudent), HttpPost]
         public async Task<ActionResult<MarkDTO>> MarkInput([FromBody] MarkDTO markDTO)
         {
             if (markDTO == null) markDTO = new MarkDTO();
@@ -323,7 +307,7 @@ namespace TwelveFinal.Controller.student
         #endregion
 
         #region View Form Register
-        [Route(StudentRoute.ViewForm), HttpPost]
+        [Route(AdminRoute.ViewForm), HttpPost]
         public async Task<FormDTO> ViewForm([FromBody] ViewRegisterFormDTO viewRegisterFormDTO)
         {
             if (viewRegisterFormDTO == null) viewRegisterFormDTO = new ViewRegisterFormDTO();
@@ -414,7 +398,7 @@ namespace TwelveFinal.Controller.student
         #endregion
 
         #region Accept
-        [Route(StudentRoute.ApproveAccept), HttpPost]
+        [Route(AdminRoute.ApproveAccept), HttpPost]
         public async Task<ActionResult<bool>> ApproveAccept([FromBody] ApproveDTO approveDTO)
         {
             if (approveDTO == null) approveDTO = new ApproveDTO();
@@ -435,7 +419,7 @@ namespace TwelveFinal.Controller.student
         #endregion
 
         #region Deny
-        [Route(StudentRoute.ApproveDeny), HttpPost]
+        [Route(AdminRoute.ApproveDeny), HttpPost]
         public async Task<ActionResult<bool>> ApproveDeny([FromBody] ApproveDTO approveDTO)
         {
             if (approveDTO == null) approveDTO = new ApproveDTO();

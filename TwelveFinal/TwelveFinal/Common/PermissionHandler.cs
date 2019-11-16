@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using TwelveFinal.Controller;
 using TwelveFinal.Controller.form;
 using TwelveFinal.Controller.majors;
 using TwelveFinal.Repositories;
@@ -56,17 +57,21 @@ namespace TwelveFinal.Common
             //Kiểm tra phân quyền
             if (!IsAdmin)
             {
-                if (!url.StartsWith("/" + FormRoute.Default))
+                if (!url.StartsWith("/" + AdminRoute.Default))
                 {
                     context.Fail();
                     return;
                 }
             }
-            //List<APPSPermission> permissions = await UOW.APPSPermissionRepository.List(new APPSPermissionFilter
-            //{
-            //    UserId = UserId,// xac dinh xem user truyen vao tuong ung voi tap quyen nao
-            //    OperationId = url.ToGuid() // url path la cai nay, neu co path thi tuc la co quyen voi path do
-            //});
+
+            if (IsAdmin)
+            {
+                if (!url.StartsWith("/" + StudentRoute.Default))
+                {
+                    context.Fail();
+                    return;
+                }
+            }
 
             context.Succeed(requirement);
         }

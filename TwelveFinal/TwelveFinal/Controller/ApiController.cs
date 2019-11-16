@@ -19,43 +19,71 @@ namespace TwelveFinal.Controller
 
     public class AdminRoute : Root
     {
-        public const string GetForm = FormRoute.Get;
-        public const string DeleteForm = FormRoute.Delete;
+        public const string Default = Base + "/ad";
 
-        public const string CreateMajors = MajorsRoute.Create;
-        public const string GetMajors = MajorsRoute.Get;
-        public const string ListMajors = MajorsRoute.List;
-        public const string UpdateMajors = MajorsRoute.Update;
-        public const string DeleteMajors = MajorsRoute.Delete;
+        public const string CreateStudent = Default + "/student/create";
+        public const string ImportStudent = Default + "/student/import";
+        public const string ListStudent = Default + "/student/list";
+        public const string GetByIdentify = Default + "/student/get-by-identify";
+        public const string MarkInputStudent = Default + "/student/mark-input";
+        public const string ViewForm = Default + "/student/view-form";
+        public const string ApproveAccept = Default + "/student/accept";
+        public const string ApproveDeny = Default + "/student/deny";
 
-        public const string CreateSubjectGroup = SubjectGroupRoute.Create;
-        public const string GetSubjectGroup = SubjectGroupRoute.Get;
-        public const string ListSubjectGroup = SubjectGroupRoute.List;
-        public const string UpdateSubjectGroup = SubjectGroupRoute.Update;
-        public const string DeleteSubjectGroup = SubjectGroupRoute.Delete;
+        public const string CreateMajors = Default + "/majors/create";
+        public const string UpdateMajors = Default + "/majors/update";
+        public const string DeleteMajors = Default + "/majors/delete";
 
-        public const string CreateUniversity = UniversityRoute.Create;
-        public const string GetUniversity = UniversityRoute.Get;
-        public const string ListUniversity = UniversityRoute.List;
-        public const string UpdateUniversity = UniversityRoute.Update;
-        public const string DeleteUniversity = UniversityRoute.Delete;
+        public const string CreateSubjectGroup = Default + "/subject-group/create";
+        public const string UpdateSubjectGroup = Default + "/subject-group/update";
+        public const string DeleteSubjectGroup = Default + "/subject-group/delete";
 
-        public const string CreateUniversity_Majors = University_MajorsRoute.Create;
-        public const string GetUniversity_Majors = University_MajorsRoute.Get;
-        public const string ListUniversity_Majors = University_MajorsRoute.List;
-        public const string UpdateUniversity_Majors = University_MajorsRoute.Update;
-        public const string DeleteUniversity_Majors = University_MajorsRoute.Delete;
+        public const string CreateUniversity = Default + "/university/create";
+        public const string UpdateUniversity = Default + "/university/update";
+        public const string DeleteUniversity = Default + "/university/delete";
 
-        public const string CreateStudent = TwelveFinal.Controller.student.StudentRoute.Create;
-        public const string ImportStudent = TwelveFinal.Controller.student.StudentRoute.Import;
-        public const string GetStudent = TwelveFinal.Controller.student.StudentRoute.Get;
-        public const string ListStudent = TwelveFinal.Controller.student.StudentRoute.List;
-        public const string MarkInputStudent = TwelveFinal.Controller.student.StudentRoute.MarkInput;
+        public const string CreateUniversity_Majors = Default + "/university-majors/create";
+        public const string UpdateUniversity_Majors = Default + "/university-majors/update";
+        public const string DeleteUniversity_Majors = Default + "/university-majors/delete";
+
     }
 
     public class StudentRoute : Root
     {
+        public const string Default = Base + "/st";
+        public const string GetForm = Default + "/form/get";
+        public const string SaveForm = Default + "/form/save";
 
+        public const string UpdateProfile = Default + "/student/update";
+        public const string GetProfile = Default + "/student/get";
+        public const string ViewMark = Default + "/student/view-mark";
+    }
+
+    public class CommonRoute : Root
+    {
+        public const string GetProvince = Base + "/province/get";
+        public const string GetDistrict = Base + "/district/get";
+        public const string GetTown = Base + "/town/get";
+        public const string GetHighSchool = Base + "/high-school/get";
+        public const string GetEthnic = Base + "/ethnic/get";
+
+        public const string ListProvince = Base + "/province/list";
+        public const string ListDistrict = Base + "/district/list";
+        public const string ListTown = Base + "/town/list";
+        public const string ListHighSchool = Base + "/high-school/list";
+        public const string ListEthnic = Base + "/ethnic/list";
+
+        public const string GetUniversity = Base + "/university/get";
+        public const string ListUniversity = Base + "/university/list";
+
+        public const string GetMajors = Base + "/majors/get";
+        public const string ListMajors = Base + "/majors/list";
+
+        public const string GetSubjectGroup = Base + "/subject-group/get";
+        public const string ListSubjectGroup = Base + "/subject-group/list";
+
+        public const string GetUniversity_Majors = Base + "/university-majors/get";
+        public const string ListUniversity_Majors = Base + "/university-majors/list";
     }
 
     //[Authorize]

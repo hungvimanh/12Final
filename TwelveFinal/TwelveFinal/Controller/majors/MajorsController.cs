@@ -6,19 +6,10 @@ using System.Threading.Tasks;
 using TwelveFinal.Entities;
 using TwelveFinal.Controller.DTO;
 using TwelveFinal.Services.MMajors;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TwelveFinal.Controller.majors
 {
-    public class MajorsRoute : Root
-    {
-        public const string Default = Base + "/majors";
-        public const string Create = Default + "/create";
-        public const string Get = Default + "/get";
-        public const string List = Default + "/list";
-        public const string Update = Default + "/update";
-        public const string Delete = Default + "/delete";
-    }
-
     public class MajorsController : ApiController
     {
         private IMajorsService MajorsService;
@@ -28,7 +19,8 @@ namespace TwelveFinal.Controller.majors
             this.MajorsService = majorsService;
         }
 
-        [Route(MajorsRoute.Create), HttpPost]
+        #region Create
+        [Route(AdminRoute.CreateMajors), HttpPost]
         public async Task<ActionResult<MajorsDTO>> Create([FromBody] MajorsDTO majorsDTO)
         {
             if (majorsDTO == null) majorsDTO = new MajorsDTO();
@@ -47,8 +39,10 @@ namespace TwelveFinal.Controller.majors
                 return BadRequest(majorsDTO);
             return Ok(majorsDTO);
         }
+        #endregion
 
-        [Route(MajorsRoute.Update), HttpPost]
+        #region Update
+        [Route(AdminRoute.UpdateMajors), HttpPost]
         public async Task<ActionResult<MajorsDTO>> Update([FromBody] MajorsDTO majorsDTO)
         {
             if (majorsDTO == null) majorsDTO = new MajorsDTO();
@@ -67,8 +61,11 @@ namespace TwelveFinal.Controller.majors
                 return BadRequest(majorsDTO);
             return Ok(majorsDTO);
         }
+        #endregion
 
-        [Route(MajorsRoute.Get), HttpPost]
+        #region Read
+        [AllowAnonymous]
+        [Route(CommonRoute.GetMajors), HttpPost]
         public async Task<MajorsDTO> Get([FromBody] MajorsDTO MajorsDTO)
         {
             if (MajorsDTO == null) MajorsDTO = new MajorsDTO();
@@ -85,7 +82,8 @@ namespace TwelveFinal.Controller.majors
             };
         }
 
-        [Route(MajorsRoute.List), HttpPost]
+        [AllowAnonymous]
+        [Route(CommonRoute.ListMajors), HttpPost]
         public async Task<List<MajorsDTO>> List([FromBody] MajorsFilterDTO majorsFilterDTO)
         {
             MajorsFilter majorsFilter = new MajorsFilter
@@ -107,8 +105,10 @@ namespace TwelveFinal.Controller.majors
 
             return majorsDTOs;
         }
+        #endregion
 
-        [Route(MajorsRoute.Delete), HttpPost]
+        #region Delete
+        [Route(AdminRoute.DeleteMajors), HttpPost]
         public async Task<ActionResult<MajorsDTO>> Delete([FromBody] MajorsDTO majorsDTO)
         {
             if (majorsDTO == null) majorsDTO = new MajorsDTO();
@@ -127,6 +127,7 @@ namespace TwelveFinal.Controller.majors
                 return BadRequest(majorsDTO);
             return Ok(majorsDTO);
         }
+        #endregion
 
         private Majors ConvertDTOtoBO(MajorsDTO majorsDTO)
         {

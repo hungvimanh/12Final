@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,16 +11,6 @@ using TwelveFinal.Services.MUniversity_Majors_Majors;
 
 namespace TwelveFinal.Controller.university
 {
-    public class UniversityRoute : Root
-    {
-        public const string Default = Base + "/university";
-        public const string Create = Default + "/create";
-        public const string Get = Default + "/get";
-        public const string List = Default + "/list";
-        public const string Update = Default + "/update";
-        public const string Delete = Default + "/delete";
-    }
-
     public class UniversityController : ApiController
     {
         private IUniversityService UniversityService;
@@ -31,7 +22,8 @@ namespace TwelveFinal.Controller.university
             this.University_MajorsService = University_MajorsService;
         }
 
-        [Route(UniversityRoute.Create), HttpPost]
+        #region Create
+        [Route(AdminRoute.CreateUniversity), HttpPost]
         public async Task<ActionResult<UniversityDTO>> Create([FromBody] UniversityDTO universityDTO)
         {
             if (universityDTO == null) universityDTO = new UniversityDTO();
@@ -51,8 +43,10 @@ namespace TwelveFinal.Controller.university
                 return BadRequest(universityDTO);
             return Ok(universityDTO);
         }
+        #endregion
 
-        [Route(UniversityRoute.Update), HttpPost]
+        #region Update
+        [Route(AdminRoute.UpdateUniversity), HttpPost]
         public async Task<ActionResult<UniversityDTO>> Update([FromBody] UniversityDTO universityDTO)
         {
             if (universityDTO == null) universityDTO = new UniversityDTO();
@@ -72,8 +66,11 @@ namespace TwelveFinal.Controller.university
                 return BadRequest(universityDTO);
             return Ok(universityDTO);
         }
+        #endregion
 
-        [Route(UniversityRoute.Get), HttpPost]
+        #region Read
+        [AllowAnonymous]
+        [Route(CommonRoute.GetUniversity), HttpPost]
         public async Task<UniversityDTO> Get([FromBody] UniversityFilterDTO universityFilterDTO)
         {
             if (universityFilterDTO == null) universityFilterDTO = new UniversityFilterDTO();
@@ -114,7 +111,8 @@ namespace TwelveFinal.Controller.university
             };
         }
 
-        [Route(UniversityRoute.List), HttpPost]
+        [AllowAnonymous]
+        [Route(CommonRoute.ListUniversity), HttpPost]
         public async Task<List<UniversityDTO>> List([FromBody] UniversityFilterDTO universityFilterDTO)
         {
             UniversityFilter universityFilter = new UniversityFilter
@@ -139,8 +137,10 @@ namespace TwelveFinal.Controller.university
 
             return universityDTOs;
         }
+        #endregion
 
-        [Route(UniversityRoute.Delete), HttpPost]
+        #region Delete
+        [Route(AdminRoute.DeleteUniversity), HttpPost]
         public async Task<ActionResult<UniversityDTO>> Delete([FromBody] UniversityDTO universityDTO)
         {
             if (universityDTO == null) universityDTO = new UniversityDTO();
@@ -160,6 +160,7 @@ namespace TwelveFinal.Controller.university
                 return BadRequest(universityDTO);
             return Ok(universityDTO);
         }
+        #endregion
 
         private University ConvertDTOtoBO(UniversityDTO universityDTO)
         {

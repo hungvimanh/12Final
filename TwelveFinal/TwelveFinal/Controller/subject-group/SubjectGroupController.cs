@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +10,6 @@ using TwelveFinal.Services.MSubjectGroup;
 
 namespace TwelveFinal.Controller.subject_group
 {
-    public class SubjectGroupRoute : Root
-    {
-        public const string Default = Base + "/subject-group";
-        public const string Create = Default + "/create";
-        public const string Get = Default + "/get";
-        public const string List = Default + "/list";
-        public const string Update = Default + "/update";
-        public const string Delete = Default+  "/delete";
-    }
-
     public class SubjectGroupController : ApiController
     {
         private ISubjectGroupService SubjectGrupService;
@@ -27,7 +18,8 @@ namespace TwelveFinal.Controller.subject_group
             this.SubjectGrupService = SubjectGrupService;
         }
 
-        [Route(SubjectGroupRoute.Create), HttpPost]
+        #region Create
+        [Route(AdminRoute.CreateSubjectGroup), HttpPost]
         public async Task<ActionResult<SubjectGroupDTO>> Create([FromBody] SubjectGroupDTO subjectGroupDTO)
         {
             if (subjectGroupDTO == null) subjectGroupDTO = new SubjectGroupDTO();
@@ -47,8 +39,11 @@ namespace TwelveFinal.Controller.subject_group
                 return BadRequest(subjectGroupDTO);
             return Ok(subjectGroupDTO);
         }
+        #endregion
 
-        [Route(SubjectGroupRoute.Get), HttpPost]
+        #region Read
+        [AllowAnonymous]
+        [Route(CommonRoute.GetSubjectGroup), HttpPost]
         public async Task<SubjectGroupDTO> Get([FromBody] SubjectGroupDTO subjectGroupDTO)
         {
             if (subjectGroupDTO == null) subjectGroupDTO = new SubjectGroupDTO();
@@ -66,7 +61,8 @@ namespace TwelveFinal.Controller.subject_group
             return subjectGroupDTO;
         }
 
-        [Route(SubjectGroupRoute.List), HttpPost]
+        [AllowAnonymous]
+        [Route(CommonRoute.ListSubjectGroup), HttpPost]
         public async Task<List<SubjectGroupDTO>> List([FromBody] SubjectGroupFilterDTO subjectGroupFilterDTO)
         {
             SubjectGroupFilter filter = new SubjectGroupFilter
@@ -87,8 +83,10 @@ namespace TwelveFinal.Controller.subject_group
 
             return subjectGroupDTOs;
         }
+        #endregion
 
-        [Route(SubjectGroupRoute.Update), HttpPost]
+        #region Update
+        [Route(AdminRoute.UpdateSubjectGroup), HttpPost]
         public async Task<ActionResult<SubjectGroupDTO>> Update([FromBody] SubjectGroupDTO subjectGroupDTO)
         {
             if (subjectGroupDTO == null) subjectGroupDTO = new SubjectGroupDTO();
@@ -108,8 +106,10 @@ namespace TwelveFinal.Controller.subject_group
                 return BadRequest(subjectGroupDTO);
             return Ok(subjectGroupDTO);
         }
+        #endregion
 
-        [Route(SubjectGroupRoute.Delete), HttpPost]
+        #region Delete
+        [Route(AdminRoute.DeleteSubjectGroup), HttpPost]
         public async Task<ActionResult<SubjectGroupDTO>> Delete([FromBody] SubjectGroupDTO subjectGroupDTO)
         {
             if (subjectGroupDTO == null) subjectGroupDTO = new SubjectGroupDTO();
@@ -129,6 +129,7 @@ namespace TwelveFinal.Controller.subject_group
                 return BadRequest(subjectGroupDTO);
             return Ok(subjectGroupDTO);
         }
+        #endregion
 
         private SubjectGroup ConvertDTOtoBO(SubjectGroupDTO subjectGroupDTO)
         {

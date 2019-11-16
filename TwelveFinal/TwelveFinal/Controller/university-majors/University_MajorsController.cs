@@ -7,30 +7,20 @@ using TwelveFinal.Entities;
 using TwelveFinal.Controller.DTO;
 using TwelveFinal.Services.MUniversity_Majors_Majors;
 using TwelveFinal.Services.MSubjectGroup;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TwelveFinal.Controller.university_majors
 {
-    public class University_MajorsRoute : Root
-    {
-        public const string Default = Base + "/university-majors";
-        public const string Create = Default + "/create";
-        public const string Get = Default + "/get";
-        public const string List = Default + "/list";
-        public const string Update = Default + "/update";
-        public const string Delete = Default + "/delete";
-        public const string DropListSubjectGroup = Default + "/drop-list-subject-group";
-    }   
     public class University_MajorsController : ApiController
     {
         private IUniversity_MajorsService university_MajorsService;
-        private ISubjectGroupService SubjectGrupService;
-        public University_MajorsController(IUniversity_MajorsService university_MajorsService, ISubjectGroupService SubjectGrupService)
+        public University_MajorsController(IUniversity_MajorsService university_MajorsService)
         {
             this.university_MajorsService = university_MajorsService;
-            this.SubjectGrupService = SubjectGrupService;
         }
 
-        [Route(University_MajorsRoute.Create), HttpPost]
+        #region Create
+        [Route(AdminRoute.CreateUniversity_Majors), HttpPost]
         public async Task<ActionResult<University_MajorsDTO>> Create([FromBody] University_MajorsDTO university_MajorsDTO)
         {
             if (university_MajorsDTO == null) university_MajorsDTO = new University_MajorsDTO();
@@ -60,8 +50,10 @@ namespace TwelveFinal.Controller.university_majors
                 return BadRequest(university_MajorsDTO);
             return Ok(university_MajorsDTO);
         }
+        #endregion
 
-        [Route(University_MajorsRoute.Update), HttpPost]
+        #region Update
+        [Route(AdminRoute.UpdateUniversity_Majors), HttpPost]
         public async Task<ActionResult<University_MajorsDTO>> Update([FromBody] University_MajorsDTO university_MajorsDTO)
         {
             if (university_MajorsDTO == null) university_MajorsDTO = new University_MajorsDTO();
@@ -91,8 +83,11 @@ namespace TwelveFinal.Controller.university_majors
                 return BadRequest(university_MajorsDTO);
             return Ok(university_MajorsDTO);
         }
+        #endregion
 
-        [Route(University_MajorsRoute.Get), HttpPost]
+        #region Read
+        [AllowAnonymous]
+        [Route(CommonRoute.GetUniversity_Majors), HttpPost]
         public async Task<University_MajorsDTO> Get([FromBody] University_MajorsDTO university_MajorsDTO)
         {
             if (university_MajorsDTO == null) university_MajorsDTO = new University_MajorsDTO();
@@ -121,7 +116,8 @@ namespace TwelveFinal.Controller.university_majors
             };
         }
 
-        [Route(University_MajorsRoute.List), HttpPost]
+        [AllowAnonymous]
+        [Route(CommonRoute.ListUniversity_Majors), HttpPost]
         public async Task<List<University_MajorsDTO>> List([FromBody] University_MajorsFilterDTO university_MajorsFilterDTO)
         {
             University_MajorsFilter university_MajorsFilter = new University_MajorsFilter
@@ -165,8 +161,10 @@ namespace TwelveFinal.Controller.university_majors
 
             return university_MajorsDTOs;
         }
+        #endregion
 
-        [Route(University_MajorsRoute.Delete), HttpPost]
+        #region Delete
+        [Route(AdminRoute.DeleteUniversity_Majors), HttpPost]
         public async Task<ActionResult<University_MajorsDTO>> Delete([FromBody] University_MajorsDTO university_MajorsDTO)
         {
             if (university_MajorsDTO == null) university_MajorsDTO = new University_MajorsDTO();
@@ -196,28 +194,7 @@ namespace TwelveFinal.Controller.university_majors
                 return BadRequest(university_MajorsDTO);
             return Ok(university_MajorsDTO);
         }
-
-        [Route(University_MajorsRoute.DropListSubjectGroup), HttpPost]
-        public async Task<List<SubjectGroupDTO>> DropListSubjectGroup([FromBody] SubjectGroupFilterDTO subjectGroupFilterDTO)
-        {
-            SubjectGroupFilter filter = new SubjectGroupFilter
-            {
-                Code = new StringFilter { StartsWith = subjectGroupFilterDTO.Code },
-                Skip = subjectGroupFilterDTO.Skip,
-                Take = subjectGroupFilterDTO.Take
-            };
-
-            List<SubjectGroup> subjectGroups = await SubjectGrupService.List(filter);
-
-            List<SubjectGroupDTO> subjectGroupDTOs = subjectGroups.Select(s => new SubjectGroupDTO
-            {
-                Id = s.Id,
-                Code = s.Code,
-                Name = s.Name
-            }).ToList();
-
-            return subjectGroupDTOs;
-        }
+        #endregion
 
         private University_Majors ConvertDTOtoBO(University_MajorsDTO university_MajorsDTO)
         {

@@ -11,13 +11,16 @@ using TwelveFinal.Services.MUser;
 namespace TwelveFinal.Controller
 {
     [Route("api/TF/authentication")]
-    public class AuthenticationController : ControllerBase
+    public class AuthenticationController : ApiController
     {
         private IUserService userService;
         public AuthenticationController(IUserService _userService)
         {
             this.userService = _userService;
         }
+
+        #region Login
+        [AllowAnonymous]
         [Route("login"), HttpPost]
         public async Task<LoginResultDTO> Login([FromBody] LoginDTO loginDTO)
         {
@@ -37,7 +40,9 @@ namespace TwelveFinal.Controller
                 IsAdmin = user.IsAdmin
             };
         }
+        #endregion
 
+        #region Change Password
         [Route("change-password"), HttpPost]
         public async Task<bool> ChangePassword([FromBody] ChangePasswordDTO changePasswordDTO)
         {
@@ -49,7 +54,10 @@ namespace TwelveFinal.Controller
             User user = await this.userService.ChangePassword(userFilter, changePasswordDTO.NewPassword);
             return user != null;
         }
+        #endregion
 
+        #region Forgot Password
+        [AllowAnonymous]
         [Route("forgot-password"), HttpPost]
         public async Task<bool> ForgotPassword([FromBody] ForgotPasswordDTO forgotPasswordDTO)
         {
@@ -61,5 +69,6 @@ namespace TwelveFinal.Controller
             await this.userService.ForgotPassword(userFilter);
             return true;
         }
+        #endregion
     }
 }
