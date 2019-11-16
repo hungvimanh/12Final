@@ -54,24 +54,33 @@ namespace TwelveFinal.Common
             CurrentContext.StudentId = StudentId;
             CurrentContext.IsAdmin = IsAdmin;
 
-            //Kiểm tra phân quyền
-            if (!IsAdmin)
+            //Phân quyền
+            switch (IsAdmin)
             {
-                if (!url.StartsWith("/" + AdminRoute.Default))
-                {
-                    context.Fail();
-                    return;
-                }
+                case true:
+                    if (url.StartsWith("/" + StudentRoute.Default))
+                    {
+                        context.Fail();
+                    }
+                    break;
+                case false:
+                    if (url.StartsWith("/" + AdminRoute.Default))
+                    {
+                        context.Fail();
+                    }
+                    break;
+                default:
+                    break;
             }
+            //if (!IsAdmin)
+            //{
+                
+            //}
 
-            if (IsAdmin)
-            {
-                if (!url.StartsWith("/" + StudentRoute.Default))
-                {
-                    context.Fail();
-                    return;
-                }
-            }
+            //if (IsAdmin)
+            //{
+                
+            //}
 
             context.Succeed(requirement);
         }

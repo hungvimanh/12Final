@@ -40,7 +40,7 @@ namespace TwelveFinal.Services.MForm
                 //Chuyển trạng thái từ chờ duyệt sang đã duyệt
                 form.Status = 2;
                 await UOW.FormRepository.Approve(form);
-                await UOW.StudentRepository.Update(new Student { Id = form.StudentId, Status = form.Status });
+                await UOW.StudentRepository.UpdateStatus(new Student { Id = form.StudentId, Status = form.Status });
                 await UOW.Commit();
                 return await Get(form.StudentId);
             }
@@ -62,7 +62,7 @@ namespace TwelveFinal.Services.MForm
                 //Chuyển trạng thái từ chờ duyệt sang đã từ chối
                 form.Status = 3;
                 await UOW.FormRepository.Approve(form);
-                await UOW.StudentRepository.Update(new Student { Id = form.StudentId, Status = form.Status });
+                await UOW.StudentRepository.UpdateStatus(new Student { Id = form.StudentId, Status = form.Status });
                 await UOW.Commit();
                 return await Get(form.StudentId);
             }
@@ -95,7 +95,7 @@ namespace TwelveFinal.Services.MForm
                 //Chuyển trạng thái từ chưa đăng ký sang chờ duyệt
                 form.Status = 1;
                 await UOW.FormRepository.Create(form);
-                await UOW.StudentRepository.Update(new Student { Id = CurrentContext.StudentId, Status = form.Status });
+                await UOW.StudentRepository.UpdateStatus(new Student { Id = CurrentContext.StudentId, Status = form.Status });
                 await UOW.Commit();
                 return await Get(CurrentContext.StudentId);
             }
@@ -126,7 +126,7 @@ namespace TwelveFinal.Services.MForm
                 //Khi đó trạng thái sẽ chuyển từ đã duyệt về chờ duyệt
                 form.Status = 1;
                 await UOW.FormRepository.Update(form);
-                await UOW.StudentRepository.Update(new Student { Id = CurrentContext.StudentId, Status = 1 });
+                await UOW.StudentRepository.UpdateStatus(new Student { Id = CurrentContext.StudentId, Status = 1 });
                 await UOW.Commit();
                 return await Get(CurrentContext.StudentId);
             }
@@ -147,7 +147,7 @@ namespace TwelveFinal.Services.MForm
                 await UOW.Begin();
                 await UOW.FormRepository.Delete(form.Id);
                 //Chuyển trạng thái về chưa đăng ký
-                await UOW.StudentRepository.Update(new Student { Id = CurrentContext.StudentId, Status = 0 });
+                await UOW.StudentRepository.UpdateStatus(new Student { Id = CurrentContext.StudentId, Status = 0 });
                 await UOW.Commit();
                 return await Get(CurrentContext.StudentId);
             }

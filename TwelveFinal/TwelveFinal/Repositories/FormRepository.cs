@@ -108,7 +108,7 @@ namespace TwelveFinal.Repositories
 
         public async Task<Form> Get(Guid StudentId)
         {
-            Form form = await tFContext.Form.Where(f => f.StudentId.Equals(StudentId)).Select(f => new Form
+            Form form = await tFContext.Form.Where(f => f.StudentId.Equals(StudentId)).Include(f => f.Aspirations).Select(f => new Form
             {
                 Id = f.Id,
                 StudentId = f.StudentId,

@@ -74,6 +74,7 @@ namespace TwelveFinal.Services.MStudentService
         #region Update Profile/Mark
         public async Task<Student> Update(Student student)
         {
+            student.Id = CurrentContext.StudentId;
             if (!await StudentValidator.Update(student))
                 return student;
 

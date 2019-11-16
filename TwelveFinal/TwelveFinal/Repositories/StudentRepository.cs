@@ -17,6 +17,7 @@ namespace TwelveFinal.Repositories
         Task<bool> BulkInsert(List<Student> students);
         Task<Student> Get(Guid Id);
         Task<bool> Update(Student student);
+        Task<bool> UpdateStatus(Student student);
         Task<bool> Delete(Guid Id);
     }
     public class StudentRepository : IStudentRepository
@@ -207,14 +208,15 @@ namespace TwelveFinal.Repositories
 
         public async Task<bool> Delete(Guid Id)
         {
-            await tFContext.User.Where(u => u.StudentId.Equals(Id)).UpdateFromQueryAsync(s => new UserDAO { StudentId = Guid.Empty});
+            await tFContext.User.Where(u => u.StudentId.Equals(Id)).UpdateFromQueryAsync(s => new UserDAO { StudentId = Guid.Empty });
             await tFContext.Student.Where(s => s.Id.Equals(Id)).DeleteFromQueryAsync();
             return true;
         }
 
         public async Task<Student> Get(Guid Id)
         {
-            Student student = await tFContext.Student.Where(s => s.Id.Equals(Id)).Select(s => new Student
+            Student student = await tFContext.Student.Where(s => s.Id.Equals(Id))
+                .Select(s => new Student
             {
                 Id = s.Id,
                 Address = s.Address,
@@ -254,11 +256,11 @@ namespace TwelveFinal.Repositories
             }).FirstOrDefaultAsync();
 
             FormDAO formDAO = tFContext.Form.Where(f => f.StudentId == Id).FirstOrDefault();
-            if(formDAO != null && formDAO.Graduated.HasValue)
+            if (formDAO != null && formDAO.Graduated.HasValue)
             {
                 student.Graduated = formDAO.Graduated.Value;
             }
-            
+
             return student;
         }
 
@@ -282,28 +284,33 @@ namespace TwelveFinal.Repositories
         {
             await tFContext.Student.Where(s => s.Id.Equals(CurrentContext.StudentId)).UpdateFromQueryAsync(s => new StudentDAO
             {
-                Address = s.Address,
-                Dob = s.Dob,
-                Email = s.Email,
-                Gender = s.Gender,
-                EthnicId = s.EthnicId,
-                HighSchoolId = s.HighSchoolId,
-                Name = s.Name,
-                Phone = s.Phone,
-                PlaceOfBirth = s.PlaceOfBirth,
-                TownId = s.TownId,
-                Identify = s.Identify,
+                Address = student.Address,
+                Dob = student.Dob,
+                Gender = student.Gender,
+                EthnicId = student.EthnicId,
+                HighSchoolId = student.HighSchoolId,
+                Name = student.Name,
+                Phone = student.Phone,
+                PlaceOfBirth = student.PlaceOfBirth,
+                TownId = student.TownId,
 
-                Biology = s.Biology,
-                Chemistry = s.Chemistry,
-                CivicEducation = s.CivicEducation,
-                Geography = s.Geography,
-                History = s.History,
-                Languages = s.Languages,
-                Literature = s.Literature,
-                Maths = s.Maths,
-                Physics = s.Physics,
+                Biology = student.Biology,
+                Chemistry = student.Chemistry,
+                CivicEducation = student.CivicEducation,
+                Geography = student.Geography,
+                History = student.History,
+                Languages = student.Languages,
+                Literature = student.Literature,
+                Maths = student.Maths,
+                Physics = student.Physics,
+            });
+            return true;
+        }
 
+        public async Task<bool> UpdateStatus(Student student)
+        {
+            await tFContext.Student.Where(s => s.Id.Equals(student.Id)).UpdateFromQueryAsync(s => new StudentDAO
+            {
                 Status = student.Status
             });
             return true;

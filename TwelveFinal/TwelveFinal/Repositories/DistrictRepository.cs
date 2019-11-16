@@ -141,15 +141,6 @@ namespace TwelveFinal.Repositories
                 ProvinceId = d.ProvinceId,
                 ProvinceCode = d.Province.Code,
                 ProvinceName = d.Province.Name,
-                Towns = tFContext.Town.Where(t => t.DistrictId.Equals(Id)).Select(t => new Town
-                {
-                    Id = t.Id,
-                    Code = t.Code,
-                    Name = t.Name,
-                    DistrictId = t.DistrictId,
-                    DistrictCode = t.District.Code,
-                    DistrictName = t.District.Name
-                }).ToList()
             }).FirstOrDefaultAsync();
 
             return District;
