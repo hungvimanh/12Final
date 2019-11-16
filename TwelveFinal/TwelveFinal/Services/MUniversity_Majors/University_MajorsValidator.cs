@@ -45,7 +45,6 @@ namespace TwelveFinal.Services.MUniversity_Majors_Majors
         {
             bool IsValid = true;
             IsValid &= await IsExisted(university_Majors);
-            IsValid &= await CodeValidate(university_Majors);
             return IsValid;
         }
 
@@ -66,7 +65,8 @@ namespace TwelveFinal.Services.MUniversity_Majors_Majors
             {
                 MajorsId = university_Majors.MajorsId,
                 UniversityId = university_Majors.UniversityId,
-                SubjectGroupId = university_Majors.SubjectGroupId
+                SubjectGroupId = university_Majors.SubjectGroupId,
+                Year = university_Majors.Year,
             };
 
             var count = await UOW.University_MajorsRepository.Count(filter);

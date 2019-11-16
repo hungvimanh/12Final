@@ -170,13 +170,19 @@ namespace TwelveFinal.Repositories
 
         public async Task<bool> Delete(University_Majors university_Majors)
         {
-            await tFContext.University_Majors.Where(m => m.MajorsId.Equals(university_Majors.MajorsId) && m.UniversityId.Equals(university_Majors.UniversityId)).DeleteFromQueryAsync();
+            await tFContext.University_Majors.Where(m => m.MajorsId.Equals(university_Majors.MajorsId)
+            && m.UniversityId.Equals(university_Majors.UniversityId)
+            && m.SubjectGroupId.Equals(university_Majors.SubjectGroupId)
+            && m.Year.Equals(university_Majors.Year)).DeleteFromQueryAsync();
             return true;
         }
 
         public async Task<University_Majors> Get(University_Majors university_Majors)
         {
-            University_Majors University_Majors = await tFContext.University_Majors.Where(m => m.MajorsId.Equals(university_Majors.MajorsId) && m.UniversityId.Equals(university_Majors.UniversityId)).Select(u => new University_Majors
+            University_Majors University_Majors = await tFContext.University_Majors.Where(m => m.MajorsId.Equals(university_Majors.MajorsId) 
+            && m.UniversityId.Equals(university_Majors.UniversityId)
+            && m.SubjectGroupId.Equals(university_Majors.SubjectGroupId)
+            && m.Year.Equals(university_Majors.Year)).Select(u => new University_Majors
             {
                 UniversityId = u.UniversityId,
                 UniversityCode = u.University.Code,
@@ -199,13 +205,12 @@ namespace TwelveFinal.Repositories
 
         public async Task<bool> Update(University_Majors university_Majors)
         {
-            await tFContext.University_Majors.Where(m => m.MajorsId.Equals(university_Majors.MajorsId) && m.UniversityId.Equals(university_Majors.UniversityId)).UpdateFromQueryAsync(u => new University_MajorsDAO
+            await tFContext.University_Majors.Where(m => m.MajorsId.Equals(university_Majors.MajorsId)
+            && m.UniversityId.Equals(university_Majors.UniversityId)
+            && m.SubjectGroupId.Equals(university_Majors.SubjectGroupId)
+            && m.Year.Equals(university_Majors.Year)).UpdateFromQueryAsync(u => new University_MajorsDAO
             {
-                MajorsId = university_Majors.MajorsId,
-                UniversityId = university_Majors.UniversityId,
-                SubjectGroupId = university_Majors.SubjectGroupId,
                 Benchmark = university_Majors.Benchmark,
-                Year = university_Majors.Year,
                 Quantity = university_Majors.Quantity,
                 Descreption = university_Majors.Descreption
             });
