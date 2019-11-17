@@ -42,7 +42,11 @@ namespace TwelveFinal.Controller.common
             ProvinceFilter provinceFilter = new ProvinceFilter
             {
                 Code = new StringFilter { StartsWith = provinceFilterDTO.Code },
-                Name = new StringFilter { StartsWith = provinceFilterDTO.Name }
+                Name = new StringFilter { StartsWith = provinceFilterDTO.Name },
+                Skip = provinceFilterDTO.Skip,
+                Take = int.MaxValue,
+                OrderBy = ProvinceOrder.Name,
+                OrderType = OrderType.ASC
             };
 
             var listProvince = await ProvinceService.List(provinceFilter);
@@ -79,7 +83,11 @@ namespace TwelveFinal.Controller.common
             {
                 Code = new StringFilter { StartsWith = districtFilterDTO.Code },
                 Name = new StringFilter { StartsWith = districtFilterDTO.Name },
-                ProvinceId = districtFilterDTO.ProvinceId
+                ProvinceId = districtFilterDTO.ProvinceId,
+                Skip = districtFilterDTO.Skip,
+                Take = int.MaxValue,
+                OrderBy = DistrictOrder.Name,
+                OrderType = OrderType.ASC
             };
 
             var listDistrict = await DistrictService.List(districtFilter);
@@ -118,7 +126,11 @@ namespace TwelveFinal.Controller.common
             {
                 Code = new StringFilter { StartsWith = townFilterDTO.Code },
                 Name = new StringFilter { StartsWith = townFilterDTO.Name },
-                DistrictId = townFilterDTO.DistrictId
+                DistrictId = townFilterDTO.DistrictId,
+                Skip = townFilterDTO.Skip,
+                Take = int.MaxValue,
+                OrderBy = TownOrder.Name,
+                OrderType = OrderType.ASC
             };
 
             var listTown = await TownService.List(townFilter);
@@ -157,7 +169,11 @@ namespace TwelveFinal.Controller.common
             {
                 Code = new StringFilter { StartsWith = highSchoolFilterDTO.Code },
                 Name = new StringFilter { Contains = highSchoolFilterDTO.Name },
-                ProvinceId = highSchoolFilterDTO.ProvinceId
+                ProvinceId = highSchoolFilterDTO.ProvinceId,
+                Skip = highSchoolFilterDTO.Skip,
+                Take = int.MaxValue,
+                OrderBy = HighSchoolOrder.Name,
+                OrderType = OrderType.ASC
             };
 
             var listHighSchool = await HighSchoolService.List(highSchoolFilter);
@@ -195,7 +211,11 @@ namespace TwelveFinal.Controller.common
             EthnicFilter ethnicFilter = new EthnicFilter
             {
                 Code = new StringFilter { StartsWith = ethnicFilterDTO.Code },
-                Name = new StringFilter { StartsWith = ethnicFilterDTO.Name }
+                Name = new StringFilter { StartsWith = ethnicFilterDTO.Name },
+                Skip = ethnicFilterDTO.Skip,
+                Take = int.MaxValue,
+                OrderBy = EthnicOrder.Name,
+                OrderType = OrderType.ASC
             };
 
             var listEthnic = await EthnicService.List(ethnicFilter);

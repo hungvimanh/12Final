@@ -29,8 +29,7 @@ namespace TwelveFinal.Repositories
         {
             if (highSchoolFilter == null)
                 return query.Where(q => 1 == 0);
-            if (highSchoolFilter.ProvinceId.HasValue)
-                query = query.Where(q => highSchoolFilter.ProvinceId.Equals(q.ProvinceId));
+            query = query.Where(q => q.ProvinceId == highSchoolFilter.ProvinceId);
 
             if (highSchoolFilter.Id != null)
                 query = query.Where(q => q.Id, highSchoolFilter.Id);

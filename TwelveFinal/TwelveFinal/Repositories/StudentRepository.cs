@@ -48,7 +48,7 @@ namespace TwelveFinal.Repositories
             if (studentFilter.HighSchoolId != null)
                 query = query.Where(q => q.HighSchoolId, studentFilter.HighSchoolId);
             if (studentFilter.Dob != null)
-                query = query.Where(q => q.Dob, studentFilter.Dob);
+                query = query.Where(q => q.Dob.Date, studentFilter.Dob);
             if (studentFilter.Gender.HasValue)
                 query = query.Where(q => q.Gender.Equals(studentFilter.Gender.Value));
             if (studentFilter.Status.HasValue)

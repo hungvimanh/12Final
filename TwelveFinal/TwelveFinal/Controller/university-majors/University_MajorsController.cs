@@ -135,7 +135,6 @@ namespace TwelveFinal.Controller.university_majors
                 Year = university_MajorsFilterDTO.Year,
                 Skip = university_MajorsFilterDTO.Skip,
                 Take = int.MaxValue,
-                OrderBy = university_MajorsFilterDTO.OrderBy,
                 OrderType = OrderType.DESC
             };
 

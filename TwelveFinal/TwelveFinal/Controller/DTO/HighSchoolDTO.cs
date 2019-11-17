@@ -18,7 +18,7 @@ namespace TwelveFinal.Controller.DTO
         public Guid Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
-        public Guid? ProvinceId { get; set; }
+        public Guid ProvinceId { get; set; }
         public HighSchoolFilterDTO() : base()
         {
 

@@ -22,7 +22,7 @@ namespace TwelveFinal.Entities
         public GuidFilter Id { get; set; }
         public StringFilter Code { get; set; }
         public StringFilter Name { get; set; }
-        public Guid? DistrictId { get; set; }
+        public Guid DistrictId { get; set; }
         public StringFilter DistrictCode { get; set; }
         public StringFilter DistrictName { get; set; }
         public TownOrder OrderBy { get; set; }

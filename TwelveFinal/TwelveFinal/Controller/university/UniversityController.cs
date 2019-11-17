@@ -124,7 +124,7 @@ namespace TwelveFinal.Controller.university
                 Name = new StringFilter { Contains = universityFilterDTO.Name },
                 Skip = universityFilterDTO.Skip,
                 Take = int.MaxValue,
-                OrderType = universityFilterDTO.OrderType,
+                OrderType = OrderType.ASC,
                 OrderBy = UniversityOrder.Name
             };
 

@@ -91,7 +91,9 @@ namespace TwelveFinal.Controller.majors
                 Code = new StringFilter { StartsWith = majorsFilterDTO.Code },
                 Name = new StringFilter { Contains = majorsFilterDTO.Name },
                 Skip = majorsFilterDTO.Skip,
-                Take = int.MaxValue
+                Take = int.MaxValue,
+                OrderBy = MajorsOrder.Name,
+                OrderType = OrderType.ASC
             };
 
             List<Majors> universities = await MajorsService.List(majorsFilter);

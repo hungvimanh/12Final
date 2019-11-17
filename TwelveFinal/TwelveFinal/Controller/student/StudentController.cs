@@ -42,7 +42,7 @@ namespace TwelveFinal.Controller.student
 
             registerDTO = new RegisterDTO
             {
-                Dob = student.Dob,
+                Dob = student.Dob.Date,
                 Email = student.Email,
                 Name = student.Name,
                 EthnicId = student.EthnicId.HasValue ? student.EthnicId.Value : Guid.Empty,
@@ -94,7 +94,7 @@ namespace TwelveFinal.Controller.student
             studentDTO = new StudentDTO
             {
                 Id = student.Id,
-                Dob = student.Dob,
+                Dob = student.Dob.Date,
                 Name = student.Name,
                 Gender = student.Gender,
                 Identify = student.Identify,
@@ -134,7 +134,7 @@ namespace TwelveFinal.Controller.student
             {
                 Id = student.Id,
                 Address = student.Address,
-                Dob = student.Dob,
+                Dob = student.Dob.Date,
                 Gender = student.Gender,
                 Email = student.Email,
                 Identify = student.Identify,
@@ -184,7 +184,7 @@ namespace TwelveFinal.Controller.student
             {
                 Id = s.Id,
                 Address = s.Address,
-                Dob = s.Dob,
+                Dob = s.Dob.Date,
                 Gender = s.Gender,
                 Email = s.Email,
                 Identify = s.Identify,
@@ -229,7 +229,7 @@ namespace TwelveFinal.Controller.student
             student_IdentifyDTO = new Student_IdentifyDTO
             {
                 Identify = student.FirstOrDefault().Identify,
-                Dob = student.FirstOrDefault().Dob,
+                Dob = student.FirstOrDefault().Dob.Date,
                 Name = student.FirstOrDefault().Name,
                 Email = student.FirstOrDefault().Email
             };
@@ -323,7 +323,7 @@ namespace TwelveFinal.Controller.student
                 Id = form.Id,
                 StudentId = form.StudentId,
                 Address = student.Address,
-                Dob = student.Dob,
+                Dob = student.Dob.Date,
                 Gender = student.Gender,
                 Email = student.Email,
                 Identify = student.Identify,

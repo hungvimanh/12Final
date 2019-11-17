@@ -29,7 +29,7 @@ namespace TwelveFinal.Repositories
         {
             if (townFilter == null)
                 return query.Where(q => 1 == 0);
-            query.Where(q => q.DistrictId.Equals(townFilter.DistrictId));
+            query = query.Where(q => q.DistrictId == townFilter.DistrictId);
 
             if (townFilter.Id != null)
                 query = query.Where(q => q.Id, townFilter.Id);

@@ -23,7 +23,7 @@ namespace TwelveFinal.Entities
         public GuidFilter Id { get; set; }
         public StringFilter Code { get; set; }
         public StringFilter Name { get; set; }
-        public Guid? ProvinceId { get; set; }
+        public Guid ProvinceId { get; set; }
 
         public HighSchoolOrder OrderBy { get; set; }
         public HighSchoolFilter() : base()
