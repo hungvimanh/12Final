@@ -156,6 +156,7 @@ namespace TwelveFinal.Controller.student
                 ProvinceId = student.ProvinceId,
                 ProvinceCode = student.ProvinceCode,
                 ProvinceName = student.ProvinceName,
+                Status = student.Status
             };
         }
         #endregion
@@ -174,7 +175,7 @@ namespace TwelveFinal.Controller.student
                 Dob = new DateTimeFilter { Equal = studentFilterDTO.Dob },
                 Status = studentFilterDTO.Status,
                 Skip = studentFilterDTO.Skip,
-                Take = studentFilterDTO.Take
+                Take = int.MaxValue
             };
 
             var students = await StudentService.List(studentFilter);
@@ -205,6 +206,7 @@ namespace TwelveFinal.Controller.student
                 ProvinceId = s.ProvinceId,
                 ProvinceCode = s.ProvinceCode,
                 ProvinceName = s.ProvinceName,
+                Status = s.Status
             }).ToList();
         }
         #endregion

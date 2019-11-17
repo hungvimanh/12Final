@@ -69,7 +69,7 @@ namespace TwelveFinal.Controller.subject_group
             {
                 Code = new StringFilter { StartsWith = subjectGroupFilterDTO.Code },
                 Skip = subjectGroupFilterDTO.Skip,
-                Take = subjectGroupFilterDTO.Take
+                Take = int.MaxValue
             };
 
             List<SubjectGroup> subjectGroups = await SubjectGrupService.List(filter);

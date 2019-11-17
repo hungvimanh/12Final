@@ -42,6 +42,8 @@ namespace TwelveFinal.Controller.DTO
         public double? History { get; set; }
         public double? Geography { get; set; }
         public double? CivicEducation { get; set; }
+
+        public int Status { get; set; }
     }
 
     public class StudentFilterDTO : FilterDTO
