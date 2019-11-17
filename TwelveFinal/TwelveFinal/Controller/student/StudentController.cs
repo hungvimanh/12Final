@@ -440,5 +440,48 @@ namespace TwelveFinal.Controller.student
         }
         #endregion
 
+        #region Delete
+        [Route(AdminRoute.DeleteStudent), HttpPost]
+        public async Task<ActionResult<StudentDTO>> Delete([FromBody] StudentDTO studentDTO)
+        {
+            if (studentDTO == null) studentDTO = new StudentDTO();
+
+            Student student = new Student { Id = studentDTO.Id };
+            student = await StudentService.Delete(student);
+
+            studentDTO = new StudentDTO
+            {
+                Id = student.Id,
+                Address = student.Address,
+                Dob = student.Dob.Date,
+                Gender = student.Gender,
+                Email = student.Email,
+                Identify = student.Identify,
+                PlaceOfBirth = student.PlaceOfBirth,
+                Name = student.Name,
+                Phone = student.Phone,
+                EthnicId = student.EthnicId,
+                EthnicName = student.EthnicName,
+                EthnicCode = student.EthnicCode,
+                HighSchoolId = student.HighSchoolId,
+                HighSchoolName = student.HighSchoolName,
+                HighSchoolCode = student.HighSchoolCode,
+                TownId = student.TownId,
+                TownCode = student.TownCode,
+                TownName = student.TownName,
+                DistrictId = student.DistrictId,
+                DistrictCode = student.DistrictCode,
+                DistrictName = student.DistrictName,
+                ProvinceId = student.ProvinceId,
+                ProvinceCode = student.ProvinceCode,
+                ProvinceName = student.ProvinceName,
+                Status = student.Status,
+                Errors = student.Errors
+            };
+            if (student.HasError)
+                return BadRequest(studentDTO);
+            return Ok(studentDTO);
+        }
+        #endregion
     }
 }

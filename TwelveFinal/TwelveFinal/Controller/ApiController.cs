@@ -29,6 +29,7 @@ namespace TwelveFinal.Controller
         public const string ViewForm = Default + "/student/view-form";
         public const string ApproveAccept = Default + "/student/accept";
         public const string ApproveDeny = Default + "/student/deny";
+        public const string DeleteStudent = Default + "/student/delete";
 
         public const string CreateMajors = Default + "/majors/create";
         public const string UpdateMajors = Default + "/majors/update";

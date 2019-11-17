@@ -24,6 +24,7 @@ namespace TwelveFinal.Services.MStudentService
         Task<Student> Get();
         Task<Student> GetById(Guid Id);
         Task<List<Student>> List(StudentFilter studentFilter);
+        Task<Student> Delete(Student student);
     }
     public class StudentService : IStudentService
     {
@@ -226,10 +227,23 @@ namespace TwelveFinal.Services.MStudentService
             return mark;
         }
 
-        
+        public async Task<Student> Delete(Student student)
+        {
+            if (!await StudentValidator.Delete(student))
+                return student;
 
-        
-
-        
+            try
+            {
+                await UOW.Begin();
+                await UOW.StudentRepository.Delete(student.Id);
+                await UOW.Commit();
+                return student;
+            }
+            catch (Exception ex)
+            {
+                await UOW.Rollback();
+                throw new MessageException(ex);
+            }
+        }
     }
 }
