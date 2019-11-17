@@ -36,8 +36,6 @@ namespace TwelveFinal.Repositories
                 query = query.Where(q => q.Name, universityFilter.Name);
             if (universityFilter.Code != null)
                 query = query.Where(q => q.Code, universityFilter.Code);
-            if (universityFilter.Address != null)
-                query = query.Where(q => q.Address, universityFilter.Address);
             return query;
         }
         private IQueryable<UniversityDAO> DynamicOrder(IQueryable<UniversityDAO> query, UniversityFilter universityFilter)

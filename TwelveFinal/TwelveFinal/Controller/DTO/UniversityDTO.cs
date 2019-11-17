@@ -12,6 +12,7 @@ namespace TwelveFinal.Controller.DTO
         public string Code { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
+        public string Website { get; set; }
         public List<University_MajorsDTO> University_Majors { get; set; } 
     }
 

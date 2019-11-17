@@ -37,6 +37,7 @@ namespace TwelveFinal.Controller.university
                 Code = university.Code,
                 Name = university.Name,
                 Address = university.Address,
+                Website = university.Website,
                 Errors = university.Errors
             };
             if (university.HasError)
@@ -60,6 +61,7 @@ namespace TwelveFinal.Controller.university
                 Code = university.Code,
                 Name = university.Name,
                 Address = university.Address,
+                Website = university.Website,
                 Errors = university.Errors
             };
             if (university.HasError)
@@ -90,6 +92,7 @@ namespace TwelveFinal.Controller.university
                 Code = university.Code,
                 Name = university.Name,
                 Address = university.Address,
+                Website = university.Website,
                 University_Majors = university_Majors.Select( u => new University_MajorsDTO
                 {
                     MajorsId = u.MajorsId,
@@ -132,7 +135,8 @@ namespace TwelveFinal.Controller.university
                 Id = u.Id,
                 Address = u.Address,
                 Code = u.Code,
-                Name = u.Name
+                Name = u.Name,
+                Website = u.Website
             }).ToList();
 
             return universityDTOs;
@@ -169,7 +173,8 @@ namespace TwelveFinal.Controller.university
                 Id = universityDTO.Id ?? Guid.Empty,
                 Code = universityDTO.Code,
                 Name = universityDTO.Name,
-                Address = universityDTO.Address
+                Address = universityDTO.Address,
+                Website = universityDTO.Website
             };
             return university;
         }

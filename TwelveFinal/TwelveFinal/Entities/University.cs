@@ -21,7 +21,6 @@ namespace TwelveFinal.Entities
         public GuidFilter Id { get; set; }
         public StringFilter Code { get; set; }
         public StringFilter Name { get; set; }
-        public StringFilter Address { get; set; }
         public UniversityOrder OrderBy { get; set; }
         public UniversityFilter() : base()
         {
