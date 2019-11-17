@@ -41,7 +41,6 @@ namespace TwelveFinal.Controller.common
         {
             ProvinceFilter provinceFilter = new ProvinceFilter
             {
-                Id = new GuidFilter { Equal = provinceFilterDTO.Id },
                 Code = new StringFilter { StartsWith = provinceFilterDTO.Code },
                 Name = new StringFilter { StartsWith = provinceFilterDTO.Name }
             };
@@ -78,7 +77,6 @@ namespace TwelveFinal.Controller.common
         {
             DistrictFilter districtFilter = new DistrictFilter
             {
-                Id = new GuidFilter { Equal = districtFilterDTO.Id },
                 Code = new StringFilter { StartsWith = districtFilterDTO.Code },
                 Name = new StringFilter { StartsWith = districtFilterDTO.Name },
                 ProvinceId = districtFilterDTO.ProvinceId
@@ -118,7 +116,6 @@ namespace TwelveFinal.Controller.common
         {
             TownFilter townFilter = new TownFilter
             {
-                Id = new GuidFilter { Equal = townFilterDTO.Id },
                 Code = new StringFilter { StartsWith = townFilterDTO.Code },
                 Name = new StringFilter { StartsWith = townFilterDTO.Name },
                 DistrictId = townFilterDTO.DistrictId
@@ -158,7 +155,6 @@ namespace TwelveFinal.Controller.common
         {
             HighSchoolFilter highSchoolFilter = new HighSchoolFilter
             {
-                Id = new GuidFilter { Equal = highSchoolFilterDTO.Id },
                 Code = new StringFilter { StartsWith = highSchoolFilterDTO.Code },
                 Name = new StringFilter { Contains = highSchoolFilterDTO.Name },
                 ProvinceId = highSchoolFilterDTO.ProvinceId
@@ -198,7 +194,6 @@ namespace TwelveFinal.Controller.common
         {
             EthnicFilter ethnicFilter = new EthnicFilter
             {
-                Id = new GuidFilter { Equal = ethnicFilterDTO.Id },
                 Code = new StringFilter { StartsWith = ethnicFilterDTO.Code },
                 Name = new StringFilter { StartsWith = ethnicFilterDTO.Name }
             };
