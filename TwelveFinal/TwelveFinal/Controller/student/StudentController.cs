@@ -213,7 +213,7 @@ namespace TwelveFinal.Controller.student
 
         #region Get By Identify
         [Route(AdminRoute.GetByIdentify), HttpPost]
-        public async Task<ActionResult<Student_IdentifyDTO>> GetByIdentify(Student_IdentifyDTO student_IdentifyDTO)
+        public async Task<ActionResult<Student_IdentifyDTO>> GetByIdentify([FromBody]Student_IdentifyDTO student_IdentifyDTO)
         {
             if (student_IdentifyDTO == null) student_IdentifyDTO = new Student_IdentifyDTO();
             StudentFilter studentFilter = new StudentFilter
