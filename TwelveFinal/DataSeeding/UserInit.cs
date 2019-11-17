@@ -17,6 +17,7 @@ namespace DataSeeding
             List<UserDAO> userDAOs = new List<UserDAO>();
             UserDAO Admin = new UserDAO
             {
+                Id = Guid.NewGuid(),
                 Username = "admin",
                 Password = "admin",
                 IsAdmin = true
@@ -27,6 +28,7 @@ namespace DataSeeding
             {
                 UserDAO user = new UserDAO
                 {
+                    Id = Guid.NewGuid(),
                     Username = "hocsinh" + i.ToString(),
                     Password = "hocsinh" + i.ToString(),
                     IsAdmin = false
