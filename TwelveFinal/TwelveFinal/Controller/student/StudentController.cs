@@ -166,7 +166,6 @@ namespace TwelveFinal.Controller.student
         {
             StudentFilter studentFilter = new StudentFilter
             {
-                Id = new GuidFilter { Equal = studentFilterDTO.Id },
                 Identify = new StringFilter { StartsWith = studentFilterDTO.Identify },
                 Name = new StringFilter { Contains = studentFilterDTO.Name },
                 ProvinceId = new GuidFilter { Equal = studentFilterDTO.ProvinceId },
