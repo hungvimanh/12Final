@@ -48,7 +48,7 @@ namespace TwelveFinal.Controller.DTO
 
     public class StudentFilterDTO : FilterDTO
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
         public string Identify { get; set; }
         public string Name { get; set; }
         public bool? Gender { get; set; }
@@ -56,7 +56,7 @@ namespace TwelveFinal.Controller.DTO
         public Guid? ProvinceId { get; set; } 
         public Guid? HighSchoolId { get; set; }
         public int? Status { get; set; }
-        public StudentOrder OrderBy;
+        public StudentOrder OrderBy { get; set; }
         public StudentFilterDTO() : base()
         {
 

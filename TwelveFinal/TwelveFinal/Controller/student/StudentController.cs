@@ -163,7 +163,7 @@ namespace TwelveFinal.Controller.student
 
         #region List
         [Route(AdminRoute.ListStudent), HttpPost]
-        public async Task<List<StudentDTO>> List([FromForm] StudentFilterDTO studentFilterDTO)
+        public async Task<List<StudentDTO>> List([FromBody] StudentFilterDTO studentFilterDTO)
         {
             StudentFilter studentFilter = new StudentFilter
             {
@@ -228,6 +228,7 @@ namespace TwelveFinal.Controller.student
             }
             student_IdentifyDTO = new Student_IdentifyDTO
             {
+                StudentId = student.FirstOrDefault().Id,
                 Identify = student.FirstOrDefault().Identify,
                 Dob = student.FirstOrDefault().Dob.Date,
                 Name = student.FirstOrDefault().Name,

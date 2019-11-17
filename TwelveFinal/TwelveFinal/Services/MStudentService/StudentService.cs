@@ -95,6 +95,8 @@ namespace TwelveFinal.Services.MStudentService
 
         public async Task<Student> MarkInput(Student student)
         {
+            if (!await StudentValidator.Update(student))
+                return student;
             try
             {
                 await UOW.Begin();
@@ -202,7 +204,7 @@ namespace TwelveFinal.Services.MStudentService
         }
         #endregion
 
-        public async Task<double> GraduationMarkCalculate(Student student)
+        private async Task<double> GraduationMarkCalculate(Student student)
         {
             double mark = 0;
             var NaturalSciences = (student.Physics + student.Chemistry + student.Biology) / 3;

@@ -208,15 +208,14 @@ namespace TwelveFinal.Repositories
 
         public async Task<bool> Delete(Guid Id)
         {
-            await tFContext.User.Where(u => u.StudentId.Equals(Id)).UpdateFromQueryAsync(s => new UserDAO { StudentId = Guid.Empty });
+            await tFContext.User.Where(u => u.StudentId.Equals(Id)).DeleteFromQueryAsync();
             await tFContext.Student.Where(s => s.Id.Equals(Id)).DeleteFromQueryAsync();
             return true;
         }
 
         public async Task<Student> Get(Guid Id)
         {
-            Student student = await tFContext.Student.Where(s => s.Id.Equals(Id))
-                .Select(s => new Student
+            Student student = await tFContext.Student.Where(s => s.Id.Equals(Id)).Select(s => new Student
             {
                 Id = s.Id,
                 Address = s.Address,
@@ -282,7 +281,7 @@ namespace TwelveFinal.Repositories
         }
         public async Task<bool> Update(Student student)
         {
-            await tFContext.Student.Where(s => s.Id.Equals(CurrentContext.StudentId)).UpdateFromQueryAsync(s => new StudentDAO
+            await tFContext.Student.Where(s => s.Id.Equals(student.Id)).UpdateFromQueryAsync(s => new StudentDAO
             {
                 Address = student.Address,
                 Dob = student.Dob,

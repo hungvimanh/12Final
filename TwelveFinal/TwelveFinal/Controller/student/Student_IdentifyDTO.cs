@@ -7,6 +7,7 @@ namespace TwelveFinal.Controller.student
 {
     public class Student_IdentifyDTO : DataDTO
     {
+        public Guid? StudentId { get; set; }
         public string Identify { get; set; }
         public string Name { get; set; }
         public DateTime? Dob { get; set; }
