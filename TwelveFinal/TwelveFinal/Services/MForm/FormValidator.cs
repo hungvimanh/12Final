@@ -46,11 +46,11 @@ namespace TwelveFinal.Services.MForm
         {
             bool IsValid = true;
             IsValid &= await FormApproved(form);
-            IsValid &= await GraduationValidate(form);
-            if (form.Aspirations.Any())
-            {
-                IsValid &= await SequenceValidate(form.Aspirations);
-            }
+            //IsValid &= await GraduationValidate(form);
+            //if (form.Aspirations.Any())
+            //{
+            //    IsValid &= await SequenceValidate(form.Aspirations);
+            //}
             return IsValid;
         }
 
@@ -104,85 +104,85 @@ namespace TwelveFinal.Services.MForm
         }
 
         #region Validate thông tin xét tốt nghiệp
-        private async Task<bool> GraduationValidate(Form form)
-        {
-            //Kiểm tra số điểm các môn bảo lưu nếu có 
-            if (form.ReserveMaths != null && !(form.ReserveMaths >= 0 && form.ReserveMaths <= 10))
-            {
-                form.AddError(nameof(FormValidator), nameof(form.ReserveMaths), ErrorCode.Invalid);
-            }
+        //private async Task<bool> GraduationValidate(Form form)
+        //{
+        //    //Kiểm tra số điểm các môn bảo lưu nếu có 
+        //    if (form.ReserveMaths != null && !(form.ReserveMaths >= 0 && form.ReserveMaths <= 10))
+        //    {
+        //        form.AddError(nameof(FormValidator), nameof(form.ReserveMaths), ErrorCode.Invalid);
+        //    }
 
-            if (form.ReservePhysics != null && !(form.ReservePhysics >= 0 && form.ReservePhysics <= 10))
-            {
-                form.AddError(nameof(FormValidator), nameof(form.ReservePhysics), ErrorCode.Invalid);
-            }
+        //    if (form.ReservePhysics != null && !(form.ReservePhysics >= 0 && form.ReservePhysics <= 10))
+        //    {
+        //        form.AddError(nameof(FormValidator), nameof(form.ReservePhysics), ErrorCode.Invalid);
+        //    }
 
-            if (form.ReserveChemistry != null && !(form.ReserveChemistry >= 0 && form.ReserveChemistry <= 10))
-            {
-                form.AddError(nameof(FormValidator), nameof(form.ReserveChemistry), ErrorCode.Invalid);
-            }
+        //    if (form.ReserveChemistry != null && !(form.ReserveChemistry >= 0 && form.ReserveChemistry <= 10))
+        //    {
+        //        form.AddError(nameof(FormValidator), nameof(form.ReserveChemistry), ErrorCode.Invalid);
+        //    }
 
-            if (form.ReserveLiterature != null && !(form.ReserveLiterature >= 0 && form.ReserveLiterature <= 10))
-            {
-                form.AddError(nameof(FormValidator), nameof(form.ReserveLiterature), ErrorCode.Invalid);
-            }
+        //    if (form.ReserveLiterature != null && !(form.ReserveLiterature >= 0 && form.ReserveLiterature <= 10))
+        //    {
+        //        form.AddError(nameof(FormValidator), nameof(form.ReserveLiterature), ErrorCode.Invalid);
+        //    }
 
-            if (form.ReserveHistory != null && !(form.ReserveHistory >= 0 && form.ReserveHistory <= 10))
-            {
-                form.AddError(nameof(FormValidator), nameof(form.ReserveHistory), ErrorCode.Invalid);
-            }
+        //    if (form.ReserveHistory != null && !(form.ReserveHistory >= 0 && form.ReserveHistory <= 10))
+        //    {
+        //        form.AddError(nameof(FormValidator), nameof(form.ReserveHistory), ErrorCode.Invalid);
+        //    }
 
-            if (form.ReserveGeography != null && !(form.ReserveGeography >= 0 && form.ReserveGeography <= 10))
-            {
-                form.AddError(nameof(FormValidator), nameof(form.ReserveGeography), ErrorCode.Invalid);
-            }
+        //    if (form.ReserveGeography != null && !(form.ReserveGeography >= 0 && form.ReserveGeography <= 10))
+        //    {
+        //        form.AddError(nameof(FormValidator), nameof(form.ReserveGeography), ErrorCode.Invalid);
+        //    }
 
-            if (form.ReserveBiology != null && !(form.ReserveBiology >= 0 && form.ReserveBiology <= 10))
-            {
-                form.AddError(nameof(FormValidator), nameof(form.ReserveBiology), ErrorCode.Invalid);
-            }
+        //    if (form.ReserveBiology != null && !(form.ReserveBiology >= 0 && form.ReserveBiology <= 10))
+        //    {
+        //        form.AddError(nameof(FormValidator), nameof(form.ReserveBiology), ErrorCode.Invalid);
+        //    }
 
-            if (form.ReserveCivicEducation != null && !(form.ReserveCivicEducation >= 0 && form.ReserveCivicEducation <= 10))
-            {
-                form.AddError(nameof(FormValidator), nameof(form.ReserveCivicEducation), ErrorCode.Invalid);
-            }
+        //    if (form.ReserveCivicEducation != null && !(form.ReserveCivicEducation >= 0 && form.ReserveCivicEducation <= 10))
+        //    {
+        //        form.AddError(nameof(FormValidator), nameof(form.ReserveCivicEducation), ErrorCode.Invalid);
+        //    }
 
-            if (form.ReserveLanguages != null && !(form.ReserveLanguages >= 0 && form.ReserveLanguages <= 10))
-            {
-                form.AddError(nameof(FormValidator), nameof(form.ReserveLanguages), ErrorCode.Invalid);
-            }
+        //    if (form.ReserveLanguages != null && !(form.ReserveLanguages >= 0 && form.ReserveLanguages <= 10))
+        //    {
+        //        form.AddError(nameof(FormValidator), nameof(form.ReserveLanguages), ErrorCode.Invalid);
+        //    }
 
-            return form.IsValidated;
-        }
+        //    return form.IsValidated;
+        //}
         #endregion
 
         #region Validate thông tin xét tuyển đại học
-        private async Task<bool> SequenceValidate(List<Aspiration> aspirations)
-        {
-            //Kiểm tra thứ tự nguyện vọng hợp lệ
-            //Sắp xếp List thứ tự nguyện vọng từ bé đến lớn
-            aspirations = aspirations.OrderBy(a => a.Sequence).ToList();
-            //Nguyện vọng cao nhất phải có Sequence = 1
-            if (aspirations.First().Sequence != 1)
-            {
-                aspirations.First().AddError(nameof(FormValidator), "Sequence", ErrorCode.Invalid);
-                return false;
-            }
+        //private async Task<bool> SequenceValidate(List<Aspiration> aspirations)
+        //{
+        //    //Kiểm tra thứ tự nguyện vọng hợp lệ
+        //    //Sắp xếp List thứ tự nguyện vọng từ bé đến lớn
+        //    aspirations = aspirations.OrderBy(a => a.Sequence).ToList();
+        //    //Nguyện vọng cao nhất phải có Sequence = 1
+        //    if (aspirations.First().Sequence != 1)
+        //    {
+        //        aspirations.First().AddError(nameof(FormValidator), "Sequence", ErrorCode.Invalid);
+        //        return false;
+        //    }
 
-            //Sequence của các nguyện vọng sau phải hơn nguyện vọng trước 1
-            var listSequence = aspirations.Select(a => a.Sequence).ToList();
-            for (int i = 1; i < listSequence.Count; i++)
-            {
-                if (listSequence[i] != listSequence[i - 1] + 1)
-                {
-                    aspirations[i].AddError(nameof(FormValidator), "Sequence", ErrorCode.Invalid);
-                }
-            }
+        //    //Sequence của các nguyện vọng sau phải hơn nguyện vọng trước 1
+        //    var listSequence = aspirations.Select(a => a.Sequence).ToList();
+        //    for (int i = 1; i < listSequence.Count; i++)
+        //    {
+        //        if (listSequence[i] != listSequence[i - 1] + 1)
+        //        {
+        //            aspirations[i].AddError(nameof(FormValidator), "Sequence", ErrorCode.Invalid);
+        //        }
+        //    }
 
-            bool IsValid = true;
-            aspirations.ForEach(e => IsValid &= e.IsValidated);
-            return IsValid;
-        }
+        //    bool IsValid = true;
+        //    aspirations.ForEach(e => IsValid &= e.IsValidated);
+        //    return IsValid;
+        //}
         #endregion
     }
 }
