@@ -18,6 +18,7 @@ namespace TwelveFinal.Repositories
         Task<Student> Get(Guid Id);
         Task<bool> Update(Student student);
         Task<bool> UpdateStatus(Student student);
+        Task<bool> MarkInput(Student student);
         Task<bool> Delete(Guid Id);
     }
     public class StudentRepository : IStudentRepository
@@ -291,17 +292,7 @@ namespace TwelveFinal.Repositories
                 Name = student.Name,
                 Phone = student.Phone,
                 PlaceOfBirth = student.PlaceOfBirth,
-                TownId = student.TownId,
-
-                Biology = student.Biology,
-                Chemistry = student.Chemistry,
-                CivicEducation = student.CivicEducation,
-                Geography = student.Geography,
-                History = student.History,
-                Languages = student.Languages,
-                Literature = student.Literature,
-                Maths = student.Maths,
-                Physics = student.Physics,
+                TownId = student.TownId
             });
             return true;
         }
@@ -311,6 +302,23 @@ namespace TwelveFinal.Repositories
             await tFContext.Student.Where(s => s.Id.Equals(student.Id)).UpdateFromQueryAsync(s => new StudentDAO
             {
                 Status = student.Status
+            });
+            return true;
+        }
+
+        public async Task<bool> MarkInput(Student student)
+        {
+            await tFContext.Student.Where(s => s.Id.Equals(student.Id)).UpdateFromQueryAsync(s => new StudentDAO
+            {
+                Biology = student.Biology,
+                Chemistry = student.Chemistry,
+                CivicEducation = student.CivicEducation,
+                Geography = student.Geography,
+                History = student.History,
+                Languages = student.Languages,
+                Literature = student.Literature,
+                Maths = student.Maths,
+                Physics = student.Physics
             });
             return true;
         }

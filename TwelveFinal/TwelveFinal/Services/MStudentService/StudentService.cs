@@ -100,7 +100,7 @@ namespace TwelveFinal.Services.MStudentService
             try
             {
                 await UOW.Begin();
-                await UOW.StudentRepository.Update(student);
+                await UOW.StudentRepository.MarkInput(student);
                 await UOW.Commit();
                 return await UOW.StudentRepository.Get(student.Id);
             }
