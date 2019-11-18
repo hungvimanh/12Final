@@ -87,8 +87,8 @@ namespace TwelveFinal.Controller
         public const string ListUniversity_Majors = Base + "/university-majors/list";
     }
 
-    //[Authorize]
-    //[Authorize(Policy = "Permission")]
+    [Authorize]
+    [Authorize(Policy = "Permission")]
     public class ApiController : ControllerBase
     {
 

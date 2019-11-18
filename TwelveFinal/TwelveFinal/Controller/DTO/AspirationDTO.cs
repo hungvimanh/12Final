@@ -18,6 +18,7 @@ namespace TwelveFinal.Controller.DTO
         public Guid SubjectGroupId { get; set; }
         public string SubjectGroupCode { get; set; }
         public string SubjectGroupName { get; set; }
+        public int Sequence { get; set; }
         public Guid FormId { get; set; }
     }
 }

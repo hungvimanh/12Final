@@ -32,17 +32,6 @@ namespace TwelveFinal.Controller.DTO
         public Guid? ProvinceId { get; set; }
         public string ProvinceCode { get; set; }
         public string ProvinceName { get; set; }
-
-        public double? Maths { get; set; }
-        public double? Literature { get; set; }
-        public double? Languages { get; set; }
-        public double? Physics { get; set; }
-        public double? Chemistry { get; set; }
-        public double? Biology { get; set; }
-        public double? History { get; set; }
-        public double? Geography { get; set; }
-        public double? CivicEducation { get; set; }
-
         public int Status { get; set; }
     }
 

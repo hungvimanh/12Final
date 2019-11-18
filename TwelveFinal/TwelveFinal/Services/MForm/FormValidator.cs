@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TwelveFinal.Common;
 using TwelveFinal.Entities;
 using TwelveFinal.Repositories;
 
@@ -17,6 +18,7 @@ namespace TwelveFinal.Services.MForm
     public class FormValidator : IFormValidator
     {
         private IUOW UOW;
+        private ICurrentContext CurrentContext;
         public enum ErrorCode
         {
             Duplicate,
@@ -25,9 +27,10 @@ namespace TwelveFinal.Services.MForm
             IsApproved,
         }
 
-        public FormValidator(IUOW _UOW)
+        public FormValidator(IUOW _UOW, ICurrentContext CurrentContext)
         {
             UOW = _UOW;
+            this.CurrentContext = CurrentContext;
         }
 
         public async Task<bool> Approve(Form form)
@@ -68,7 +71,7 @@ namespace TwelveFinal.Services.MForm
         public async Task<bool> IsExisted(Form form)
         {
             //Kiểm tra Form đã tồn tại hay chưa?
-            if(await UOW.FormRepository.Get(form.Id) == null)
+            if(await UOW.FormRepository.Get(CurrentContext.StudentId) == null)
             {
                 return false;
             }

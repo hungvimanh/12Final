@@ -122,7 +122,8 @@ namespace TwelveFinal.Controller.form
                     UniversityAddress = m.UniversityAddress,
                     SubjectGroupId = m.SubjectGroupId,
                     SubjectGroupCode = m.SubjectGroupCode,
-                    SubjectGroupName = m.SubjectGroupName
+                    SubjectGroupName = m.SubjectGroupName,
+                    Sequence = m.Sequence
                 }).ToList(),
                 Errors = form.Errors
             };
@@ -218,7 +219,8 @@ namespace TwelveFinal.Controller.form
                     UniversityAddress = m.UniversityAddress,
                     SubjectGroupId = m.SubjectGroupId,
                     SubjectGroupCode = m.SubjectGroupCode,
-                    SubjectGroupName = m.SubjectGroupName
+                    SubjectGroupName = m.SubjectGroupName,
+                    Sequence = m.Sequence
                 }).ToList()
             };
         }
@@ -277,6 +279,7 @@ namespace TwelveFinal.Controller.form
                     SubjectGroupId = m.SubjectGroupId,
                     SubjectGroupCode = m.SubjectGroupCode,
                     SubjectGroupName = m.SubjectGroupName,
+                    Sequence = m.Sequence
                 }).ToList()
             };
             return form;

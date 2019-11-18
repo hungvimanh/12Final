@@ -86,6 +86,7 @@ namespace TwelveFinal.Services.MForm
         private async Task<Form> Create(Form form)
         {
             form.Id = Guid.NewGuid();
+            form.Aspirations.ForEach(a => a.Id = Guid.NewGuid());
             if(!await FormValidator.Save(form))
                 return form;
 
@@ -115,6 +116,7 @@ namespace TwelveFinal.Services.MForm
 
         private async Task<Form> Update(Form form)
         {
+            form.Aspirations.ForEach(a => a.Id = Guid.NewGuid());
             if (!await FormValidator.Save(form))
                 return form;
 
