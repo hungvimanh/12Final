@@ -88,6 +88,18 @@ namespace TwelveFinal.Common
             }
         }
 
+        public static string GeneratePassword()
+        {
+            const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            StringBuilder res = new StringBuilder();
+            Random rnd = new Random();
+            for (int i = 0; i < 10; i++)
+            {
+                res.Append(valid[rnd.Next(valid.Length)]);
+            }
+            return res.ToString();
+        }
+
         public static Guid CreateGuid(string name)
         {
             MD5 md5 = MD5.Create();
