@@ -80,6 +80,7 @@ namespace TwelveFinal.Services.MForm
 
         private async Task<bool> FormApproved(Form form)
         {
+            //Nếu form đã được Approve thì không thể approve lại nữa
             if(form.Status == 2)
             {
                 form.AddError(nameof(FormValidator), "Form", ErrorCode.IsApproved);

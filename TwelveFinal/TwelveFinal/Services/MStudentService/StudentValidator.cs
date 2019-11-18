@@ -59,6 +59,7 @@ namespace TwelveFinal.Services.MStudentService
 
         private async Task<bool> IsExisted(Student student)
         {
+            //Validate Existed
             if(await UOW.StudentRepository.Get(student.Id) == null)
             {
                 student.AddError(nameof(StudentValidator), nameof(student.Identify), ErrorCode.NotExisted);
@@ -84,7 +85,16 @@ namespace TwelveFinal.Services.MStudentService
 
         private async Task<bool> ValidateIdentify(Student student)
         {
-            if(await UOW.StudentRepository.Count(new StudentFilter { Id = new GuidFilter { NotEqual = student.Id}, Identify = new StringFilter { Equal = student.Identify} }) != 0)
+            //Validate số CMND Unique
+            
+            StudentFilter filter = new StudentFilter
+            {
+                Id = new GuidFilter { NotEqual = student.Id },
+                Identify = new StringFilter { Equal = student.Identify }
+            };
+
+            //Đếm số record có Identify qua filter
+            if (await UOW.StudentRepository.Count(filter) != 0)
             {
                 student.AddError(nameof(StudentValidator), nameof(student.Identify), ErrorCode.Duplicate);
             }

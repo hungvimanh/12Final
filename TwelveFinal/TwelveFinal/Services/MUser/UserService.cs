@@ -46,6 +46,7 @@ namespace TwelveFinal.Services.MUser
         public async Task<User> Login(UserFilter userFilter)
         {
             User user = await this.Verify(userFilter);
+            //Nếu tài khoản đăng nhập lần đầu tiên, hệ thống sẽ yêu cầu đổi mật khẩu để bảo vệ tài khoản
             if(userFilter.Password == user.Password)
             {
                 user.FirstLogin = true;
@@ -60,7 +61,8 @@ namespace TwelveFinal.Services.MUser
         }
         public async Task<User> ChangePassword(UserFilter userFilter, string newPassword)
         {
-            
+            //Khi đổi mật khẩu sẽ có thêm Salt
+            // mỗi lần đổi salt sẽ được generate lại
             User user = await this.Verify(userFilter);
             if (!await UserValidator.ChangePassword(user))
                 return user;
@@ -77,10 +79,12 @@ namespace TwelveFinal.Services.MUser
 
         public async Task<bool> ForgotPassword(UserFilter userFilter)
         {
+            //Quên mật khẩu
+            //Nếu thí sinh nhập đúng Identify và Email, hệ thống sẽ generate lại mật khẩu và gửi về email
             User user = await UOW.UserRepository.Get(userFilter);
             if (user == null) throw new BadRequestException("Id không tồn tại");
             if (!userFilter.Email.Equals(user.Email)) throw new BadRequestException("Email không đúng!");
-            user.Password = GeneratePassword();
+            user.Password = Utils.GeneratePassword();
             user.Salt = null;
             await UOW.UserRepository.ChangePassword(user);
             await Utils.RecoveryPasswordMail(user);
@@ -140,67 +144,7 @@ namespace TwelveFinal.Services.MUser
             return user;
         }
 
-        
 
-        //public async Task<byte[]> Export()
-        //{
-        //    UserFilter employeeFilter = new UserFilter()
-        //    {
-        //        Skip = 0,
-        //        Take = int.MaxValue,
-        //        OrderBy = EmployeeOrder.Code,
-        //        Disabled = false,
-        //        Selects = EmployeeSelect.ALL,
-        //    };
-
-        //    List<Employee> employees = await UOW.EmployeeRepository.List(employeeFilter);
-        //    using (ExcelPackage excel = new ExcelPackage())
-        //    {
-        //        var employeeHeaders = new List<string[]>()
-        //        {
-        //            new string[] { "STT", "Mã nhân viên", "Tên nhân viên", "Ngày sinh", "Chức vụ", "Cấp bậc",
-        //                "Trạng thái", "CMND", "Mã số thuế", "Lương", "Hệ số lương", "Lương bảo hiểm", "Người phụ thuộc" }
-        //        };
-
-        //        List<object[]> data = new List<object[]>();
-        //        for (int i = 0; i < employees.Count; i++)
-        //        {
-        //            data.Add(new object[] {
-        //                i + 1,
-        //                employees[i].Code,
-        //                employees[i].Name,
-        //                employees[i].Dob,
-        //                employees[i].JobLevel,
-        //                employees[i].JobTitleName,
-        //                employees[i].StatusName,
-        //                employees[i].IdentityNumber,
-        //                employees[i].TaxCode,
-        //                employees[i].Salary,
-        //                employees[i].SalaryRatio,
-        //                employees[i].InsuranceSalary,
-        //                employees[i].NumberDependentPerson
-        //            });
-        //        }
-
-        //        excel.GenerateWorksheet(EmployeeSheet, employeeHeaders, data);
-
-        //        return excel.GetAsByteArray();
-        //    }
-        //}
-
-        
-
-        public static string GeneratePassword()
-        {
-            const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-            StringBuilder res = new StringBuilder();
-            Random rnd = new Random();
-            for (int i = 0; i < 10; i++)
-            {
-                res.Append(valid[rnd.Next(valid.Length)]);
-            }
-            return res.ToString();
-        }
 
     }
 }

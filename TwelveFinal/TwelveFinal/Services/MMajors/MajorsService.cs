@@ -20,10 +20,7 @@ namespace TwelveFinal.Services.MMajors
         private readonly IUOW UOW;
         private readonly IMajorsValidator MajorsValidator;
 
-        public MajorsService(
-            IUOW UOW,
-            IMajorsValidator MajorsValidator
-            )
+        public MajorsService(IUOW UOW, IMajorsValidator MajorsValidator)
         {
             this.UOW = UOW;
             this.MajorsValidator = MajorsValidator;

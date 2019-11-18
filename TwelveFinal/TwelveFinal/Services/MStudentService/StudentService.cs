@@ -43,12 +43,16 @@ namespace TwelveFinal.Services.MStudentService
             if (!await StudentValidator.Create(student))
                 return student;
 
+            //Tạo mới tài khoản thí sinh
             try
             {
                 await UOW.Begin();
+                //Tạo mới Id
                 student.Id = Guid.NewGuid();
                 await UOW.StudentRepository.Create(student);
 
+                //Tạo mới account với Username bằng Identify
+                //Password được generate tự động
                 User user = new User()
                 {
                     Username = student.Identify,
@@ -61,6 +65,7 @@ namespace TwelveFinal.Services.MStudentService
                 await UOW.UserRepository.Create(user);
 
                 await UOW.Commit();
+                //Sau đó gửi về Email
                 await Utils.RegisterMail(user);
                 return await UOW.StudentRepository.Get(student.Id);
             }
@@ -75,10 +80,12 @@ namespace TwelveFinal.Services.MStudentService
         #region Update Profile/Mark
         public async Task<Student> Update(Student student)
         {
+            //student Id sẽ được gán bằng Id của thí sinh đang truy cập hệ thống
             student.Id = CurrentContext.StudentId;
             if (!await StudentValidator.Update(student))
                 return student;
 
+            //Cập nhật thông tin thí sinh
             try
             {
                 await UOW.Begin();
@@ -97,6 +104,7 @@ namespace TwelveFinal.Services.MStudentService
         {
             if (!await StudentValidator.Update(student))
                 return student;
+            //Nhập điểm thi cho thí sinh
             try
             {
                 await UOW.Begin();
@@ -115,6 +123,7 @@ namespace TwelveFinal.Services.MStudentService
         #region Import From Excel
         public async Task<bool> ImportExcel(byte[] file)
         {
+            //Tạo nhiều tài khoản thí sinh từ file excel
             List<Student> students = await LoadFromExcel(file);
             try
             {
@@ -150,10 +159,18 @@ namespace TwelveFinal.Services.MStudentService
 
         private async Task<List<Student>> LoadFromExcel(byte[] file)
         {
+            //Đọc file excel
             List<Student> excelTemplates = new List<Student>();
             using (MemoryStream ms = new MemoryStream(file))
             using (var package = new ExcelPackage(ms))
             {
+                //Thông tin thí sinh phải ở sheet đầu tiên của file excel
+                //Cột 1: Họ và tên
+                //Cột 2: Ngày tháng năm sinh
+                //Cột 3: Giới tính ( 1:Nam/0:Nữ)
+                //Cột 4: Số CMND
+                //Cột 5: Số điện thoại
+                //Cột 6: địa chỉ Email
                 var worksheet = package.Workbook.Worksheets.FirstOrDefault();
                 for (int i = worksheet.Dimension.Start.Row + 1; i <= worksheet.Dimension.End.Row; i++)
                 {
@@ -196,6 +213,8 @@ namespace TwelveFinal.Services.MStudentService
         {
             if (CurrentContext.StudentId == Guid.Empty) return null;
             var student = await UOW.StudentRepository.Get(CurrentContext.StudentId);
+            //Nếu thí sinh chưa tốt nghiệp THPT
+            //Tính điểm tốt nghiệp
             if(student.Graduated.HasValue && !student.Graduated.Value)
             {
                 student.GraduationMark = await GraduationMarkCalculate(student);
@@ -204,31 +223,7 @@ namespace TwelveFinal.Services.MStudentService
         }
         #endregion
 
-        private async Task<double> GraduationMarkCalculate(Student student)
-        {
-            double mark = 0;
-            var NaturalSciences = (student.Physics + student.Chemistry + student.Biology) / 3;
-            var SocialSciences = (student.History + student.Geography + student.CivicEducation) / 3;
-            if(NaturalSciences.HasValue && SocialSciences.HasValue)
-            {
-                mark = NaturalSciences.Value > SocialSciences.Value ? NaturalSciences.Value : SocialSciences.Value;
-            }
-
-            if(NaturalSciences.HasValue && !SocialSciences.HasValue)
-            {
-                mark = NaturalSciences.Value;
-            }
-
-            if (!NaturalSciences.HasValue && SocialSciences.HasValue)
-            {
-                mark = SocialSciences.Value;
-            }
-
-            mark = (mark + student.Maths.Value + student.Literature.Value + student.Languages.Value) / 4;
-            if (!student.EthnicCode.Equals("01")) mark += 1;
-            return mark;
-        }
-
+        #region Delete
         public async Task<Student> Delete(Student student)
         {
             if (!await StudentValidator.Delete(student))
@@ -247,5 +242,37 @@ namespace TwelveFinal.Services.MStudentService
                 throw new MessageException(ex);
             }
         }
+        #endregion
+
+        private async Task<double> GraduationMarkCalculate(Student student)
+        {
+            //Điểm tốt nghiệp được tính theo công thức
+            //Điểm môn tổ hợp = (Lý + Hoá + Sinh)/3 hoặc (Sử + Địa + GDCD)/3  => lấy điểm của tổ hợp cao nhất
+            double mark = 0;
+            var NaturalSciences = (student.Physics + student.Chemistry + student.Biology) / 3;
+            var SocialSciences = (student.History + student.Geography + student.CivicEducation) / 3;
+            if(NaturalSciences.HasValue && SocialSciences.HasValue)
+            {
+                mark = NaturalSciences.Value > SocialSciences.Value ? NaturalSciences.Value : SocialSciences.Value;
+            }
+
+            if(NaturalSciences.HasValue && !SocialSciences.HasValue)
+            {
+                mark = NaturalSciences.Value;
+            }
+
+            if (!NaturalSciences.HasValue && SocialSciences.HasValue)
+            {
+                mark = SocialSciences.Value;
+            }
+            //Điểm tốt nghiệp = (Toán + Văn + Ngoại ngữ + điểm tổ hợp môn)/4
+            mark = (mark + student.Maths.Value + student.Literature.Value + student.Languages.Value) / 4;
+            //Nếu thí sinh là dân tộc thiểu số sẽ được cộng thêm 1 điểm
+            if (!student.EthnicCode.Equals("01")) mark += 1;
+            //Tổng điểm sau khi tính >=5 đủ điều kiện tốt nghiệp
+            return mark;
+        }
+
+        
     }
 }
