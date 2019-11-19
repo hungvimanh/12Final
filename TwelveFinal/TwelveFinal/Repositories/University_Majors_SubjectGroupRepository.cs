@@ -13,6 +13,8 @@ namespace TwelveFinal.Repositories
         Task<University_Majors_SubjectGroup> Get(Guid Id);
         Task<List<University_Majors_SubjectGroup>> List(University_Majors_SubjectGroupFilter u_M_Y_SFilter);
         Task<int> Count(University_Majors_SubjectGroupFilter u_M_Y_SFilter);
+        Task<bool> Create(University_Majors_SubjectGroup university_Majors_SubjectGroup);
+        Task<bool> Delete(Guid Id);
     }
     public class University_Majors_SubjectGroupRepository : IUniversity_Majors_SubjectGroupRepository
     {
@@ -26,8 +28,9 @@ namespace TwelveFinal.Repositories
         {
             if (university_Majors_SubjectGroupFilter == null)
                 return query.Where(q => 1 == 0);
-            query = query.Where(q => q.University_MajorsId.Equals(university_Majors_SubjectGroupFilter.University_MajorsId));
-
+            if (university_Majors_SubjectGroupFilter.University_MajorsId.HasValue)
+                query = query.Where(q => q.University_MajorsId.Equals(university_Majors_SubjectGroupFilter.University_MajorsId));
+            
             if (university_Majors_SubjectGroupFilter.UniversityId != null)
                 query = query.Where(q => q.University_Majors.UniversityId.Equals(university_Majors_SubjectGroupFilter.UniversityId));
             if (university_Majors_SubjectGroupFilter.MajorsId != null)
@@ -156,6 +159,29 @@ namespace TwelveFinal.Repositories
             }).FirstOrDefaultAsync();
 
             return university_Majors_SubjectGroup;
+        }
+
+        public async Task<bool> Create(University_Majors_SubjectGroup university_Majors_SubjectGroup)
+        {
+            University_Majors_SubjectGroupDAO university_Majors_SubjectGroupDAO = new University_Majors_SubjectGroupDAO
+            {
+                Id = university_Majors_SubjectGroup.Id,
+                University_MajorsId = university_Majors_SubjectGroup.University_MajorsId,
+                SubjectGroupId = university_Majors_SubjectGroup.SubjectGroupId,
+                Benchmark = university_Majors_SubjectGroup.Benchmark,
+                Quantity = university_Majors_SubjectGroup.Quantity,
+                Note = university_Majors_SubjectGroup.Note
+            };
+
+            await tFContext.University_Majors_SubjectGroup.AddAsync(university_Majors_SubjectGroupDAO);
+            await tFContext.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> Delete(Guid Id)
+        {
+            await tFContext.University_Majors_SubjectGroup.Where(u => u.Id == Id).DeleteFromQueryAsync();
+            return true;
         }
     }
 }

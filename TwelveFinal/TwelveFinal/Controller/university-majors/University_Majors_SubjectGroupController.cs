@@ -18,6 +18,40 @@ namespace TwelveFinal.Controller.university_majors
             this.University_Majors_SubjectGroupService = University_Majors_SubjectGroupService;
         }
 
+        #region Create
+        [Route(AdminRoute.CreateUniversity_Majors_SubjectGroup), HttpPost]
+        public async Task<ActionResult<University_Majors_SubjectGroupDTO>> Create([FromBody] University_Majors_SubjectGroupDTO university_Majors_SubjectGroupDTO)
+        {
+            if (university_Majors_SubjectGroupDTO == null) university_Majors_SubjectGroupDTO = new University_Majors_SubjectGroupDTO();
+
+            University_Majors_SubjectGroup university_Majors_SubjectGroup = ConvertDTOtoBO(university_Majors_SubjectGroupDTO);
+            university_Majors_SubjectGroup = await University_Majors_SubjectGroupService.Create(university_Majors_SubjectGroup);
+
+            university_Majors_SubjectGroupDTO = new University_Majors_SubjectGroupDTO
+            {
+                MajorsId = university_Majors_SubjectGroup.MajorsId,
+                MajorsCode = university_Majors_SubjectGroup.MajorsCode,
+                MajorsName = university_Majors_SubjectGroup.MajorsName,
+                UniversityId = university_Majors_SubjectGroup.UniversityId,
+                UniversityCode = university_Majors_SubjectGroup.UniversityCode,
+                UniversityName = university_Majors_SubjectGroup.UniversityName,
+                SubjectGroupId = university_Majors_SubjectGroup.SubjectGroupId,
+                SubjectGroupCode = university_Majors_SubjectGroup.SubjectGroupCode,  
+                SubjectGroupName = university_Majors_SubjectGroup.SubjectGroupName,
+                University_MajorsId = university_Majors_SubjectGroup.University_MajorsId,
+                Quantity = university_Majors_SubjectGroup.Quantity,
+                Note = university_Majors_SubjectGroup.Note,
+                Benchmark = university_Majors_SubjectGroup.Benchmark,
+                Id = university_Majors_SubjectGroup.Id,
+                Year = university_Majors_SubjectGroup.Year,
+                Errors = university_Majors_SubjectGroup.Errors
+            };
+            if (university_Majors_SubjectGroup.HasError)
+                return BadRequest(university_Majors_SubjectGroupDTO);
+            return Ok(university_Majors_SubjectGroupDTO);
+        }
+        #endregion
+
         #region Read
         [AllowAnonymous]
         [Route(CommonRoute.GetUniversity_Majors_SubjectGroup), HttpPost]
@@ -96,5 +130,62 @@ namespace TwelveFinal.Controller.university_majors
             return University_Majors_SubjectDTOs;
         }
         #endregion
+
+        #region Delete
+        [Route(AdminRoute.DeleteUniversity_Majors_SubjectGroup), HttpPost]
+        public async Task<ActionResult<University_Majors_SubjectGroupDTO>> Delete([FromBody] University_Majors_SubjectGroupDTO university_Majors_SubjectGroupDTO)
+        {
+            if (university_Majors_SubjectGroupDTO == null) university_Majors_SubjectGroupDTO = new University_Majors_SubjectGroupDTO();
+
+            University_Majors_SubjectGroup university_Majors_SubjectGroup = ConvertDTOtoBO(university_Majors_SubjectGroupDTO);
+            university_Majors_SubjectGroup = await University_Majors_SubjectGroupService.Delete(university_Majors_SubjectGroup);
+
+            university_Majors_SubjectGroupDTO = new University_Majors_SubjectGroupDTO
+            {
+                MajorsId = university_Majors_SubjectGroup.MajorsId,
+                MajorsCode = university_Majors_SubjectGroup.MajorsCode,
+                MajorsName = university_Majors_SubjectGroup.MajorsName,
+                UniversityId = university_Majors_SubjectGroup.UniversityId,
+                UniversityCode = university_Majors_SubjectGroup.UniversityCode,
+                UniversityName = university_Majors_SubjectGroup.UniversityName,
+                SubjectGroupId = university_Majors_SubjectGroup.SubjectGroupId,
+                SubjectGroupCode = university_Majors_SubjectGroup.SubjectGroupCode,
+                SubjectGroupName = university_Majors_SubjectGroup.SubjectGroupName,
+                University_MajorsId = university_Majors_SubjectGroup.University_MajorsId,
+                Quantity = university_Majors_SubjectGroup.Quantity,
+                Note = university_Majors_SubjectGroup.Note,
+                Benchmark = university_Majors_SubjectGroup.Benchmark,
+                Id = university_Majors_SubjectGroup.Id,
+                Year = university_Majors_SubjectGroup.Year,
+                Errors = university_Majors_SubjectGroup.Errors
+            };
+            if (university_Majors_SubjectGroup.HasError)
+                return BadRequest(university_Majors_SubjectGroupDTO);
+            return Ok(university_Majors_SubjectGroupDTO);
+        }
+        #endregion
+
+        private University_Majors_SubjectGroup ConvertDTOtoBO(University_Majors_SubjectGroupDTO university_Majors_SubjectGroupDTO)
+        {
+            University_Majors_SubjectGroup university_Majors_SubjectGroup = new University_Majors_SubjectGroup
+            {
+                Id = university_Majors_SubjectGroupDTO.Id,
+                MajorsId = university_Majors_SubjectGroupDTO.MajorsId,
+                MajorsCode = university_Majors_SubjectGroupDTO.MajorsCode,
+                MajorsName = university_Majors_SubjectGroupDTO.MajorsName,
+                UniversityId = university_Majors_SubjectGroupDTO.UniversityId,
+                UniversityCode = university_Majors_SubjectGroupDTO.UniversityCode,
+                UniversityName = university_Majors_SubjectGroupDTO.UniversityName,
+                SubjectGroupId = university_Majors_SubjectGroupDTO.SubjectGroupId,
+                SubjectGroupCode = university_Majors_SubjectGroupDTO.SubjectGroupCode,
+                SubjectGroupName = university_Majors_SubjectGroupDTO.SubjectGroupName,
+                University_MajorsId = university_Majors_SubjectGroupDTO.University_MajorsId,
+                Benchmark = university_Majors_SubjectGroupDTO.Benchmark,
+                Note = university_Majors_SubjectGroupDTO.Note,
+                Quantity = university_Majors_SubjectGroupDTO.Quantity,
+                Year = university_Majors_SubjectGroupDTO.Year
+            };
+            return university_Majors_SubjectGroup;
+        }
     }
 }
