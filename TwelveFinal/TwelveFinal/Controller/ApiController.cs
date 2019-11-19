@@ -47,8 +47,8 @@ namespace TwelveFinal.Controller
         public const string UpdateUniversity_Majors = Default + "/university-majors/update";
         public const string DeleteUniversity_Majors = Default + "/university-majors/delete";
 
-        public const string CreateUniversity_Major_SubjectGroup = Default + "/university-majors-subject-group/create";
-        public const string DeleteUniversity_Major_SubjectGroup = Default + "/university-majors-subject-group/delete";
+        public const string CreateUniversity_Majors_SubjectGroup = Default + "/university-majors-subject-group/create";
+        public const string DeleteUniversity_Majors_SubjectGroup = Default + "/university-majors-subject-group/delete";
     }
 
     public class StudentRoute : Root
