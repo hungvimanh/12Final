@@ -24,6 +24,7 @@ namespace TwelveFinal.Repositories
         IStudentRepository StudentRepository { get; }
         IUniversity_MajorsRepository University_MajorsRepository { get; }
         IUniversityRepository UniversityRepository { get; }
+        IUniversity_Majors_SubjectGroupRepository University_Majors_SubjectGroupRepository { get; }
         IUserRepository UserRepository { get; }
     }
     public class UOW : IUOW
@@ -39,6 +40,7 @@ namespace TwelveFinal.Repositories
         public ISubjectGroupRepository SubjectGroupRepository { get; private set; }
         public IStudentRepository StudentRepository { get; private set; }
         public IUniversity_MajorsRepository University_MajorsRepository { get; private set; }
+        public IUniversity_Majors_SubjectGroupRepository University_Majors_SubjectGroupRepository { get; private set; }
         public IUniversityRepository UniversityRepository { get; private set; }
         public IUserRepository UserRepository { get; private set; }
 
@@ -55,6 +57,7 @@ namespace TwelveFinal.Repositories
             SubjectGroupRepository = new SubjectGroupRepository(tFContext);
             StudentRepository = new StudentRepository(tFContext, currentContext);
             University_MajorsRepository = new University_MajorsRepository(tFContext);
+            University_Majors_SubjectGroupRepository = new University_Majors_SubjectGroupRepository(tFContext);
             UniversityRepository = new UniversityRepository(tFContext);
             UserRepository = new UserRepository(tFContext);
             EntityFrameworkManager.ContextFactory = DbContext => tFContext;

@@ -85,6 +85,9 @@ namespace TwelveFinal.Controller
 
         public const string GetUniversity_Majors = Base + "/university-majors/get";
         public const string ListUniversity_Majors = Base + "/university-majors/list";
+
+        public const string GetUniversity_Majors_SubjectGroup = Base + "/university-majors-subject-group/get";
+        public const string ListUniversity_Majors_SubjectGroup = Base + "/university-majors-subject-group/list";
     }
 
     [Authorize]

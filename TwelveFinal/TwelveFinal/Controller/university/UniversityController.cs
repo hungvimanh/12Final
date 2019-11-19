@@ -80,12 +80,6 @@ namespace TwelveFinal.Controller.university
             University university = new University { Id = universityFilterDTO.Id ?? Guid.Empty };
             university = await UniversityService.Get(university.Id);
 
-            List<University_Majors> university_Majors = await University_MajorsService.List(new University_MajorsFilter
-            {
-                UniversityId = universityFilterDTO.Id,
-                Year = universityFilterDTO.Year
-            });
-
             return university == null ? null : new UniversityDTO()
             {
                 Id = university.Id,
@@ -93,8 +87,9 @@ namespace TwelveFinal.Controller.university
                 Name = university.Name,
                 Address = university.Address,
                 Website = university.Website,
-                University_Majors = university_Majors.Select( u => new University_MajorsDTO
+                University_Majors = university.University_Majors.Select( u => new University_MajorsDTO
                 {
+                    Id = u.Id,
                     MajorsId = u.MajorsId,
                     MajorsCode = u.MajorsCode,
                     MajorsName = u.MajorsName,
@@ -102,13 +97,6 @@ namespace TwelveFinal.Controller.university
                     UniversityCode = u.UniversityCode,
                     UniversityName = u.UniversityName,
                     UniversityAddress = u.UniversityAddress,
-                    SubjectGroupId = u.SubjectGroupId,
-                    SubjectGroupCode = u.SubjectGroupCode,
-                    SubjectGroupName = u.SubjectGroupName,
-                    Benchmark = u.Benchmark,
-                    Year = u.Year,
-                    Quantity = u.Quantity,
-                    Descreption = u.Descreption
                 }).ToList(),
                 Errors = university.Errors
             };

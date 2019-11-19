@@ -10,7 +10,7 @@ namespace TwelveFinal.Services.MUniversity_Majors_Majors
     public interface IUniversity_MajorsService : IServiceScoped
     {
         Task<University_Majors> Create(University_Majors university_Majors);
-        Task<University_Majors> Get(University_Majors university_Majors);
+        Task<University_Majors> Get(Guid Id);
         Task<List<University_Majors>> List(University_MajorsFilter university_MajorsFilter);
         Task<University_Majors> Update(University_Majors university_Majors);
         Task<University_Majors> Delete(University_Majors university_Majors);
@@ -39,7 +39,7 @@ namespace TwelveFinal.Services.MUniversity_Majors_Majors
                 await UOW.Begin();
                 await UOW.University_MajorsRepository.Create(university_Majors);
                 await UOW.Commit();
-                return await Get(university_Majors);
+                return await Get(university_Majors.Id);
             }
             catch (Exception ex)
             {
@@ -56,7 +56,7 @@ namespace TwelveFinal.Services.MUniversity_Majors_Majors
             try
             {
                 await UOW.Begin();
-                await UOW.University_MajorsRepository.Delete(university_Majors);
+                await UOW.University_MajorsRepository.Delete(university_Majors.Id);
                 await UOW.Commit();
                 return university_Majors;
             }
@@ -67,10 +67,10 @@ namespace TwelveFinal.Services.MUniversity_Majors_Majors
             }
         }
 
-        public async Task<University_Majors> Get(University_Majors university_Majors)
+        public async Task<University_Majors> Get(Guid Id)
         {
-            if (university_Majors == null) return null;
-            University_Majors University_Majors = await UOW.University_MajorsRepository.Get(university_Majors);
+            if (Id == Guid.Empty) return null;
+            University_Majors University_Majors = await UOW.University_MajorsRepository.Get(Id);
             return University_Majors;
         }
 
@@ -89,7 +89,7 @@ namespace TwelveFinal.Services.MUniversity_Majors_Majors
                 await UOW.Begin();
                 await UOW.University_MajorsRepository.Update(university_Majors);
                 await UOW.Commit();
-                return await Get(university_Majors);
+                return await Get(university_Majors.Id);
             }
             catch (Exception ex)
             {

@@ -8,7 +8,7 @@ namespace TwelveFinal.Repositories.Models
         public SubjectGroupDAO()
         {
             Aspirations = new HashSet<AspirationDAO>();
-            University_Majors = new HashSet<University_MajorsDAO>();
+            University_Majors_SubjectGroups = new HashSet<University_Majors_SubjectGroupDAO>();
         }
 
         public Guid Id { get; set; }
@@ -17,6 +17,6 @@ namespace TwelveFinal.Repositories.Models
         public string Name { get; set; }
 
         public virtual ICollection<AspirationDAO> Aspirations { get; set; }
-        public virtual ICollection<University_MajorsDAO> University_Majors { get; set; }
+        public virtual ICollection<University_Majors_SubjectGroupDAO> University_Majors_SubjectGroups { get; set; }
     }
 }

@@ -122,7 +122,7 @@ namespace TwelveFinal.Repositories
 
         public async Task<bool> Delete(Guid Id)
         {
-            await tFContext.University_Majors.Where(t => t.SubjectGroupId.Equals(Id)).DeleteFromQueryAsync();
+            await tFContext.University_Majors_SubjectGroup.Where(t => t.SubjectGroupId.Equals(Id)).DeleteFromQueryAsync();
             await tFContext.SubjectGroup.Where(d => d.Id.Equals(Id)).DeleteFromQueryAsync();
             return true;
         }

@@ -51,7 +51,7 @@ namespace TwelveFinal.Services.MUniversity_Majors_Majors
         private async Task<bool> IsExisted(University_Majors university_Majors)
         {
             //Kiểm tra sự tồn tại trong DB
-            if (await UOW.University_MajorsRepository.Get(university_Majors) == null)
+            if (await UOW.University_MajorsRepository.Get(university_Majors.Id) == null)
             {
                 university_Majors.AddError(nameof(University_MajorsValidator), nameof(university_Majors.MajorsName), ErrorCode.NotExisted);
             }
@@ -65,8 +65,6 @@ namespace TwelveFinal.Services.MUniversity_Majors_Majors
             {
                 MajorsId = university_Majors.MajorsId,
                 UniversityId = university_Majors.UniversityId,
-                SubjectGroupId = university_Majors.SubjectGroupId,
-                Year = university_Majors.Year,
             };
 
             var count = await UOW.University_MajorsRepository.Count(filter);

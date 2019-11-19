@@ -24,7 +24,7 @@ namespace DataSeeding
             List<TownDAO> excelTemplates = new List<TownDAO>();
             using (var package = new ExcelPackage(new FileInfo(path)))
             {
-                var worksheet = package.Workbook.Worksheets[7];
+                var worksheet = package.Workbook.Worksheets[8];
                 for (int i = worksheet.Dimension.Start.Row + 1; i <= worksheet.Dimension.End.Row; i++)
                 {
                     string provinceCode = worksheet.Cells[i, 4].Value?.ToString();

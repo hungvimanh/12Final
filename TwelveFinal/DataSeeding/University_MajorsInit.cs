@@ -30,17 +30,14 @@ namespace DataSeeding
                 {
                     string universityCode = worksheet.Cells[i, 1].Value?.ToString();
                     string majorsCode = worksheet.Cells[i, 2].Value?.ToString();
-                    string subjectGroupCode = worksheet.Cells[i, 3].Value?.ToString();
+                    string year = worksheet.Cells[i, 3].Value?.ToString();
 
                     University_MajorsDAO excelTemplate = new University_MajorsDAO()
                     {
+                        Id = CreateGuid(universityCode + majorsCode + year),
                         UniversityId = CreateGuid("University" + universityCode),
                         MajorsId = CreateGuid("Majors" + majorsCode),
-                        SubjectGroupId = CreateGuid("SubjectGroup" + subjectGroupCode),
-                        Year = worksheet.Cells[i, 4].Value?.ToString(),
-                        Benchmark = Convert.ToDouble(worksheet.Cells[i, 5].Value?.ToString()),
-                        Descreption = worksheet.Cells[i, 6].Value?.ToString(),
-                        Quantity = Convert.ToInt32(worksheet.Cells[i, 7].Value?.ToString())
+                        Year = year
                     };
                     excelTemplates.Add(excelTemplate);
                 }

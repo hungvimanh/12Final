@@ -18,6 +18,7 @@ namespace TwelveFinal.Repositories.Models
         public virtual DbSet<TownDAO> Town { get; set; }
         public virtual DbSet<UniversityDAO> University { get; set; }
         public virtual DbSet<University_MajorsDAO> University_Majors { get; set; }
+        public virtual DbSet<University_Majors_SubjectGroupDAO> University_Majors_SubjectGroup { get; set; }
         public virtual DbSet<UserDAO> User { get; set; }
         public virtual DbSet<__MigrationLogDAO> __MigrationLog { get; set; }
         // Unable to generate entity type for table 'dbo.__SchemaSnapshot'. Please see the warning messages.
@@ -32,7 +33,7 @@ namespace TwelveFinal.Repositories.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("data source=.;initial catalog=TF;persist security info=True;user id=sa;password=123456a@;multipleactiveresultsets=True;");
+                optionsBuilder.UseSqlServer("data source=.;initial catalog=TFCopy;persist security info=True;user id=sa;password=123456a@;multipleactiveresultsets=True;");
             }
         }
 
@@ -349,38 +350,56 @@ namespace TwelveFinal.Repositories.Models
 
             modelBuilder.Entity<University_MajorsDAO>(entity =>
             {
-                entity.HasKey(e => new { e.UniversityId, e.MajorsId, e.SubjectGroupId, e.Year })
-                    .HasName("PK_University_Majors_1")
-                    .HasAnnotation("SqlServer:Clustered", false);
-
                 entity.HasIndex(e => e.CX)
                     .HasName("CX_University_Majors")
                     .IsUnique()
                     .HasAnnotation("SqlServer:Clustered", true);
 
-                entity.Property(e => e.Year).HasMaxLength(50);
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.CX).ValueGeneratedOnAdd();
 
-                entity.Property(e => e.Descreption).HasMaxLength(500);
+                entity.Property(e => e.Year)
+                    .IsRequired()
+                    .HasMaxLength(4);
 
                 entity.HasOne(d => d.Majors)
                     .WithMany(p => p.University_Majors)
                     .HasForeignKey(d => d.MajorsId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_University_Majors_Majors1");
-
-                entity.HasOne(d => d.SubjectGroup)
-                    .WithMany(p => p.University_Majors)
-                    .HasForeignKey(d => d.SubjectGroupId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_University_Majors_SubjectGroup");
+                    .HasConstraintName("FK_University_Majors_Majors");
 
                 entity.HasOne(d => d.University)
                     .WithMany(p => p.University_Majors)
                     .HasForeignKey(d => d.UniversityId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_University_Majors_University1");
+                    .HasConstraintName("FK_University_Majors_University");
+            });
+
+            modelBuilder.Entity<University_Majors_SubjectGroupDAO>(entity =>
+            {
+                entity.HasIndex(e => e.CX)
+                    .HasName("CX_University_Majors_Year_SubjectGroup")
+                    .IsUnique()
+                    .HasAnnotation("SqlServer:Clustered", true);
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.CX).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Note).HasMaxLength(500);
+
+                entity.HasOne(d => d.SubjectGroup)
+                    .WithMany(p => p.University_Majors_SubjectGroups)
+                    .HasForeignKey(d => d.SubjectGroupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_University_Majors_SubjectGroup_SubjectGroup");
+
+                entity.HasOne(d => d.University_Majors)
+                    .WithMany(p => p.University_Majors_SubjectGroups)
+                    .HasForeignKey(d => d.University_MajorsId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_University_Majors_SubjectGroup_University_Majors");
             });
 
             modelBuilder.Entity<UserDAO>(entity =>

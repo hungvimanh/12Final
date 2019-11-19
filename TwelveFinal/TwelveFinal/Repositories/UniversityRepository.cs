@@ -132,13 +132,24 @@ namespace TwelveFinal.Repositories
 
         public async Task<University> Get(Guid Id)
         {
-            University university = await tFContext.University.Where(u => u.Id.Equals(Id)).Select(u => new University
+            University university = await tFContext.University.Where(u => u.Id.Equals(Id)).Include(u => u.University_Majors).Select(u => new University
             {
                 Id = u.Id,
                 Code = u.Code,
                 Name = u.Name,
                 Address = u.Address,
-                Website = u.Website
+                Website = u.Website,
+                University_Majors = u.University_Majors.Select(um => new University_Majors
+                {
+                    Id = um.Id,
+                    MajorsId = um.MajorsId,
+                    MajorsCode = um.Majors.Code,
+                    MajorsName = um.Majors.Name,
+                    UniversityId = um.UniversityId,
+                    UniversityCode = um.University.Code,
+                    UniversityName = um.University.Name
+                    
+                }).ToList()
             }).FirstOrDefaultAsync();
 
             return university;
