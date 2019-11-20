@@ -7,7 +7,7 @@ using TwelveFinal.Repositories;
 
 namespace TwelveFinal.Services.MUniversity_Majors
 {
-    public interface IUniversity_Majors_SubjectGroupValidator
+    public interface IUniversity_Majors_SubjectGroupValidator : IServiceScoped
     {
         Task<bool> Create(University_Majors_SubjectGroup university_Majors_SubjectGroup);
         Task<bool> Delete(University_Majors_SubjectGroup university_Majors_SubjectGroup);

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TwelveFinal.Controller.DTO;
 using TwelveFinal.Entities;
 using TwelveFinal.Services.MUniversity;
+using TwelveFinal.Services.MUniversity_Majors;
 using TwelveFinal.Services.MUniversity_Majors_Majors;
 
 namespace TwelveFinal.Controller.university
@@ -15,11 +16,15 @@ namespace TwelveFinal.Controller.university
     {
         private IUniversityService UniversityService;
         private IUniversity_MajorsService University_MajorsService;
+        private IUniversity_Majors_SubjectGroupService University_Majors_SubjectGroupService;
 
-        public UniversityController(IUniversityService UniversityService, IUniversity_MajorsService University_MajorsService)
+        public UniversityController(IUniversityService UniversityService,
+            IUniversity_MajorsService University_MajorsService,
+            IUniversity_Majors_SubjectGroupService University_Majors_SubjectGroupService)
         {
             this.UniversityService = UniversityService;
             this.University_MajorsService = University_MajorsService;
+            this.University_Majors_SubjectGroupService = University_Majors_SubjectGroupService;
         }
 
         #region Create
@@ -80,6 +85,8 @@ namespace TwelveFinal.Controller.university
             University university = new University { Id = universityFilterDTO.Id ?? Guid.Empty };
             university = await UniversityService.Get(university.Id);
 
+            List<University_Majors_SubjectGroup> listUniversity_Majors_SubjectGroup = await University_Majors_SubjectGroupService.List(new University_Majors_SubjectGroupFilter { UniversityId = university.Id });
+
             return university == null ? null : new UniversityDTO()
             {
                 Id = university.Id,
@@ -87,7 +94,7 @@ namespace TwelveFinal.Controller.university
                 Name = university.Name,
                 Address = university.Address,
                 Website = university.Website,
-                University_Majors = university.University_Majors.Select( u => new University_MajorsDTO
+                University_Majors_SubjectGroups = listUniversity_Majors_SubjectGroup.Select( u => new University_Majors_SubjectGroupDTO
                 {
                     Id = u.Id,
                     MajorsId = u.MajorsId,
@@ -96,7 +103,13 @@ namespace TwelveFinal.Controller.university
                     UniversityId = u.UniversityId,
                     UniversityCode = u.UniversityCode,
                     UniversityName = u.UniversityName,
-                    UniversityAddress = u.UniversityAddress,
+                    SubjectGroupId = u.SubjectGroupId,
+                    SubjectGroupCode = u.SubjectGroupCode,
+                    SubjectGroupName = u.SubjectGroupName,
+                    Benchmark = u.Benchmark,
+                    Note = u.Note,
+                    Quantity = u.Quantity,
+                    Year = u.Year
                 }).ToList(),
                 Errors = university.Errors
             };

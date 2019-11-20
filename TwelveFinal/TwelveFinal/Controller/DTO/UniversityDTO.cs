@@ -13,7 +13,7 @@ namespace TwelveFinal.Controller.DTO
         public string Name { get; set; }
         public string Address { get; set; }
         public string Website { get; set; }
-        public List<University_MajorsDTO> University_Majors { get; set; } 
+        public List<University_Majors_SubjectGroupDTO> University_Majors_SubjectGroups { get; set; } 
     }
 
     public class UniversityFilterDTO : FilterDTO
