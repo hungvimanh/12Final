@@ -37,8 +37,7 @@ namespace TwelveFinal.Entities
         public StringFilter Year { get; set; }
         public Guid? SubjectGroupId { get; set; }
         public StringFilter SubjectGroupCode { get; set; }
-        public DoubleFilter BenchmarkHigh { get; set; }
-        public DoubleFilter BenchmarkLow { get; set; }
+        public DoubleFilter Benchmark { get; set; }
         public University_Majors_SubjectGroupOrder OrderBy { get; set; }
         public University_Majors_SubjectGroupFilter() : base()
         {

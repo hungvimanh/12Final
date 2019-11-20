@@ -36,8 +36,7 @@ namespace TwelveFinal.Controller.DTO
         public Guid? MajorsId { get; set; }
         public string MajorsCode { get; set; }
         public string MajorsName { get; set; }
-        public double? BenchmarkLow { get; set; }
-        public double? BenchmarkHigh { get; set; }
+        public double? Benchmark { get; set; }
         public Guid? SubjectGroupId { get; set; }
         public string SubjectGroupCode { get; set; }
         public University_Majors_SubjectGroupOrder OrderBy { get; set; }

@@ -49,10 +49,8 @@ namespace TwelveFinal.Repositories
 
             if (university_Majors_SubjectGroupFilter.SubjectGroupCode != null)
                 query = query.Where(q => q.SubjectGroup.Code, university_Majors_SubjectGroupFilter.SubjectGroupCode);
-            if (university_Majors_SubjectGroupFilter.BenchmarkHigh != null)
-                query = query.Where(q => q.Benchmark, university_Majors_SubjectGroupFilter.BenchmarkHigh);
-            if (university_Majors_SubjectGroupFilter.BenchmarkLow != null)
-                query = query.Where(q => q.Benchmark, university_Majors_SubjectGroupFilter.BenchmarkLow);
+            if (university_Majors_SubjectGroupFilter.Benchmark != null)
+                query = query.Where(q => q.Benchmark, university_Majors_SubjectGroupFilter.Benchmark);
             if (university_Majors_SubjectGroupFilter.Year != null)
                 query = query.Where(q => q.University_Majors.Year, university_Majors_SubjectGroupFilter.Year);
             return query;
