@@ -102,7 +102,7 @@ namespace TwelveFinal.Controller.university_majors
                 Skip = University_Majors_SubjectFilterDTO.Skip,
                 Take = int.MaxValue,
                 OrderType = OrderType.DESC,
-                OrderBy = University_Majors_SubjectGroupOrder.SubjectGroupCode
+                OrderBy = University_Majors_SubjectGroupOrder.Benchmark
             };
 
             List<University_Majors_SubjectGroup> University_Majors_Subjects = await University_Majors_SubjectGroupService.List(University_Majors_SubjectFilter);
