@@ -94,7 +94,7 @@ namespace TwelveFinal.Controller.university
                 Name = university.Name,
                 Address = university.Address,
                 Website = university.Website,
-                University_Majors_SubjectGroups = listUniversity_Majors_SubjectGroup.Select( u => new University_Majors_SubjectGroupDTO
+                University_Majors_SubjectGroups = listUniversity_Majors_SubjectGroup.Where(u => u.Year == universityFilterDTO.Year).Select( u => new University_Majors_SubjectGroupDTO
                 {
                     Id = u.Id,
                     MajorsId = u.MajorsId,

@@ -32,7 +32,7 @@ namespace DataSeeding
                     string majorsCode = worksheet.Cells[i, 2].Value?.ToString();
                     string subjectGroupCode = worksheet.Cells[i, 3].Value?.ToString();
                     string year = worksheet.Cells[i, 4].Value?.ToString();
-                    double benchmark = Convert.ToDouble(worksheet.Cells[i, 5].Value?.ToString());
+                    double benchmark = Convert.ToDouble(worksheet.Cells[i, 5].Value?.ToString().Replace(".", ","));
                     string note = worksheet.Cells[i, 6].Value?.ToString();
                     int quantity = Convert.ToInt32(worksheet.Cells[i, 7].Value?.ToString());
 
