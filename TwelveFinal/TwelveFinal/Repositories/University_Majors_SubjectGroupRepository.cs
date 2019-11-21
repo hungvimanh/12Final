@@ -68,6 +68,9 @@ namespace TwelveFinal.Repositories
                         case University_Majors_SubjectGroupOrder.Benchmark:
                             query = query.OrderBy(q => q.Benchmark);
                             break;
+                        case University_Majors_SubjectGroupOrder.MajorsCode:
+                            query = query.OrderBy(q => q.University_Majors.Majors.Code);
+                            break;
                         default:
                             query = query.OrderBy(q => q.CX);
                             break;
@@ -81,6 +84,9 @@ namespace TwelveFinal.Repositories
                             break;
                         case University_Majors_SubjectGroupOrder.Benchmark:
                             query = query.OrderByDescending(q => q.Benchmark);
+                            break;
+                        case University_Majors_SubjectGroupOrder.MajorsCode:
+                            query = query.OrderByDescending(q => q.University_Majors.Majors.Code);
                             break;
                         default:
                             query = query.OrderByDescending(q => q.CX);

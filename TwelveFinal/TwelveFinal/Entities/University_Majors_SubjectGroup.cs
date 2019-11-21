@@ -48,6 +48,7 @@ namespace TwelveFinal.Entities
     public enum University_Majors_SubjectGroupOrder
     {
         CX,
+        MajorsCode,
         SubjectGroupCode,
         Benchmark
     }

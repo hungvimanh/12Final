@@ -85,7 +85,14 @@ namespace TwelveFinal.Controller.university
             University university = new University { Id = universityFilterDTO.Id ?? Guid.Empty };
             university = await UniversityService.Get(university.Id);
 
-            List<University_Majors_SubjectGroup> listUniversity_Majors_SubjectGroup = await University_Majors_SubjectGroupService.List(new University_Majors_SubjectGroupFilter { UniversityId = university.Id });
+            List<University_Majors_SubjectGroup> listUniversity_Majors_SubjectGroup = await University_Majors_SubjectGroupService.List(new University_Majors_SubjectGroupFilter 
+            { 
+                UniversityId = university.Id,
+                Year = string.IsNullOrEmpty(universityFilterDTO.Year)? null : new StringFilter { Equal = universityFilterDTO.Year },
+                Skip = universityFilterDTO.Skip,
+                Take = int.MaxValue,
+                OrderBy = University_Majors_SubjectGroupOrder.MajorsCode
+            });
 
             return university == null ? null : new UniversityDTO()
             {
@@ -94,7 +101,7 @@ namespace TwelveFinal.Controller.university
                 Name = university.Name,
                 Address = university.Address,
                 Website = university.Website,
-                University_Majors_SubjectGroups = listUniversity_Majors_SubjectGroup.Where(u => u.Year == universityFilterDTO.Year).Select( u => new University_Majors_SubjectGroupDTO
+                University_Majors_SubjectGroups = listUniversity_Majors_SubjectGroup.Select( u => new University_Majors_SubjectGroupDTO
                 {
                     Id = u.Id,
                     MajorsId = u.MajorsId,
