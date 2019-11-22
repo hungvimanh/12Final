@@ -28,8 +28,8 @@ namespace TwelveFinal.Common
         public static async Task RegisterMail(User user)
         {
             if (string.IsNullOrEmpty(user.Email)) return;
-            string SendEmail = "hsntladykillah@gmail.com";
-            string SendEmailPassword = "hoilamgi1234";
+            string SendEmail = "12finalteam@gmail.com";
+            string SendEmailPassword = "TF123456a@";
 
             var loginInfo = new NetworkCredential(SendEmail, SendEmailPassword);
             var msg = new MailMessage();
@@ -49,7 +49,7 @@ namespace TwelveFinal.Common
                 smtpClient.EnableSsl = true;
                 smtpClient.UseDefaultCredentials = false;
                 smtpClient.Credentials = loginInfo;
-                smtpClient.Send(msg);
+                await smtpClient.SendMailAsync(msg);
             }
             catch (Exception ex)
             {
@@ -60,8 +60,8 @@ namespace TwelveFinal.Common
         public static async Task RecoveryPasswordMail(User user)
         {
             if (string.IsNullOrEmpty(user.Email)) return;
-            string SendEmail = "hsntladykillah@gmail.com";
-            string SendEmailPassword = "hoilamgi1234";
+            string SendEmail = "12finalteam@gmail.com";
+            string SendEmailPassword = "TF123456a@";
 
             var loginInfo = new NetworkCredential(SendEmail, SendEmailPassword);
             var msg = new MailMessage();
@@ -80,7 +80,7 @@ namespace TwelveFinal.Common
                 smtpClient.EnableSsl = true;
                 smtpClient.UseDefaultCredentials = false;
                 smtpClient.Credentials = loginInfo;
-                smtpClient.Send(msg);
+                await smtpClient.SendMailAsync(msg);
             }
             catch (Exception ex)
             {

@@ -43,16 +43,12 @@ namespace TwelveFinal.Services.MStudentService
             if (!await StudentValidator.Create(student))
                 return student;
 
-            //Tạo mới tài khoản thí sinh
             try
             {
                 await UOW.Begin();
-                //Tạo mới Id
                 student.Id = Guid.NewGuid();
                 await UOW.StudentRepository.Create(student);
 
-                //Tạo mới account với Username bằng Identify
-                //Password được generate tự động
                 User user = new User()
                 {
                     Username = student.Identify,
@@ -65,7 +61,6 @@ namespace TwelveFinal.Services.MStudentService
                 await UOW.UserRepository.Create(user);
 
                 await UOW.Commit();
-                //Sau đó gửi về Email
                 await Utils.RegisterMail(user);
                 return await UOW.StudentRepository.Get(student.Id);
             }
