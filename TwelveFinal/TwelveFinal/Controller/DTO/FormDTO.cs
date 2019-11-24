@@ -16,6 +16,7 @@ namespace TwelveFinal.Controller.DTO
         public string Address { get; set; }
         public string Identify { get; set; }
         public DateTime Dob { get; set; }
+        public string Image { get; set; }
         public Guid? EthnicId { get; set; }
         public string EthnicCode { get; set; }
         public string EthnicName { get; set; }

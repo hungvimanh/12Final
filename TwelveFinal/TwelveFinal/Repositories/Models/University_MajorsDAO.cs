@@ -10,10 +10,10 @@ namespace TwelveFinal.Repositories.Models
             University_Majors_SubjectGroups = new HashSet<University_Majors_SubjectGroupDAO>();
         }
 
-        public Guid Id { get; set; }
         public long CX { get; set; }
         public Guid UniversityId { get; set; }
         public Guid MajorsId { get; set; }
+        public Guid Id { get; set; }
         public string Year { get; set; }
 
         public virtual MajorsDAO Majors { get; set; }

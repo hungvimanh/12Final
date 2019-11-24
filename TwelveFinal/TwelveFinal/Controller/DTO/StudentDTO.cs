@@ -32,6 +32,7 @@ namespace TwelveFinal.Controller.DTO
         public Guid? ProvinceId { get; set; }
         public string ProvinceCode { get; set; }
         public string ProvinceName { get; set; }
+        public string Image { get; set; }
         public int Status { get; set; }
     }
 

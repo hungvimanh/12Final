@@ -34,6 +34,7 @@ namespace TwelveFinal.Repositories.Models
         public double? Geography { get; set; }
         public double? CivicEducation { get; set; }
         public int Status { get; set; }
+        public byte[] Image { get; set; }
 
         public virtual EthnicDAO Ethnic { get; set; }
         public virtual HighSchoolDAO HighSchool { get; set; }

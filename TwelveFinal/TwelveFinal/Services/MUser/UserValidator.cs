@@ -87,7 +87,6 @@ namespace TwelveFinal.Services.MUser
             return user.IsValidated;
         }
 
-
         private async Task<bool> ValidatePassword(User user)
         {
             //Kiểm tra tính hợp lệ của Password

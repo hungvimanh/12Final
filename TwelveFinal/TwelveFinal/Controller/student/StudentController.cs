@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using TwelveFinal.Controller.DTO;
 using TwelveFinal.Entities;
@@ -87,6 +88,7 @@ namespace TwelveFinal.Controller.student
                 Name = studentDTO.Name,
                 Gender = studentDTO.Gender,
                 Identify = studentDTO.Identify,
+                Image = studentDTO.Image != null ? Encoding.UTF8.GetBytes(studentDTO.Image) : null,
                 Phone = studentDTO.Phone,
                 Address = studentDTO.Address,
                 EthnicId = studentDTO.EthnicId,
@@ -108,6 +110,7 @@ namespace TwelveFinal.Controller.student
                 Email = student.Email,
                 Phone = student.Phone,
                 Address = student.Address,
+                Image = student.Image == null ? null : Encoding.UTF8.GetString(student.Image),
                 EthnicId = student.EthnicId,
                 EthnicCode = student.EthnicCode,
                 EthnicName = student.EthnicName,
@@ -148,6 +151,7 @@ namespace TwelveFinal.Controller.student
                 PlaceOfBirth = student.PlaceOfBirth,
                 Name = student.Name,
                 Phone = student.Phone,
+                Image = student.Image == null ? null : Encoding.UTF8.GetString(student.Image),
                 EthnicId = student.EthnicId,
                 EthnicName = student.EthnicName,
                 EthnicCode = student.EthnicCode,
@@ -338,6 +342,7 @@ namespace TwelveFinal.Controller.student
                 PlaceOfBirth = student.PlaceOfBirth,
                 Name = student.Name,
                 Phone = student.Phone,
+                Image = student.Image == null ? null : Encoding.UTF8.GetString(student.Image),
                 EthnicId = student.EthnicId,
                 EthnicName = student.EthnicName,
                 EthnicCode = student.EthnicCode,

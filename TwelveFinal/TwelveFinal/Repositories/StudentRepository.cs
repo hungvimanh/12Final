@@ -124,7 +124,7 @@ namespace TwelveFinal.Repositories
                 EthnicCode = q.Ethnic.Code,
                 EthnicName = q.Ethnic.Name,
                 PlaceOfBirth = q.PlaceOfBirth,
-
+                Image = q.Image,
                 Biology = q.Biology,
                 Chemistry = q.Chemistry,
                 CivicEducation = q.CivicEducation,
@@ -155,7 +155,7 @@ namespace TwelveFinal.Repositories
                 PlaceOfBirth = student.PlaceOfBirth,
                 TownId = student.TownId,
                 Identify = student.Identify,
-
+                Image = student.Image,
                 Biology = student.Biology,
                 Chemistry = student.Chemistry,
                 CivicEducation = student.CivicEducation,
@@ -189,7 +189,7 @@ namespace TwelveFinal.Repositories
                 PlaceOfBirth = s.PlaceOfBirth,
                 TownId = s.TownId,
                 Identify = s.Identify,
-
+                Image = s.Image,
                 Biology = s.Biology,
                 Chemistry = s.Chemistry,
                 CivicEducation = s.CivicEducation,
@@ -242,7 +242,7 @@ namespace TwelveFinal.Repositories
                 ProvinceCode = s.Town.District.Province.Code,
                 ProvinceName = s.Town.District.Province.Name,
                 Identify = s.Identify,
-
+                Image = s.Image,
                 Biology = s.Biology,
                 Chemistry = s.Chemistry,
                 CivicEducation = s.CivicEducation,
@@ -292,7 +292,8 @@ namespace TwelveFinal.Repositories
                 Name = student.Name,
                 Phone = student.Phone,
                 PlaceOfBirth = student.PlaceOfBirth,
-                TownId = student.TownId
+                TownId = student.TownId,
+                Image = student.Image
             });
             return true;
         }

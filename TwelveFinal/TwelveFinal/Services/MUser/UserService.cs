@@ -64,6 +64,7 @@ namespace TwelveFinal.Services.MUser
             //Khi đổi mật khẩu sẽ có thêm Salt
             // mỗi lần đổi salt sẽ được generate lại
             User user = await this.Verify(userFilter);
+            user.Password = newPassword;
             if (!await UserValidator.ChangePassword(user))
                 return user;
             //Generate Salt Random

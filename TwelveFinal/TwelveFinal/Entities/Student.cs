@@ -33,7 +33,7 @@ namespace TwelveFinal.Entities
         public Guid? ProvinceId { get; set; }
         public string ProvinceCode { get; set; }
         public string ProvinceName { get; set; }
-
+        public byte[] Image { get; set; }
         public double? Maths { get; set; }
         public double? Literature { get; set; }
         public double? Languages { get; set; }
