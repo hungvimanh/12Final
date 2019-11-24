@@ -12,8 +12,7 @@ namespace TwelveFinal.Controller.DTO
         public DateTime Dob { get; set; }
         public Guid? EthnicId { get; set; }
         public string EthnicName { get; set; }
-        public Guid? ProvinceId { get; set; }
-        public string ProvinceName { get; set; }
+        public string PlaceOfBirth { get; set; }
         public Guid? HighSchoolId { get; set; }
         public string HighSchoolName { get; set; }
         public string Identify { get; set; }

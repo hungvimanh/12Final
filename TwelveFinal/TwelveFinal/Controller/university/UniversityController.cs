@@ -101,7 +101,7 @@ namespace TwelveFinal.Controller.university
                 Name = university.Name,
                 Address = university.Address,
                 Website = university.Website,
-                University_Majors_SubjectGroups = listUniversity_Majors_SubjectGroup.Select( u => new University_Majors_SubjectGroupDTO
+                University_Majors_SubjectGroups = listUniversity_Majors_SubjectGroup.Select(u => new University_Majors_SubjectGroupDTO
                 {
                     Id = u.Id,
                     MajorsId = u.MajorsId,
@@ -117,7 +117,7 @@ namespace TwelveFinal.Controller.university
                     Note = u.Note,
                     Quantity = u.Quantity,
                     Year = u.Year
-                }).ToList(),
+                }).OrderByDescending(u => u.Year).ToList(),
                 Errors = university.Errors
             };
         }

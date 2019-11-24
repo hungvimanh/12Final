@@ -68,6 +68,7 @@ namespace TwelveFinal.Controller.subject_group
             SubjectGroupFilter filter = new SubjectGroupFilter
             {
                 Code = new StringFilter { StartsWith = subjectGroupFilterDTO.Code },
+                Name = new StringFilter { Contains = subjectGroupFilterDTO.Name },
                 Skip = subjectGroupFilterDTO.Skip,
                 Take = int.MaxValue,
                 OrderBy = SubjectGroupOrder.Code,
