@@ -42,7 +42,7 @@ namespace TwelveFinal.Services.MUniversity_Majors
 
         private async Task<bool> IsExisted(University_Majors_SubjectGroup university_Majors_SubjectGroup)
         {
-            if(UOW.University_Majors_SubjectGroupRepository.Get(university_Majors_SubjectGroup.Id) == null)
+            if(await UOW.University_Majors_SubjectGroupRepository.Get(university_Majors_SubjectGroup.Id) == null)
             {
                 university_Majors_SubjectGroup.AddError(nameof(University_Majors_SubjectGroupValidator), nameof(University_Majors_SubjectGroup), ErrorCode.NotExisted);
             }
