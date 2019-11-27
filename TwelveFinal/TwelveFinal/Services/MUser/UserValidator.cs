@@ -65,7 +65,7 @@ namespace TwelveFinal.Services.MUser
         {
             //Kiểm tra username đã tồn tại hay chưa??
             //Nếu tồn tại thì trả ra lỗi Username đã được sử dụng
-            if(UOW.UserRepository.Get(new UserFilter
+            if(await UOW.UserRepository.Get(new UserFilter
             {
                 Username = user.Username
             }) == null)
