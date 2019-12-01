@@ -210,7 +210,7 @@ namespace TwelveFinal.Services.MStudentService
             var student = await UOW.StudentRepository.Get(CurrentContext.StudentId);
             //Nếu thí sinh chưa tốt nghiệp THPT
             //Tính điểm tốt nghiệp
-            if(student.Graduated.HasValue && !student.Graduated.Value)
+            if(!student.Graduated.HasValue || (student.Graduated.HasValue && !student.Graduated.Value))
             {
                 student.GraduationMark = await GraduationMarkCalculate(student);
             }
@@ -263,7 +263,7 @@ namespace TwelveFinal.Services.MStudentService
             //Điểm tốt nghiệp = (Toán + Văn + Ngoại ngữ + điểm tổ hợp môn)/4
             mark = (mark + student.Maths.Value + student.Literature.Value + student.Languages.Value) / 4;
             //Nếu thí sinh là dân tộc thiểu số sẽ được cộng thêm 1 điểm
-            if (!student.EthnicCode.Equals("01")) mark += 1;
+            if (!string.IsNullOrEmpty(student.EthnicCode) && !student.EthnicCode.Equals("01")) mark += 1;
             //Tổng điểm sau khi tính >=5 đủ điều kiện tốt nghiệp
             return mark;
         }

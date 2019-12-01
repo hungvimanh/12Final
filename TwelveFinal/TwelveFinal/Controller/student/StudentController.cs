@@ -302,6 +302,8 @@ namespace TwelveFinal.Controller.student
             return student == null ? null : new MarkDTO
             {
                 StudentId = student.Id,
+                Dob = student.Dob,
+                Name = student.Name,
                 Email = student.Email,
                 Identify = student.Identify,
                 Biology = student.Biology,
@@ -313,6 +315,7 @@ namespace TwelveFinal.Controller.student
                 Literature = student.Literature,
                 Maths = student.Maths,
                 Physics = student.Physics,
+                Graduated = student.Graduated,
                 GraduationMark = student.GraduationMark
             };
         }

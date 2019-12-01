@@ -9,6 +9,8 @@ namespace TwelveFinal.Controller.student
     {
         public Guid StudentId { get; set; }
         public string Identify { get; set; }
+        public string Name { get; set; }
+        public DateTime Dob { get; set; }
         public string Email { get; set; }
         public double? Maths { get; set; }
         public double? Literature { get; set; }
@@ -19,6 +21,7 @@ namespace TwelveFinal.Controller.student
         public double? History { get; set; }
         public double? Geography { get; set; }
         public double? CivicEducation { get; set; }
+        public bool? Graduated { get; set; }
         public double? GraduationMark { get; set; }
     }
 }
