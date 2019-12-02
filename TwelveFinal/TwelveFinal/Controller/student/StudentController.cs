@@ -316,7 +316,8 @@ namespace TwelveFinal.Controller.student
                 Maths = student.Maths,
                 Physics = student.Physics,
                 Graduated = student.Graduated,
-                GraduationMark = student.GraduationMark
+                GraduationMark = student.GraduationMark,
+                Errors = student.Errors
             };
         }
         #endregion

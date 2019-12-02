@@ -14,6 +14,7 @@ namespace TwelveFinal.Services.MStudentService
         Task<bool> BulkInsert(List<Student> students);
         Task<bool> Update(Student student);
         Task<bool> Delete(Student student);
+        Task<bool> ViewMark(Student student);
     }
     public class StudentValidator : IStudentValidator
     {
@@ -53,7 +54,14 @@ namespace TwelveFinal.Services.MStudentService
         {
             bool IsValid = true;
             IsValid &= await IsExisted(student);
-            //IsValid &= await GraduationValidate(student);
+            IsValid &= await GraduationValidate(student);
+            return IsValid;
+        }
+
+        public async Task<bool> ViewMark(Student student)
+        {
+            bool IsValid = true;
+            IsValid &= await ValidateViewMark(student);
             return IsValid;
         }
 
@@ -101,56 +109,65 @@ namespace TwelveFinal.Services.MStudentService
             return student.IsValidated;
         }
 
-        //private async Task<bool> GraduationValidate(Student student)
-        //{
-        //    //Kiểm tra số điểm các môn nếu có 
-        //    if (student.Maths != null && !(student.Maths >= 0 && student.Maths <= 10))
-        //    {
-        //        student.AddError(nameof(StudentValidator), nameof(student.Maths), ErrorCode.Invalid);
-        //    }
+        private async Task<bool> ValidateViewMark(Student student)
+        {
+            if(!student.Maths.HasValue || !student.Literature.HasValue || !student.Languages.HasValue)
+            {
+                student.AddError(nameof(StudentValidator), "Mark", ErrorCode.Invalid);
+            }
+            return student.IsValidated;
+        }
 
-        //    if (student.Physics != null && !(student.Physics >= 0 && student.Physics <= 10))
-        //    {
-        //        student.AddError(nameof(StudentValidator), nameof(student.Physics), ErrorCode.Invalid);
-        //    }
+        private async Task<bool> GraduationValidate(Student student)
+        {
+            //Kiểm tra số điểm các môn nếu có 
+            if (student.Maths != null && !(student.Maths >= 0 && student.Maths <= 10))
+            {
+                student.AddError(nameof(StudentValidator), nameof(student.Maths), ErrorCode.Invalid);
+            }
 
-        //    if (student.Chemistry != null && !(student.Chemistry >= 0 && student.Chemistry <= 10))
-        //    {
-        //        student.AddError(nameof(StudentValidator), nameof(student.Chemistry), ErrorCode.Invalid);
-        //    }
+            if (student.Physics != null && !(student.Physics >= 0 && student.Physics <= 10))
+            {
+                student.AddError(nameof(StudentValidator), nameof(student.Physics), ErrorCode.Invalid);
+            }
 
-        //    if (student.Literature != null && !(student.Literature >= 0 && student.Literature <= 10))
-        //    {
-        //        student.AddError(nameof(StudentValidator), nameof(student.Literature), ErrorCode.Invalid);
-        //    }
+            if (student.Chemistry != null && !(student.Chemistry >= 0 && student.Chemistry <= 10))
+            {
+                student.AddError(nameof(StudentValidator), nameof(student.Chemistry), ErrorCode.Invalid);
+            }
 
-        //    if (student.History != null && !(student.History >= 0 && student.History <= 10))
-        //    {
-        //        student.AddError(nameof(StudentValidator), nameof(student.History), ErrorCode.Invalid);
-        //    }
+            if (student.Literature != null && !(student.Literature >= 0 && student.Literature <= 10))
+            {
+                student.AddError(nameof(StudentValidator), nameof(student.Literature), ErrorCode.Invalid);
+            }
 
-        //    if (student.Geography != null && !(student.Geography >= 0 && student.Geography <= 10))
-        //    {
-        //        student.AddError(nameof(StudentValidator), nameof(student.Geography), ErrorCode.Invalid);
-        //    }
+            if (student.History != null && !(student.History >= 0 && student.History <= 10))
+            {
+                student.AddError(nameof(StudentValidator), nameof(student.History), ErrorCode.Invalid);
+            }
 
-        //    if (student.Biology != null && !(student.Biology >= 0 && student.Biology <= 10))
-        //    {
-        //        student.AddError(nameof(StudentValidator), nameof(student.Biology), ErrorCode.Invalid);
-        //    }
+            if (student.Geography != null && !(student.Geography >= 0 && student.Geography <= 10))
+            {
+                student.AddError(nameof(StudentValidator), nameof(student.Geography), ErrorCode.Invalid);
+            }
 
-        //    if (student.CivicEducation != null && !(student.CivicEducation >= 0 && student.CivicEducation <= 10))
-        //    {
-        //        student.AddError(nameof(StudentValidator), nameof(student.CivicEducation), ErrorCode.Invalid);
-        //    }
+            if (student.Biology != null && !(student.Biology >= 0 && student.Biology <= 10))
+            {
+                student.AddError(nameof(StudentValidator), nameof(student.Biology), ErrorCode.Invalid);
+            }
 
-        //    if (student.Languages != null && !(student.Languages >= 0 && student.Languages <= 10))
-        //    {
-        //        student.AddError(nameof(StudentValidator), nameof(student.Languages), ErrorCode.Invalid);
-        //    }
+            if (student.CivicEducation != null && !(student.CivicEducation >= 0 && student.CivicEducation <= 10))
+            {
+                student.AddError(nameof(StudentValidator), nameof(student.CivicEducation), ErrorCode.Invalid);
+            }
 
-        //    return student.IsValidated;
-        //}
+            if (student.Languages != null && !(student.Languages >= 0 && student.Languages <= 10))
+            {
+                student.AddError(nameof(StudentValidator), nameof(student.Languages), ErrorCode.Invalid);
+            }
+
+            return student.IsValidated;
+        }
 
     }
 }

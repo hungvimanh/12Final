@@ -206,11 +206,16 @@ namespace TwelveFinal.Services.MStudentService
 
         public async Task<Student> ViewMark()
         {
+            
             if (CurrentContext.StudentId == Guid.Empty) return null;
             var student = await UOW.StudentRepository.Get(CurrentContext.StudentId);
+            if (!await StudentValidator.ViewMark(student))
+            {
+                return student;
+            }
             //Nếu thí sinh chưa tốt nghiệp THPT
             //Tính điểm tốt nghiệp
-            if(!student.Graduated.HasValue || (student.Graduated.HasValue && !student.Graduated.Value))
+            if (!student.Graduated.HasValue || (student.Graduated.HasValue && !student.Graduated.Value))
             {
                 student.GraduationMark = await GraduationMarkCalculate(student);
             }
