@@ -18,6 +18,7 @@ namespace TwelveFinal.Services.MStudentService
     {
         Task<Student> Register(Student student);
         Task<Student> Update(Student student);
+        Task<Student> UploadAvatar(Student student);
         Task<Student> MarkInput(Student student);
         Task<Student> ViewMark();
         Task<bool> ImportExcel(byte[] file);
@@ -104,6 +105,26 @@ namespace TwelveFinal.Services.MStudentService
             {
                 await UOW.Begin();
                 await UOW.StudentRepository.MarkInput(student);
+                await UOW.Commit();
+                return await UOW.StudentRepository.Get(student.Id);
+            }
+            catch (Exception ex)
+            {
+                await UOW.Rollback();
+                throw new MessageException(ex);
+            }
+        }
+
+        public async Task<Student> UploadAvatar(Student student)
+        {
+            //student Id sẽ được gán bằng Id của thí sinh đang truy cập hệ thống
+            student.Id = CurrentContext.StudentId;
+            if (!await StudentValidator.Update(student))
+                return student;
+            try
+            {
+                await UOW.Begin();
+                await UOW.StudentRepository.UploadAvatar(student);
                 await UOW.Commit();
                 return await UOW.StudentRepository.Get(student.Id);
             }

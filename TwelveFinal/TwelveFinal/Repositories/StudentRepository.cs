@@ -18,6 +18,7 @@ namespace TwelveFinal.Repositories
         Task<Student> Get(Guid Id);
         Task<bool> Update(Student student);
         Task<bool> UpdateStatus(Student student);
+        Task<bool> UploadAvatar(Student student);
         Task<bool> MarkInput(Student student);
         Task<bool> Delete(Guid Id);
     }
@@ -292,8 +293,7 @@ namespace TwelveFinal.Repositories
                 Name = student.Name,
                 Phone = student.Phone,
                 PlaceOfBirth = student.PlaceOfBirth,
-                TownId = student.TownId,
-                Image = student.Image
+                TownId = student.TownId
             });
             return true;
         }
@@ -303,6 +303,15 @@ namespace TwelveFinal.Repositories
             await tFContext.Student.Where(s => s.Id.Equals(student.Id)).UpdateFromQueryAsync(s => new StudentDAO
             {
                 Status = student.Status
+            });
+            return true;
+        }
+
+        public async Task<bool> UploadAvatar(Student student)
+        {
+            await tFContext.Student.Where(s => s.Id.Equals(student.Id)).UpdateFromQueryAsync(s => new StudentDAO
+            {
+                Image = student.Image
             });
             return true;
         }

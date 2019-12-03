@@ -58,6 +58,7 @@ namespace TwelveFinal.Controller
         public const string SaveForm = Default + "/form/save";
 
         public const string UpdateProfile = Default + "/student/update";
+        public const string UploadAvatar = Default + "/student/upload-avatar";
         public const string GetProfile = Default + "/student/get";
         public const string ViewMark = Default + "/student/view-mark";
     }

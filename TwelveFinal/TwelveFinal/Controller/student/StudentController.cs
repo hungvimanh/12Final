@@ -95,7 +95,7 @@ namespace TwelveFinal.Controller.student
                 PlaceOfBirth = studentDTO.PlaceOfBirth,
                 ProvinceId = studentDTO.ProvinceId,
                 DistrictId = studentDTO.DistrictId,
-                TownId = studentDTO.TownId,
+                TownId = studentDTO.TownId
             };
             student = await StudentService.Update(student);
 
@@ -130,6 +130,17 @@ namespace TwelveFinal.Controller.student
             if (student.HasError)
                 return BadRequest(studentDTO);
             return Ok(studentDTO);
+        }
+
+        [Route(StudentRoute.UploadAvatar), HttpPost]
+        public async Task<bool> UploadAvatar([FromBody] StudentDTO studentDTO)
+        {
+            Student student = new Student
+            {
+                Image = studentDTO.Image != null ? Encoding.UTF8.GetBytes(studentDTO.Image) : null
+            };
+            student = await StudentService.UploadAvatar(student);
+            return student == null ? false : true;
         }
         #endregion
 
