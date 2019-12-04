@@ -24,6 +24,7 @@ namespace TwelveFinal.Services.MStudentService
         Task<bool> ImportExcel(byte[] file);
         Task<Student> Get();
         Task<Student> GetById(Guid Id);
+        Task<Student> GetByIdentify(string Identify);
         Task<List<Student>> List(StudentFilter studentFilter);
         Task<Student> Delete(Student student);
     }
@@ -218,6 +219,12 @@ namespace TwelveFinal.Services.MStudentService
         {
             if (Id == Guid.Empty) return null;
             return await UOW.StudentRepository.Get(Id);
+        }
+
+        public async Task<Student> GetByIdentify(string Identify)
+        {
+            if (string.IsNullOrEmpty(Identify)) return null;
+            return await UOW.StudentRepository.GetByIdentify(Identify);
         }
 
         public async Task<List<Student>> List(StudentFilter studentFilter)

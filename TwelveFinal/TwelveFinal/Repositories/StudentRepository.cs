@@ -16,6 +16,7 @@ namespace TwelveFinal.Repositories
         Task<int> Count(StudentFilter studentFilter);
         Task<bool> BulkInsert(List<Student> students);
         Task<Student> Get(Guid Id);
+        Task<Student> GetByIdentify(string Identify);
         Task<bool> Update(Student student);
         Task<bool> UpdateStatus(Student student);
         Task<bool> UploadAvatar(Student student);
@@ -262,6 +263,27 @@ namespace TwelveFinal.Repositories
                 student.Graduated = formDAO.Graduated.Value;
             }
 
+            return student;
+        }
+
+        public async Task<Student> GetByIdentify(string Identify)
+        {
+            Student student = await tFContext.Student.Where(s => s.Identify.Equals(Identify)).Select(s => new Student
+            {
+                Id = s.Id,
+                Identify = s.Identify,
+                Dob = s.Dob,
+                Name = s.Name,
+                Biology = s.Biology,
+                Chemistry = s.Chemistry,
+                CivicEducation = s.CivicEducation,
+                Geography = s.Geography,
+                History = s.History,
+                Languages = s.Languages,
+                Literature = s.Literature,
+                Maths = s.Maths,
+                Physics = s.Physics,
+            }).FirstOrDefaultAsync();
             return student;
         }
 

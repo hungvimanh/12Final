@@ -237,24 +237,28 @@ namespace TwelveFinal.Controller.student
         public async Task<ActionResult<Student_IdentifyDTO>> GetByIdentify([FromBody]Student_IdentifyDTO student_IdentifyDTO)
         {
             if (student_IdentifyDTO == null) student_IdentifyDTO = new Student_IdentifyDTO();
-            StudentFilter studentFilter = new StudentFilter
-            {
-                Identify = new StringFilter { Equal = student_IdentifyDTO.Identify }
-            };
 
-            var student = await StudentService.List(studentFilter);
-            if (!student.Any())
+            var student = await StudentService.GetByIdentify(student_IdentifyDTO.Identify);
+            student_IdentifyDTO = new Student_IdentifyDTO
+            {
+                StudentId = student.Id,
+                Identify = student.Identify,
+                Dob = student.Dob.Date,
+                Name = student.Name,
+                Biology = student.Biology,
+                Chemistry = student.Chemistry,
+                CivicEducation = student.CivicEducation,
+                Geography = student.Geography,
+                History = student.History,
+                Languages = student.Languages,
+                Literature = student.Literature,
+                Maths = student.Maths,
+                Physics = student.Physics,
+            };
+            if (student == null)
             {
                 return null;
             }
-            student_IdentifyDTO = new Student_IdentifyDTO
-            {
-                StudentId = student.FirstOrDefault().Id,
-                Identify = student.FirstOrDefault().Identify,
-                Dob = student.FirstOrDefault().Dob.Date,
-                Name = student.FirstOrDefault().Name,
-                Email = student.FirstOrDefault().Email
-            };
             return Ok(student_IdentifyDTO);
         }
         #endregion
