@@ -36,6 +36,7 @@ namespace TwelveFinal.Services.MUniversity_Majors_Majors
 
             try
             {
+                university_Majors.Id = Guid.NewGuid();
                 await UOW.Begin();
                 await UOW.University_MajorsRepository.Create(university_Majors);
                 await UOW.Commit();

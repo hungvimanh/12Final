@@ -65,6 +65,7 @@ namespace TwelveFinal.Services.MUniversity_Majors_Majors
             {
                 MajorsId = university_Majors.MajorsId,
                 UniversityId = university_Majors.UniversityId,
+                Year = new StringFilter { Equal = university_Majors.Year }
             };
 
             var count = await UOW.University_MajorsRepository.Count(filter);

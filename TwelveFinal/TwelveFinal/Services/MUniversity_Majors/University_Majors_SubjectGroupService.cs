@@ -27,6 +27,7 @@ namespace TwelveFinal.Services.MUniversity_Majors
 
         public async Task<University_Majors_SubjectGroup> Create(University_Majors_SubjectGroup university_Majors_SubjectGroup)
         {
+            university_Majors_SubjectGroup.Id = Guid.NewGuid();
             if (!await University_Majors_SubjectGroupValidator.Create(university_Majors_SubjectGroup))
                 return university_Majors_SubjectGroup;
             try

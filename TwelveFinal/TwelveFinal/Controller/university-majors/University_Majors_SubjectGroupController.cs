@@ -7,15 +7,18 @@ using System.Threading.Tasks;
 using TwelveFinal.Controller.DTO;
 using TwelveFinal.Services.MUniversity_Majors;
 using TwelveFinal.Entities;
+using TwelveFinal.Services.MUniversity_Majors_Majors;
 
 namespace TwelveFinal.Controller.university_majors
 {
     public class University_Majors_SubjectGroupController : ApiController
     {
         private IUniversity_Majors_SubjectGroupService University_Majors_SubjectGroupService;
-        public University_Majors_SubjectGroupController(IUniversity_Majors_SubjectGroupService University_Majors_SubjectGroupService)
+        private IUniversity_MajorsService University_MajorsService;
+        public University_Majors_SubjectGroupController(IUniversity_Majors_SubjectGroupService University_Majors_SubjectGroupService, IUniversity_MajorsService University_MajorsService)
         {
             this.University_Majors_SubjectGroupService = University_Majors_SubjectGroupService;
+            this.University_MajorsService = University_MajorsService;
         }
 
         #region Create
@@ -24,7 +27,32 @@ namespace TwelveFinal.Controller.university_majors
         {
             if (university_Majors_SubjectGroupDTO == null) university_Majors_SubjectGroupDTO = new University_Majors_SubjectGroupDTO();
 
-            University_Majors_SubjectGroup university_Majors_SubjectGroup = ConvertDTOtoBO(university_Majors_SubjectGroupDTO);
+            University_Majors university_Majors = new University_Majors
+            {
+                MajorsId = university_Majors_SubjectGroupDTO.MajorsId,
+                UniversityId = university_Majors_SubjectGroupDTO.UniversityId,
+                Year = university_Majors_SubjectGroupDTO.Year
+            };
+            university_Majors = await University_MajorsService.Create(university_Majors);
+            if(university_Majors.Id == Guid.Empty)
+            {
+                var university_Majors_ = await University_MajorsService.List(new University_MajorsFilter
+                {
+                    MajorsId = university_Majors.MajorsId,
+                    UniversityId = university_Majors.UniversityId,
+                    Year = new StringFilter { Equal = university_Majors.Year }
+                });
+                university_Majors = university_Majors_.FirstOrDefault();
+            }
+
+            University_Majors_SubjectGroup university_Majors_SubjectGroup = new University_Majors_SubjectGroup
+            {
+                SubjectGroupId = university_Majors_SubjectGroupDTO.SubjectGroupId,
+                University_MajorsId = university_Majors.Id,
+                Benchmark = university_Majors_SubjectGroupDTO.Benchmark,
+                Quantity = university_Majors_SubjectGroupDTO.Quantity,
+                Note = university_Majors_SubjectGroupDTO.Note
+            };
             university_Majors_SubjectGroup = await University_Majors_SubjectGroupService.Create(university_Majors_SubjectGroup);
 
             university_Majors_SubjectGroupDTO = new University_Majors_SubjectGroupDTO
