@@ -436,7 +436,7 @@ namespace TwelveFinal.Controller.student
             if (approveDTO == null) approveDTO = new ApproveDTO();
             Form form = new Form
             {
-                Id = approveDTO.FormId,
+                Id = approveDTO.Id,
                 StudentId = approveDTO.StudentId,
                 Status = approveDTO.Status
             };
@@ -457,7 +457,7 @@ namespace TwelveFinal.Controller.student
             if (approveDTO == null) approveDTO = new ApproveDTO();
             Form form = new Form
             {
-                Id = approveDTO.FormId,
+                Id = approveDTO.Id,
                 StudentId = approveDTO.StudentId,
                 Status = approveDTO.Status
             };

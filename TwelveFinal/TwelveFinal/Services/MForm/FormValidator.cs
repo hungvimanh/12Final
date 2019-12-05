@@ -36,11 +36,6 @@ namespace TwelveFinal.Services.MForm
         public async Task<bool> Approve(Form form)
         {
             bool IsValid = true;
-            IsValid &= await IsExisted(form);
-            if (!IsValid)
-            {
-                form.AddError(nameof(FormValidator), "Form", ErrorCode.NotExisted);
-            }
             IsValid &= await StatusValidation(form);
             return IsValid;
         }
